@@ -1,0 +1,19 @@
+version: '3'
+services:
+  db:
+    env_file: ../../.env
+    image: postgres:15.3-alpine3.18
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/posgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+      timeout: 10s
+      retries: 120
+
+volumes:
+  postgres_data:
+

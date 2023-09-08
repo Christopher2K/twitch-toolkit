@@ -1,0 +1,6 @@
+node_modules
+apps/control/node_modules
+.git
+.yarn/cache
+.yarn/install-state.gz
+yarn-error.log
