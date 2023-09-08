@@ -17,7 +17,6 @@
 # dependencies
 node_modules
 
-
 # IDEs and editors
 /.idea
 .project
@@ -34,3 +33,5 @@ tmp
 .DS_Store
 Thumbs.db
 
+# Codegen
+styled-system/
