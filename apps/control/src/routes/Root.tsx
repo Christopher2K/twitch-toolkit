@@ -1,6 +1,8 @@
 import { Outlet } from '@tanstack/react-router';
 
 import { css } from '@style/css';
+import { NavItem } from '@/components/NavItem';
+import { BotIcon, CogIcon, ScreenShareIcon } from 'lucide-react';
 
 export function Root() {
   return (
@@ -10,23 +12,33 @@ export function Root() {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        background: 'bg.subtle',
         width: 'full',
         height: 'full',
       })}
     >
       <nav
         className={css({
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
           borderRightWidth: 'thin',
           borderRightStyle: 'solid',
           borderRightColor: 'neutral.200',
-          width: '240px',
+          background: 'bg.subtle',
+          width: '260px',
           height: 'full',
-          px: '2',
-          py: '4',
         })}
       >
-        Navigation
+        <NavItem to="/" icon={<BotIcon />}>
+          Commands
+        </NavItem>
+        <NavItem to="/screen-config" icon={<ScreenShareIcon />}>
+          Screen configuration
+        </NavItem>
+        <NavItem to="/settings" icon={<CogIcon />}>
+          Settings
+        </NavItem>
       </nav>
       <main
         className={css({
