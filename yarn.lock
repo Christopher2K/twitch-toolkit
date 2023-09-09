@@ -66,6 +66,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@adonisjs/auth@npm:~8.2.3":
+  version: 8.2.3
+  resolution: "@adonisjs/auth@npm:8.2.3"
+  dependencies:
+    "@poppinss/hooks": ^5.0.3
+    "@poppinss/utils": ^5.0.0
+    luxon: ^3.0.4
+  peerDependencies:
+    "@adonisjs/core": ^5.7.1
+    "@adonisjs/i18n": ^1.5.0
+    "@adonisjs/lucid": ^18.0.0
+    "@adonisjs/redis": ^7.2.0
+    "@adonisjs/session": ^6.2.0
+  peerDependenciesMeta:
+    "@adonisjs/i18n":
+      optional: true
+    "@adonisjs/lucid":
+      optional: true
+    "@adonisjs/redis":
+      optional: true
+    "@adonisjs/session":
+      optional: true
+  checksum: 48d62a1d5b860956f0fe38bf8245fe4763f9b2071ab085433b19decaf378f7ba6966d185e806602277baa2b8bd245d2c435e4736058e52aa47340e1a778dd6e1
+  languageName: node
+  linkType: hard
+
 "@adonisjs/bodyparser@npm:^8.1.7":
   version: 8.1.9
   resolution: "@adonisjs/bodyparser@npm:8.1.9"
@@ -2263,6 +2289,7 @@ __metadata:
   resolution: "@twitchtoolkit/api@workspace:apps/api"
   dependencies:
     "@adonisjs/assembler": ~5.9.5
+    "@adonisjs/auth": ~8.2.3
     "@adonisjs/core": ~5.9.0
     "@adonisjs/lucid": ~18.4.0
     "@adonisjs/repl": ~3.1.11
@@ -8407,7 +8434,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:^3.3.0, luxon@npm:^3.4.1, luxon@npm:~3.4.3":
+"luxon@npm:^3.0.4, luxon@npm:^3.3.0, luxon@npm:^3.4.1, luxon@npm:~3.4.3":
   version: 3.4.3
   resolution: "luxon@npm:3.4.3"
   checksum: 3eade81506224d038ed24035a0cd0dd4887848d7eba9361dce9ad8ef81380596a68153240be3988721f9690c624fb449fcf8fd8c3fc0681a6a8496faf48e92a3
