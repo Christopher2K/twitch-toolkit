@@ -2326,8 +2326,11 @@ __metadata:
     lucide-react: ~0.274.0
     react: ~18.2.0
     react-dom: ~18.2.0
-    typescript: ~4.6.4
+    react-hook-form: ~7.46.1
+    typescript: ~5.1.0
     vite: ~4.4.4
+    wretch: ~2.6.0
+    zustand: ~4.4.1
   languageName: unknown
   linkType: soft
 
@@ -10729,6 +10732,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:~7.46.1":
+  version: 7.46.1
+  resolution: "react-hook-form@npm:7.46.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 9c11ba454ce5b2a16e7499f2ca710e0c0cff227f39689b8e7985902f27f99bfc7a2c49f145ef228528764cf8286bf6101fc8a0f5094ce652eb31cab1684518d1
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.12.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -12279,6 +12291,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:~5.1.0":
+  version: 5.1.6
+  resolution: "typescript@npm:5.1.6"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: b2f2c35096035fe1f5facd1e38922ccb8558996331405eb00a5111cc948b2e733163cc22fab5db46992aba7dd520fff637f2c1df4996ff0e134e77d3249a7350
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>":
   version: 5.2.2
   resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=14eedb"
@@ -12296,6 +12318,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 1cb434fbc637d347be90e3a0c6cd05e33c38f941713c8786d3031faf1842c2c148ba91d2fac01e7276b0ae3249b8633f1660e32686cc7a8c6a8fd5361dc52c66
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@~5.1.0#~builtin<compat/typescript>":
+  version: 5.1.6
+  resolution: "typescript@patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: f53bfe97f7c8b2b6d23cf572750d4e7d1e0c5fff1c36d859d0ec84556a827b8785077bc27676bf7e71fae538e517c3ecc0f37e7f593be913d884805d931bc8be
   languageName: node
   linkType: hard
 
@@ -12536,7 +12568,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:^1.2.0":
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.2.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:
@@ -12909,6 +12941,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"wretch@npm:~2.6.0":
+  version: 2.6.0
+  resolution: "wretch@npm:2.6.0"
+  checksum: 90f583c6673628f248f5517c25b40e0a2d459ea3bb5e7b952fc76a6d61f5c6c1785c9e943ed3e954ef99a476b610c02cca18189db3d4328a00fa17ed376c0da5
+  languageName: node
+  linkType: hard
+
 "xtend@npm:^4.0.0":
   version: 4.0.2
   resolution: "xtend@npm:4.0.2"
@@ -13015,6 +13054,26 @@ __metadata:
   version: 3.22.2
   resolution: "zod@npm:3.22.2"
   checksum: 231e2180c8eabb56e88680d80baff5cf6cbe6d64df3c44c50ebe52f73081ecd0229b1c7215b9552537f537a36d9e36afac2737ddd86dc14e3519bdbc777e82b9
+  languageName: node
+  linkType: hard
+
+"zustand@npm:~4.4.1":
+  version: 4.4.1
+  resolution: "zustand@npm:4.4.1"
+  dependencies:
+    use-sync-external-store: 1.2.0
+  peerDependencies:
+    "@types/react": ">=16.8"
+    immer: ">=9.0"
+    react: ">=16.8"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+  checksum: 80acd0fbf633782996642802c8692bbb80ae5c80a8dff4c501b88250acd5ccd468fbc6398bdce198475a25e3839c91385b81da921274f33ffb5c2d08c3eab400
   languageName: node
   linkType: hard
 

@@ -21,4 +21,15 @@ export default class AuthController {
     await auth.use('api').revoke();
     return response.noContent();
   }
+
+  public async me({ auth, response }: HttpContextContract) {
+    const user = auth.user;
+    if (!user) return response.forbidden();
+
+    return response.ok({
+      data: {
+        user: user.serialize(),
+      },
+    });
+  }
 }

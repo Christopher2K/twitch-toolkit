@@ -5,6 +5,7 @@ import { Commands } from './routes/Commands';
 import { Settings } from './routes/Settings';
 import { ScreenConfig } from './routes/ScreenConfig';
 import { Dashboard } from './routes/Dashboard';
+import { useAppStore } from './stores/app';
 
 // ROUTES
 const rootRoute = new RootRoute({
@@ -52,5 +53,10 @@ declare module '@tanstack/react-router' {
 }
 
 export function App() {
+  const { ready } = useAppStore();
+  if (!ready) {
+    return null
+  }
+
   return <RouterProvider router={router} />;
 }
