@@ -5,7 +5,7 @@
  * file.
  */
 
-import type { AuthConfig } from '@ioc:Adonis/Addons/Auth'
+import type { AuthConfig } from '@ioc:Adonis/Addons/Auth';
 
 /*
 |--------------------------------------------------------------------------
@@ -87,7 +87,7 @@ const authConfig: AuthConfig = {
         | of the mentioned columns to find their user record.
         |
         */
-        uids: ['email'],
+        uids: ['username'],
 
         /*
         |--------------------------------------------------------------------------
@@ -104,6 +104,6 @@ const authConfig: AuthConfig = {
       },
     },
   },
-}
+};
 
-export default authConfig
+export default authConfig;
