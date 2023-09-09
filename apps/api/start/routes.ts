@@ -25,3 +25,10 @@ Route.group(() => {
   Route.post('logout', 'AuthController.logout').middleware('auth');
   Route.get('me', 'AuthController.me').middleware('auth');
 }).prefix('auth');
+
+Route.resource('screen-config', 'ScreenConfigurationController')
+  .apiOnly()
+  .except(['destroy', 'store'])
+  .middleware({
+    update: 'auth',
+  });
