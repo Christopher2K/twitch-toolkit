@@ -1,7 +1,23 @@
 version: '3'
 services:
+  api:
+    env_file: ../.env
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - /usr/src/app/.yarn/cache
+      - /usr/src/app/node_modules
+      - /usr/src/app/apps/api/node_modules
+      - ../:/usr/src/app
+    depends_on:
+      - db
+    links:
+      - 'db:db'
+    command: /bin/bash -c 'yarn && yarn api dev'
+
   db:
-    env_file: ../../.env
+    env_file: ../.env
     image: postgres:15.3-alpine3.18
     restart: always
     volumes:
@@ -14,6 +30,21 @@ services:
       timeout: 10s
       retries: 120
 
+  proxy:
+    env_file: ../.env
+    image: caddy:2.6.4-alpine
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./certs:/usr/local/etc/caddy/certs
+      - caddy_data:/data
+      - caddy_config:/config
+
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:
 

@@ -1,0 +1,5 @@
+api.twitchtoolkit.local:443 {
+  tls /usr/local/etc/caddy/certs/twitchtoolkit.local+1.pem /usr/local/etc/caddy/certs/twitchtoolkit.local+1-key.pem
+  reverse_proxy api:{$PORT}
+}
+
