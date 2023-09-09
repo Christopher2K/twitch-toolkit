@@ -26,25 +26,35 @@ export const useAuthStore = create<AuthStore>((set, get) => {
         return;
       }
 
-      await API.me({ token: maybeToken }).json(({ data }: APITypes.MeResponse) => {
-        set({
-          ready: true,
-          user: data.user,
-          token: maybeToken,
+      await API.me({ token: maybeToken })
+        .json(({ data }: APITypes.MeResponse) => {
+          set({
+            ready: true,
+            user: data.user,
+            token: maybeToken,
+          });
+        })
+
+        .catch(() => {
+          localStorage.removeItem('token');
+          set({ ready: true });
         });
-      });
     },
     login: async (payload) => {
       set({ loading: true });
 
-      await API.login(payload).json(({ data }: APITypes.LoginResponse) => {
-        localStorage.setItem('token', data.auth.token);
-        set({
-          loading: false,
-          user: data.user,
-          token: data.auth.token,
+      await API.login(payload)
+        .json(({ data }: APITypes.LoginResponse) => {
+          localStorage.setItem('token', data.auth.token);
+          set({
+            loading: false,
+            user: data.user,
+            token: data.auth.token,
+          });
+        })
+        .catch(() => {
+          set({ loading: false });
         });
-      });
     },
     logout: async () => {
       const token = get().token;

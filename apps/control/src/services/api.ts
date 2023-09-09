@@ -1,6 +1,5 @@
 import wretch from 'wretch';
-
-const _apiClient = wretch('https://api.twitchtoolkit.local', {
+const _apiClient = wretch(import.meta.env.VITE_API_URL, {
   mode: 'cors',
   credential: 'include',
 }).content('application/json');
