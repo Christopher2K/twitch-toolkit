@@ -12,6 +12,7 @@
     "c:u": "yarn compose up",
     "c:u:rebuild": "yarn compose up --force-recreate --build",
     "c:d": "yarn compose down",
+    "c:ex": "yarn compose exec api",
     "lint:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
     "lint:ci": "prettier \"**/*.{js,jsx,ts,tsx,json,md,css}\" -c",
     "control": "yarn workspace @twitchtoolkit/control",
