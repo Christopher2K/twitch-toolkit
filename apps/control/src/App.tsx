@@ -4,15 +4,22 @@ import { Root } from '@/routes/Root';
 import { Commands } from './routes/Commands';
 import { Settings } from './routes/Settings';
 import { ScreenConfig } from './routes/ScreenConfig';
+import { Dashboard } from './routes/Dashboard';
 
 // ROUTES
 const rootRoute = new RootRoute({
   component: Root,
 });
 
-const indexRoute = new Route({
+const dashboardRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/',
+  component: Dashboard,
+});
+
+const commandsRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/commands',
   component: Commands,
 });
 
@@ -30,9 +37,10 @@ const settingsRoute = new Route({
 
 // ROUTER
 const routeTree = rootRoute.addChildren([
-  indexRoute,
+  dashboardRoute,
+  commandsRoute,
   screenConfigRoute,
-  settingsRoute
+  settingsRoute,
 ]);
 
 const router = new Router({ routeTree });

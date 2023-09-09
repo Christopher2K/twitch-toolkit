@@ -1,8 +1,8 @@
 import { Outlet } from '@tanstack/react-router';
+import { BotIcon, CogIcon, LayoutDashboardIcon, ScreenShareIcon } from 'lucide-react';
 
 import { css } from '@style/css';
 import { NavItem } from '@/components/NavItem';
-import { BotIcon, CogIcon, ScreenShareIcon } from 'lucide-react';
 
 export function Root() {
   return (
@@ -30,7 +30,10 @@ export function Root() {
           height: 'full',
         })}
       >
-        <NavItem to="/" icon={<BotIcon />}>
+        <NavItem to="/" icon={<LayoutDashboardIcon />}>
+          Dashboard
+        </NavItem>
+        <NavItem to="/commands" icon={<BotIcon />}>
           Commands
         </NavItem>
         <NavItem to="/screen-config" icon={<ScreenShareIcon />}>
@@ -42,8 +45,7 @@ export function Root() {
       </nav>
       <main
         className={css({
-          px: '2',
-          py: '4',
+          px: '4',
         })}
       >
         <Outlet />
