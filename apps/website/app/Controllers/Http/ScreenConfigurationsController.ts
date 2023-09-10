@@ -4,6 +4,7 @@ import ScreenConfiguration from 'App/Models/ScreenConfiguration';
 import ConfigurationIdValidator from 'App/Validators/ConfigurationIdValidator';
 
 import { ScreenConfigId, ScreenConfig } from '@twitchtoolkit/types';
+import Ws from 'App/Services/Ws';
 
 export default class ScreenConfigurationsController {
   public async index({ response }: HttpContextContract) {
@@ -42,6 +43,8 @@ export default class ScreenConfigurationsController {
         config: config as ScreenConfig,
       },
     );
+
+    Ws.io.emit(params.id, config);
 
     return response.ok({
       data: configuration.serialize(),

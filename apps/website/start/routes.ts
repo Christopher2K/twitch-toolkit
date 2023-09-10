@@ -33,8 +33,13 @@ Route.group(() => {
     .middleware({
       update: 'auth',
     });
+
+  Route.get('stream', (ctx) => {
+    return ctx.response.ok({});
+  });
 }).prefix('api');
 
 Route.group(() => {
   Route.get('', 'OverlaysController.index');
+  Route.get('computer-screen', 'OverlaysController.computerScreen');
 });

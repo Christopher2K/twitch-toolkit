@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 
 createInertiaApp({
   id: 'app',
-  resolve: (pageName) => require(`./pagess/${pageName}`),
+  resolve: (pageName) => require(`./pages/${pageName}`),
   setup({ el, App, props }) {
     createRoot(el).render(<App {...props} />);
   },
