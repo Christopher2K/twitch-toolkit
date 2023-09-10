@@ -1,50 +1,37 @@
 import { type PropsWithChildren } from 'react';
+import { Box, useToken } from '@chakra-ui/react';
 import { Link, LinkPropsOptions } from '@tanstack/react-router';
-
-import { cva } from '@style/css';
-
-const navItemStyle = cva({
-  base: {
-    display: 'inline-flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    gap: '3',
-    fontWeight: 'normal',
-    fontSize: 'xl',
-    p: '3',
-    w: 'full',
-    _hover: {
-      background: 'neutral.200',
-    },
-  },
-  variants: {
-    active: {
-      true: {
-        background: 'neutral.300',
-        _hover: {
-          background: 'neutral.300 !important',
-        },
-      },
-    },
-  },
-});
 
 type NavLinkProps = PropsWithChildren<LinkPropsOptions> & {
   icon: JSX.Element;
 };
 
 export function NavItem({ children, icon, ...props }: NavLinkProps) {
+  const [gray300] = useToken('colors', ['gray.300']);
   return (
-    <Link
+    <Box
       {...props}
-      className={navItemStyle({ active: false })}
+      as={Link}
+      display="inline-flex"
+      flexDirection="row"
+      justifyContent="flex-start"
+      alignItems="center"
+      gap="3"
+      fontWeight="normal"
+      fontSize="lg"
+      p="3"
+      w="full"
+      _hover={{
+        background: 'gray.200',
+      }}
       activeProps={{
-        className: navItemStyle({ active: true }),
+        style: {
+          background: gray300,
+        },
       }}
     >
       {icon}
       {children}
-    </Link>
+    </Box>
   );
 }

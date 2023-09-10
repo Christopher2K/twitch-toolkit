@@ -1,34 +1,33 @@
 import { Outlet } from '@tanstack/react-router';
+import { Box } from '@chakra-ui/react'
 import { BotIcon, CogIcon, LayoutDashboardIcon, ScreenShareIcon } from 'lucide-react';
 
-import { css } from '@style/css';
 import { NavItem } from '@/components/NavItem';
 
 export function Root() {
   return (
-    <div
-      className={css({
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        width: 'full',
-        height: 'full',
-      })}
+    <Box
+      display='flex'
+      flexDirection='row'
+      justifyContent='flex-start'
+      alignItems='flex-start'
+      width='full'
+      height='100%'
+      bg="gray.50"
     >
-      <nav
-        className={css({
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          borderRightWidth: 'thin',
-          borderRightStyle: 'solid',
-          borderRightColor: 'neutral.200',
-          background: 'bg.subtle',
-          width: '260px',
-          height: 'full',
-        })}
+      <Box
+        as='nav'
+        display='flex'
+        flexDirection='column'
+        justifyContent='flex-start'
+        alignItems='flex-start'
+        borderRightWidth='thin'
+        borderRightStyle='solid'
+        borderRightColor='gray.200'
+        background='gray.100'
+        width='260px'
+        height='full'
+        pt="40px"
       >
         <NavItem to="/" icon={<LayoutDashboardIcon />}>
           Dashboard
@@ -42,14 +41,10 @@ export function Root() {
         <NavItem to="/settings" icon={<CogIcon />}>
           Settings
         </NavItem>
-      </nav>
-      <main
-        className={css({
-          px: '4',
-        })}
-      >
+      </Box>
+      <Box as="main" p="4" height="full" flex="1" overflowY="auto">
         <Outlet />
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 }

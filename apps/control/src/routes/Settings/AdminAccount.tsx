@@ -1,9 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { FormLabel, FormControl, Input, Button, Box, Heading, Flex, Text } from '@chakra-ui/react';
 
-import { Button, Input, Label, Typography } from '@/components';
 import { useAuthStore } from '@/stores/auth';
-import { Stack } from '@style/jsx';
-import { stack } from '@style/patterns';
 
 type LoginForm = {
   username: string;
@@ -21,33 +19,47 @@ export function AdminAccount() {
   }
 
   return (
-    <form className={stack({})} onSubmit={handleSubmit(onSubmit)}>
-      <Typography tag="h2">Admin account</Typography>
+    <Box>
+      <Heading as="h2" size="lg" mb="5">
+        Admin account
+      </Heading>
+
       {!isLogged && (
-        <Stack gap="5" width="sm">
-          <Stack gap="1" width="sm">
-            <Label htmlFor="username">Username</Label>
-            <Input type="text" {...register('username')} />
-          </Stack>
-          <Stack gap="1" width="sm">
-            <Label htmlFor="passowrd">Password</Label>
+        <Flex as="form" onSubmit={handleSubmit(onSubmit)} direction="column" gap="5">
+          <FormControl>
+            <FormLabel htmlFor="username">Username</FormLabel>
+            <Input type="text" autoComplete="off" {...register('username')} />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Password</FormLabel>
             <Input type="password" {...register('password')} />
-          </Stack>
-          <Button type="submit" disabled={loading}>
-            Login
-          </Button>
-        </Stack>
+          </FormControl>
+
+          <FormControl>
+            <Button type="submit" colorScheme="teal" isLoading={loading} disabled={loading}>
+              Login
+            </Button>
+          </FormControl>
+        </Flex>
       )}
+
       {isLogged && (
-        <Stack gap="5" width="sm">
-          <Typography tag="p">
+        <Flex direction="column" justifyContent="flex-start" alignItems="flex-start" gap="5">
+          <Text>
             🟢 Connected with: <span>{user?.username}</span>
-          </Typography>
-          <Button type="button" onClick={logout} disabled={loading}>
+          </Text>
+
+          <Button
+            type="button"
+            onClick={logout}
+            colorScheme="teal"
+            isLoading={loading}
+            disabled={loading}
+          >
             Logout
           </Button>
-        </Stack>
+        </Flex>
       )}
-    </form>
+    </Box>
   );
 }

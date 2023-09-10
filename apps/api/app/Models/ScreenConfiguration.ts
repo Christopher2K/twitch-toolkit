@@ -8,14 +8,14 @@ import GuestConfigurationValidator from 'App/Validators/GuestConfigurationValida
 
 type GuestScreenConfig = {
   type: 'guest';
+  banner: string;
   title: string;
-  subtitle: string;
   guests: Array<{ name: string; description: string }>;
 };
 const defaultGuestScreenConfig: GuestScreenConfig = {
   type: 'guest',
+  banner: '',
   title: '',
-  subtitle: '',
   guests: [],
 };
 

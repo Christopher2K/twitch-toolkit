@@ -27,13 +27,29 @@ function me({ token }: AuthenticatedArgs) {
   return getClient({ token }).get('/auth/me');
 }
 
+function getScreenConfigurations() {
+  return getClient().get('/screen-config');
+}
+
+function updateScreenConfiguration<T extends APITypes.ConfigId>({
+  token,
+  payload,
+}: AuthenticatedArgs<APITypes.ConfigType[T]>) {
+  return getClient({ token }).json(payload).put(`/screen-config/${payload.type}`);
+}
+
 export const API = {
   login,
   logout,
   me,
+  getScreenConfigurations,
+  updateScreenConfiguration,
 };
 
 export namespace APITypes {
+  type Response<T> = {
+    data: T;
+  };
   export type User = {
     id: string;
     username: string;
@@ -47,21 +63,43 @@ export namespace APITypes {
     expiresAt: string;
   };
 
-  export type LoginResponse = {
-    data: {
-      auth: Token;
-      user: User;
-    };
-  };
+  export type LoginResponse = Response<{
+    auth: Token;
+    user: User;
+  }>;
 
   export type LoginRequest = {
     username: string;
     password: string;
   };
 
-  export type MeResponse = {
-    data: {
-      user: User;
+  export type MeResponse = Response<{
+    user: User;
+  }>;
+
+  export type ConfigType = {
+    guest: {
+      type: 'guest';
+      banner: string;
+      title: string;
+      guests: {
+        name: string
+        description: string
+      }[]
+    };
+    talk: {
+      type: 'talk';
+    };
+    computer: {
+      type: 'computer';
     };
   };
+  export type ConfigId = keyof ConfigType;
+
+  type ScreenConfig<T extends ConfigId> = {
+    id: T;
+    config: ConfigType[T];
+  };
+
+  export type ScreenConfigResponse = Response<Array<ScreenConfig<ConfigId>>>;
 }

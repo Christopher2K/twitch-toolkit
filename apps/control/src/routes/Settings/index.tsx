@@ -1,15 +1,13 @@
-import { Button, Input, Label, Typography } from '@/components';
-import { css } from '@style/css';
-import { Flex } from '@style/jsx';
+import { Heading, Flex } from '@chakra-ui/react'
 
 import { AdminAccount } from './AdminAccount';
 
 export function Settings() {
   return (
     <Flex direction="column" width="full">
-      <Typography tag="h1" className={css({ mb: '4' })}>
+      <Heading as="h1" mb="5">
         Settings
-      </Typography>
+      </Heading>
 
       <AdminAccount />
     </Flex>
