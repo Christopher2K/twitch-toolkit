@@ -1,15 +1,18 @@
 import { create } from 'zustand';
+
+import { ScreenConfig, ScreenConfigId, ScreenConfigObject } from '@twitchtoolkit/types';
+
 import { API, APITypes } from '@/services/api';
 
 type ScreenConfigurationStore = {
   ready: boolean;
   loading: boolean;
-  data: APITypes.ConfigType | null;
+  data: Partial<ScreenConfigObject> | null;
   request: () => Promise<void>;
-  // update: () => Promise<void>;
+  update: (config: ScreenConfig) => Promise<void>;
 };
 
-export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set, get) => {
+export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set) => {
   return {
     loading: false,
     ready: false,
@@ -26,12 +29,27 @@ export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set
                 ...acc,
                 [item.id]: item.config,
               };
-            }, {} as APITypes.ConfigType),
+            }, {} as ScreenConfigObject),
           });
         })
         .catch(() => {
           set({ loading: false });
         });
+    },
+    update: async (config: ScreenConfig) => {
+      set({ loading: true });
+
+      API.updateScreenConfiguration(config)
+        .json(({ data }: APITypes.UpdateScreenConfigResponse<ScreenConfigId>) => {
+          set((state) => ({
+            loading: false,
+            data: {
+              ...state.data,
+              [data.config.type]: data.config,
+            },
+          }));
+        })
+        .catch(() => set({ loading: false }));
     },
   };
 });

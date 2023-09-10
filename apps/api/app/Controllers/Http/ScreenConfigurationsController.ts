@@ -8,13 +8,15 @@ import { ScreenConfigId, ScreenConfig } from '@twitchtoolkit/types';
 export default class ScreenConfigurationsController {
   public async index({ response }: HttpContextContract) {
     const configurations = await ScreenConfiguration.all();
-    return response.ok(configurations.map((c) => c.serialize()));
+    return response.ok({
+      data: configurations.map((c) => c.serialize()),
+    });
   }
 
   public async show({ request, response }: HttpContextContract) {
     const params = await validator.validate({
       schema: new ConfigurationIdValidator().schema,
-      data: request.params,
+      data: request.params(),
     });
     const configuration = await ScreenConfiguration.findOrFail(params.id);
 
@@ -26,7 +28,7 @@ export default class ScreenConfigurationsController {
   public async update({ request, response }: HttpContextContract) {
     const params = await validator.validate({
       schema: new ConfigurationIdValidator().schema,
-      data: request.params,
+      data: request.params(),
     });
 
     const config = request.body();
@@ -36,6 +38,7 @@ export default class ScreenConfigurationsController {
         id: params.id as ScreenConfigId,
       },
       {
+        id: params.id as ScreenConfigId,
         config: config as ScreenConfig,
       },
     );

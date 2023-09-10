@@ -1,4 +1,4 @@
-import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator';
 
 export default class GuestConfigurationValidator {
   constructor() {}
@@ -22,7 +22,17 @@ export default class GuestConfigurationValidator {
    *     ])
    *    ```
    */
-  public schema = schema.create({})
+  public schema = schema.create({
+    type: schema.enum(['guest']),
+    banner: schema.string(),
+    title: schema.string(),
+    guests: schema.array().members(
+      schema.object().members({
+        name: schema.string(),
+        description: schema.string(),
+      }),
+    ),
+  });
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
@@ -35,5 +45,5 @@ export default class GuestConfigurationValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {};
 }

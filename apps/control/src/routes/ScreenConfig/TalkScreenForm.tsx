@@ -1,16 +1,19 @@
 import { useForm } from 'react-hook-form';
 import { Flex, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 
-import { TalkScreenConfig } from '@twitchtoolkit/types';
+import { TalkScreenConfig, defaultTalkScreenConfig } from '@twitchtoolkit/types';
 
-type Form = Omit<TalkScreenConfig, 'type'>;
+export type Form = Omit<TalkScreenConfig, 'type'>;
 
 export type TalkScreenFormProps = {
   initialData?: Form;
   onSubmit: (data: Form) => void;
 };
 
-export function TalkScreenForm({ initialData, onSubmit }: TalkScreenFormProps) {
+export function TalkScreenForm({
+  initialData = defaultTalkScreenConfig,
+  onSubmit,
+}: TalkScreenFormProps) {
   const { register, handleSubmit } = useForm<Form>({
     defaultValues: initialData,
   });

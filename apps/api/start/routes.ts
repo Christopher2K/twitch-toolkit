@@ -26,7 +26,7 @@ Route.group(() => {
   Route.get('me', 'AuthController.me').middleware('auth');
 }).prefix('auth');
 
-Route.resource('screen-config', 'ScreenConfigurationController')
+Route.resource('screen-config', 'ScreenConfigurationsController')
   .apiOnly()
   .except(['destroy', 'store'])
   .middleware({

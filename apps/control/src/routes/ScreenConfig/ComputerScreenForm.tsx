@@ -1,16 +1,19 @@
 import { useForm } from 'react-hook-form';
 import { Flex, FormControl, FormLabel, Input, Button, Checkbox } from '@chakra-ui/react';
 
-import { ComputerScreenConfig } from '@twitchtoolkit/types';
+import { ComputerScreenConfig, defaultComputerScreenConfig } from '@twitchtoolkit/types';
 
-type Form = Omit<ComputerScreenConfig, 'type'>;
+export type Form = Omit<ComputerScreenConfig, 'type'>;
 
 export type ComputerScreenFormProps = {
   initialData?: Form;
   onSubmit: (data: Form) => void;
 };
 
-export function ComputerScreenForm({ initialData, onSubmit }: ComputerScreenFormProps) {
+export function ComputerScreenForm({
+  initialData = defaultComputerScreenConfig,
+  onSubmit,
+}: ComputerScreenFormProps) {
   const { register, handleSubmit } = useForm<Form>({
     defaultValues: initialData,
   });
@@ -27,9 +30,7 @@ export function ComputerScreenForm({ initialData, onSubmit }: ComputerScreenForm
       </FormControl>
 
       <FormControl>
-        <Checkbox defaultChecked {...register('focusMode')}>
-          Focus mode
-        </Checkbox>
+        <Checkbox {...register('focusMode')}>Focus mode</Checkbox>
       </FormControl>
 
       <FormControl>

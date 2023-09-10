@@ -1,4 +1,4 @@
-import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator';
 
 export default class ComputerConfigurationValidator {
   constructor() {}
@@ -22,7 +22,12 @@ export default class ComputerConfigurationValidator {
    *     ])
    *    ```
    */
-  public schema = schema.create({})
+  public schema = schema.create({
+    type: schema.enum(['computer']),
+    banner: schema.string(),
+    title: schema.string(),
+    focusMode: schema.boolean(),
+  });
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
@@ -35,5 +40,5 @@ export default class ComputerConfigurationValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {};
 }

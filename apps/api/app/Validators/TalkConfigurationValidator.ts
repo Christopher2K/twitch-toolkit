@@ -22,7 +22,11 @@ export default class TalkConfigurationValidator {
    *     ])
    *    ```
    */
-  public schema = schema.create({})
+  public schema = schema.create({
+    type: schema.enum(['talk']),
+    banner: schema.string(),
+    title: schema.string(),
+  })
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`

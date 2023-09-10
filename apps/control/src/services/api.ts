@@ -1,44 +1,41 @@
 import wretch from 'wretch';
 
-import { type ScreenConfigId, type ScreenConfigObject } from '@twitchtoolkit/types';
+import { ScreenConfig, type ScreenConfigId, type ScreenConfigObject } from '@twitchtoolkit/types';
 
-const _apiClient = wretch(import.meta.env.VITE_API_URL, {
-  mode: 'cors',
-  credential: 'include',
-}).content('application/json');
+let apiClient = getBaseClient();
 
-function getClient({ token }: { token?: string } = { token: undefined }) {
-  if (token) {
-    return _apiClient.auth(`Bearer ${token}`);
-  }
-  return _apiClient;
+function getBaseClient() {
+  return wretch(import.meta.env.VITE_API_URL, {
+    mode: 'cors',
+    credential: 'include',
+  }).content('application/json');
 }
 
-type AuthenticatedArgs<T = undefined> = {
-  token: string;
-} & (T extends undefined ? {} : { payload: T });
+export function updateApiClient({ token }: { token?: string } = { token: undefined }) {
+  if (token) {
+    apiClient = getBaseClient().auth(`Bearer ${token}`);
+  }
+  return getBaseClient();
+}
 
 function login(payload: APITypes.LoginRequest) {
-  return getClient().url('/auth/login').post(payload);
+  return apiClient.url('/auth/login').post(payload);
 }
 
-function logout({ token }: AuthenticatedArgs) {
-  return getClient({ token }).url('/auth/logout').post();
+function logout() {
+  return apiClient.url('/auth/logout').post();
 }
 
-function me({ token }: AuthenticatedArgs) {
-  return getClient({ token }).get('/auth/me');
+function me() {
+  return apiClient.get('/auth/me');
 }
 
 function getScreenConfigurations() {
-  return getClient().get('/screen-config');
+  return apiClient.get('/screen-config');
 }
 
-function updateScreenConfiguration<T extends ScreenConfigId>({
-  token,
-  payload,
-}: AuthenticatedArgs<ScreenConfigObject[T]>) {
-  return getClient({ token }).json(payload).put(`/screen-config/${payload.type}`);
+function updateScreenConfiguration(payload: ScreenConfig) {
+  return apiClient.url(`/screen-config/${payload.type}`).put(payload);
 }
 
 export const API = {
@@ -86,4 +83,5 @@ export namespace APITypes {
   };
 
   export type ScreenConfigResponse = Response<Array<ScreenConfig<ScreenConfigId>>>;
+  export type UpdateScreenConfigResponse<T extends ScreenConfigId> = Response<ScreenConfig<T>>;
 }
