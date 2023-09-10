@@ -21,17 +21,19 @@
 import Route from '@ioc:Adonis/Core/Route';
 
 Route.group(() => {
-  Route.post('login', 'AuthController.login');
-  Route.post('logout', 'AuthController.logout').middleware('auth');
-  Route.get('me', 'AuthController.me').middleware('auth');
-}).prefix('auth');
+  Route.group(() => {
+    Route.post('login', 'AuthController.login');
+    Route.post('logout', 'AuthController.logout').middleware('auth');
+    Route.get('me', 'AuthController.me').middleware('auth');
+  }).prefix('auth');
 
-Route.resource('screen-config', 'ScreenConfigurationsController')
-  .apiOnly()
-  .except(['destroy', 'store'])
-  .middleware({
-    update: 'auth',
-  });
+  Route.resource('screen-config', 'ScreenConfigurationsController')
+    .apiOnly()
+    .except(['destroy', 'store'])
+    .middleware({
+      update: 'auth',
+    });
+}).prefix('api');
 
 Route.group(() => {
   Route.get('', 'OverlaysController.index');

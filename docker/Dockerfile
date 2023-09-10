@@ -9,7 +9,8 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY yarn.lock ./
 
-COPY apps/api/package.json ./apps/api/
+COPY apps/website/package.json ./apps/website/
+COPY libs/types/package.json ./libs/types/
 
 RUN yarn install
 

@@ -1,6 +1,6 @@
 version: '3'
 services:
-  api:
+  website:
     env_file: ../.env
     build:
       context: ../
@@ -8,13 +8,13 @@ services:
     volumes:
       - /usr/src/app/.yarn/cache
       - /usr/src/app/node_modules
-      - /usr/src/app/apps/api/node_modules
+      - /usr/src/app/apps/website/node_modules
       - ../:/usr/src/app
     depends_on:
       - db
     links:
       - 'db:db'
-    command: /bin/bash -c 'yarn && yarn api dev'
+    command: /bin/bash -c 'yarn && yarn website dev'
 
   db:
     env_file: ../.env
@@ -47,4 +47,3 @@ volumes:
   postgres_data:
   caddy_data:
   caddy_config:
-

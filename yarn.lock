@@ -4311,9 +4311,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@twitchtoolkit/api@workspace:apps/api":
+"@twitchtoolkit/control@workspace:apps/control":
   version: 0.0.0-use.local
-  resolution: "@twitchtoolkit/api@workspace:apps/api"
+  resolution: "@twitchtoolkit/control@workspace:apps/control"
+  dependencies:
+    "@chakra-ui/react": ~2.8.1
+    "@emotion/react": ~11.11.1
+    "@emotion/styled": ~11.11.0
+    "@tanstack/react-router": beta
+    "@tauri-apps/api": ~1.4.0
+    "@tauri-apps/cli": ~1.4.0
+    "@twitchtoolkit/types": "*"
+    "@types/react": ~18.2.15
+    "@types/react-dom": ~18.2.7
+    "@vitejs/plugin-react": ~4.0.3
+    framer-motion: ~10.16.4
+    lucide-react: ~0.274.0
+    react: ~18.2.0
+    react-dom: ~18.2.0
+    react-hook-form: ~7.46.1
+    ts-pattern: ~4.3.0
+    typescript: ~5.1.0
+    vite: ~4.4.4
+    wretch: ~2.6.0
+    zustand: ~4.4.1
+  languageName: unknown
+  linkType: soft
+
+"@twitchtoolkit/types@*, @twitchtoolkit/types@workspace:libs/types":
+  version: 0.0.0-use.local
+  resolution: "@twitchtoolkit/types@workspace:libs/types"
+  languageName: unknown
+  linkType: soft
+
+"@twitchtoolkit/website@workspace:apps/website":
+  version: 0.0.0-use.local
+  resolution: "@twitchtoolkit/website@workspace:apps/website"
   dependencies:
     "@adonisjs/assembler": ~5.9.5
     "@adonisjs/auth": ~8.2.3
@@ -4349,39 +4382,6 @@ __metadata:
     webpack-cli: ~5.1.4
     youch: ~3.3.1
     youch-terminal: ~2.2.2
-  languageName: unknown
-  linkType: soft
-
-"@twitchtoolkit/control@workspace:apps/control":
-  version: 0.0.0-use.local
-  resolution: "@twitchtoolkit/control@workspace:apps/control"
-  dependencies:
-    "@chakra-ui/react": ~2.8.1
-    "@emotion/react": ~11.11.1
-    "@emotion/styled": ~11.11.0
-    "@tanstack/react-router": beta
-    "@tauri-apps/api": ~1.4.0
-    "@tauri-apps/cli": ~1.4.0
-    "@twitchtoolkit/types": "*"
-    "@types/react": ~18.2.15
-    "@types/react-dom": ~18.2.7
-    "@vitejs/plugin-react": ~4.0.3
-    framer-motion: ~10.16.4
-    lucide-react: ~0.274.0
-    react: ~18.2.0
-    react-dom: ~18.2.0
-    react-hook-form: ~7.46.1
-    ts-pattern: ~4.3.0
-    typescript: ~5.1.0
-    vite: ~4.4.4
-    wretch: ~2.6.0
-    zustand: ~4.4.1
-  languageName: unknown
-  linkType: soft
-
-"@twitchtoolkit/types@*, @twitchtoolkit/types@workspace:libs/types":
-  version: 0.0.0-use.local
-  resolution: "@twitchtoolkit/types@workspace:libs/types"
   languageName: unknown
   linkType: soft
 

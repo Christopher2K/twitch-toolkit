@@ -142,7 +142,7 @@ Encore.configureDevServerOptions((options) => {
     options.static = [options.static];
   }
 
-  const webSocketURL = 'wss://api.twitchtoolkit.local/ws';
+  const webSocketURL = 'wss://twitchtoolkit.local/ws';
   if (!options.client) {
     options.client = {
       webSocketURL,

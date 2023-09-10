@@ -2,7 +2,7 @@
   "entrypoints": {
     "app": {
       "js": [
-        "https://api.twitchtoolkit.local/assets/app.js"
+        "https://twitchtoolkit.local/assets/app.js"
       ]
     }
   }

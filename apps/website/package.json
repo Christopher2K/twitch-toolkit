@@ -1,10 +1,10 @@
 {
-  "name": "@twitchtoolkit/api",
+  "name": "@twitchtoolkit/website",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "ace": "node ace",
-    "dev": "node ace serve --watch --encore-args=\"--host 0.0.0.0 --public https://api.twitchtoolkit.local\"",
+    "dev": "node ace serve --watch --encore-args=\"--host 0.0.0.0 --public https://twitchtoolkit.local\"",
     "build": "node ace build --production",
     "start": "node server.js",
     "test": "node ace test"
