@@ -2876,6 +2876,7 @@ __metadata:
     "@adonisjs/repl": ~3.1.11
     "@japa/preset-adonis": ~1.2.0
     "@japa/runner": ~2.5.1
+    "@twitchtoolkit/types": "*"
     "@types/proxy-addr": ~2.0.0
     "@types/source-map-support": ~0.5.7
     adonis-preset-ts: ~2.1.0
@@ -2901,6 +2902,7 @@ __metadata:
     "@tanstack/react-router": beta
     "@tauri-apps/api": ~1.4.0
     "@tauri-apps/cli": ~1.4.0
+    "@twitchtoolkit/types": "*"
     "@types/react": ~18.2.15
     "@types/react-dom": ~18.2.7
     "@vitejs/plugin-react": ~4.0.3
@@ -2914,6 +2916,12 @@ __metadata:
     vite: ~4.4.4
     wretch: ~2.6.0
     zustand: ~4.4.1
+  languageName: unknown
+  linkType: soft
+
+"@twitchtoolkit/types@*, @twitchtoolkit/types@workspace:libs/types":
+  version: 0.0.0-use.local
+  resolution: "@twitchtoolkit/types@workspace:libs/types"
   languageName: unknown
   linkType: soft
 

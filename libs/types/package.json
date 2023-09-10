@@ -1,0 +1,7 @@
+{
+  "name": "@twitchtoolkit/types",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "packageManager": "yarn@3.6.2"
+}

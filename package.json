@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "libs/*"
   ],
   "packageManager": "yarn@3.6.2",
   "scripts": {
@@ -15,6 +16,7 @@
     "c:ex": "yarn compose exec api",
     "lint:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
     "lint:ci": "prettier \"**/*.{js,jsx,ts,tsx,json,md,css}\" -c",
+    "types": "yarn workspace @twitchtoolkit/types",
     "control": "yarn workspace @twitchtoolkit/control",
     "api": "yarn workspace @twitchtoolkit/api"
   },

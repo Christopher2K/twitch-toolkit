@@ -1,10 +1,9 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { validator } from '@ioc:Adonis/Core/Validator';
-import ScreenConfiguration, {
-  type ScreenConfigId,
-  type ScreenConfig,
-} from 'App/Models/ScreenConfiguration';
+import ScreenConfiguration from 'App/Models/ScreenConfiguration';
 import ConfigurationIdValidator from 'App/Validators/ConfigurationIdValidator';
+
+import { ScreenConfigId, ScreenConfig } from '@twitchtoolkit/types';
 
 export default class ScreenConfigurationsController {
   public async index({ response }: HttpContextContract) {
@@ -12,7 +11,6 @@ export default class ScreenConfigurationsController {
     return response.ok(configurations.map((c) => c.serialize()));
   }
 
-  // GET ONE
   public async show({ request, response }: HttpContextContract) {
     const params = await validator.validate({
       schema: new ConfigurationIdValidator().schema,
@@ -25,7 +23,6 @@ export default class ScreenConfigurationsController {
     });
   }
 
-  // UPDATE ONE
   public async update({ request, response }: HttpContextContract) {
     const params = await validator.validate({
       schema: new ConfigurationIdValidator().schema,

@@ -3,9 +3,9 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { MinusIcon } from 'lucide-react';
 import { Box, Flex, FormControl, FormLabel, Input, Button, Heading } from '@chakra-ui/react';
 
-import { APITypes } from '@/services/api';
+import { GuestScreenConfig } from '@twitchtoolkit/types';
 
-type Form = Omit<APITypes.ConfigType['guest'], 'type'>;
+type Form = Omit<GuestScreenConfig, 'type'>
 
 export function GuestScreenForm() {
   const { control, register } = useForm<Form>({

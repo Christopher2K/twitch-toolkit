@@ -1,4 +1,7 @@
 import wretch from 'wretch';
+
+import { type ScreenConfigId, type ScreenConfigObject } from '@twitchtoolkit/types';
+
 const _apiClient = wretch(import.meta.env.VITE_API_URL, {
   mode: 'cors',
   credential: 'include',
@@ -31,10 +34,10 @@ function getScreenConfigurations() {
   return getClient().get('/screen-config');
 }
 
-function updateScreenConfiguration<T extends APITypes.ConfigId>({
+function updateScreenConfiguration<T extends ScreenConfigId>({
   token,
   payload,
-}: AuthenticatedArgs<APITypes.ConfigType[T]>) {
+}: AuthenticatedArgs<ScreenConfigObject[T]>) {
   return getClient({ token }).json(payload).put(`/screen-config/${payload.type}`);
 }
 
@@ -77,29 +80,10 @@ export namespace APITypes {
     user: User;
   }>;
 
-  export type ConfigType = {
-    guest: {
-      type: 'guest';
-      banner: string;
-      title: string;
-      guests: {
-        name: string
-        description: string
-      }[]
-    };
-    talk: {
-      type: 'talk';
-    };
-    computer: {
-      type: 'computer';
-    };
-  };
-  export type ConfigId = keyof ConfigType;
-
-  type ScreenConfig<T extends ConfigId> = {
+  type ScreenConfig<T extends ScreenConfigId> = {
     id: T;
-    config: ConfigType[T];
+    config: ScreenConfigObject[T];
   };
 
-  export type ScreenConfigResponse = Response<Array<ScreenConfig<ConfigId>>>;
+  export type ScreenConfigResponse = Response<Array<ScreenConfig<ScreenConfigId>>>;
 }

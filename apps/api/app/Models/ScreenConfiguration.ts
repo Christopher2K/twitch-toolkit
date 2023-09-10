@@ -2,50 +2,18 @@ import { DateTime } from 'luxon';
 import { match } from 'ts-pattern';
 import { BaseModel, afterFind, beforeSave, column } from '@ioc:Adonis/Lucid/Orm';
 import { validator } from '@ioc:Adonis/Core/Validator';
+
+import {
+  type ScreenConfig,
+  type ScreenConfigId,
+  defaultComputerScreenConfig,
+  defaultTalkScreenConfig,
+  defaultGuestScreenConfig,
+} from '@twitchtoolkit/types';
+
 import ComputerConfigurationValidator from 'App/Validators/ComputerConfigurationValidator';
 import TalkConfigurationValidator from 'App/Validators/TalkConfigurationValidator';
 import GuestConfigurationValidator from 'App/Validators/GuestConfigurationValidator';
-
-type GuestScreenConfig = {
-  type: 'guest';
-  banner: string;
-  title: string;
-  guests: Array<{ name: string; description: string }>;
-};
-const defaultGuestScreenConfig: GuestScreenConfig = {
-  type: 'guest',
-  banner: '',
-  title: '',
-  guests: [],
-};
-
-type TalkScreenConfig = {
-  type: 'talk';
-  banner: string;
-  title: string;
-};
-const defaultTalkScreenConfig: TalkScreenConfig = {
-  type: 'talk',
-  banner: '',
-  title: '',
-};
-
-type ComputerScreenConfig = {
-  type: 'computer';
-  banner: string;
-  title: string;
-  focusMode: boolean;
-};
-const defaultComputerScreenConfig: ComputerScreenConfig = {
-  type: 'computer',
-  banner: '',
-  title: '',
-  focusMode: false,
-};
-
-export type ScreenConfig = ComputerScreenConfig | GuestScreenConfig | TalkScreenConfig;
-
-export type ScreenConfigId = 'guest' | 'talk' | 'computer';
 
 export default class ScreenConfiguration extends BaseModel {
   @column({ isPrimary: true })
