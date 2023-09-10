@@ -5,27 +5,28 @@ import { Box, Flex, FormControl, FormLabel, Input, Button, Heading } from '@chak
 
 import { GuestScreenConfig } from '@twitchtoolkit/types';
 
-type Form = Omit<GuestScreenConfig, 'type'>
+type Form = Omit<GuestScreenConfig, 'type'>;
 
-export function GuestScreenForm() {
-  const { control, register } = useForm<Form>({
-    defaultValues: {
-      banner: '',
-      title: '',
-      guests: [{ name: '', description: '' }],
-    },
+export type GuestScreenFormProps = {
+  initialData?: Form;
+  onSubmit: (data: Form) => void;
+};
+
+export function GuestScreenForm({ initialData, onSubmit }: GuestScreenFormProps) {
+  const { control, register, handleSubmit } = useForm<Form>({
+    defaultValues: initialData,
   });
   const { append, remove, fields } = useFieldArray({ control, name: 'guests' });
 
   return (
-    <Flex as="form" direction="column" gap="5">
+    <Flex as="form" direction="column" gap="5" onSubmit={handleSubmit(onSubmit)}>
       <FormControl>
         <FormLabel htmlFor="banner">Banner</FormLabel>
-        <Input type="text" />
+        <Input type="text" {...register('banner')} />
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="title">Title</FormLabel>
-        <Input type="text" />
+        <Input type="text" {...register('title')} />
       </FormControl>
 
       {fields.map((field, index) => (
@@ -42,12 +43,12 @@ export function GuestScreenForm() {
             </Flex>
             <FormControl>
               <FormLabel htmlFor={`name-${index}`}>Name #{index + 1}</FormLabel>
-              <Input type="text" />
+              <Input type="text" {...register(`guests.${index}.name`)} />
             </FormControl>
 
             <FormControl>
               <FormLabel htmlFor={`description-${index}`}>Description #{index + 1}</FormLabel>
-              <Input type="text" />
+              <Input type="text" {...register(`guests.${index}.description`)} />
             </FormControl>
           </Flex>
         </Fragment>
