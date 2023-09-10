@@ -32,3 +32,7 @@ Route.resource('screen-config', 'ScreenConfigurationsController')
   .middleware({
     update: 'auth',
   });
+
+Route.group(() => {
+  Route.get('', 'OverlaysController.index');
+});

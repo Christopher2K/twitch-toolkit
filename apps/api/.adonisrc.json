@@ -4,7 +4,8 @@
     "./commands",
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",
-    "@adonisjs/lucid/build/commands"
+    "@adonisjs/lucid/build/commands",
+    "@eidellev/inertia-adonisjs/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -15,7 +16,13 @@
   },
   "preloads": [
     "./start/routes",
-    "./start/kernel"
+    "./start/kernel",
+    {
+      "file": "./start/inertia",
+      "environment": [
+        "web"
+      ]
+    }
   ],
   "providers": [
     "./providers/AppProvider",
@@ -23,7 +30,8 @@
     "@adonisjs/lucid",
     "@adonisjs/auth",
     "@adonisjs/view",
-    "@adonisjs/session"
+    "@adonisjs/session",
+    "@eidellev/inertia-adonisjs"
   ],
   "aceProviders": [
     "@adonisjs/repl"
