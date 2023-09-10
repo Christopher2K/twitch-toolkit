@@ -334,6 +334,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@adonisjs/session@npm:~6.4.0":
+  version: 6.4.0
+  resolution: "@adonisjs/session@npm:6.4.0"
+  dependencies:
+    "@poppinss/utils": ^4.0.4
+    fs-extra: ^10.1.0
+  peerDependencies:
+    "@adonisjs/core": ^5.8.0
+  checksum: 68c0cd57717f8fef20ea36c71224c4c5d7fdadb080e5192b0be181a8d6b2d26edd74c22b33d2f4b6dd17aaa2c0a1ab893b1cdaf954bc2d33d6b8b2f53663bafe
+  languageName: node
+  linkType: hard
+
 "@adonisjs/sink@npm:^5.4.2":
   version: 5.4.3
   resolution: "@adonisjs/sink@npm:5.4.3"
@@ -2919,6 +2931,7 @@ __metadata:
     "@adonisjs/core": ~5.9.0
     "@adonisjs/lucid": ~18.4.0
     "@adonisjs/repl": ~3.1.11
+    "@adonisjs/session": ~6.4.0
     "@adonisjs/view": ~6.2.0
     "@japa/preset-adonis": ~1.2.0
     "@japa/runner": ~2.5.1
