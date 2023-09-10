@@ -1,5 +1,5 @@
 import { Outlet } from '@tanstack/react-router';
-import { Box } from '@chakra-ui/react'
+import { Box, Heading } from '@chakra-ui/react'
 import { BotIcon, CogIcon, LayoutDashboardIcon, ScreenShareIcon } from 'lucide-react';
 
 import { NavItem } from '@/components/NavItem';
@@ -25,10 +25,11 @@ export function Root() {
         borderRightStyle='solid'
         borderRightColor='gray.200'
         background='gray.100'
-        width='260px'
+        width='280px'
         height='full'
         pt="40px"
       >
+        <Heading px="4" mb="5">Twitch Toolkit</Heading>
         <NavItem to="/" icon={<LayoutDashboardIcon />}>
           Dashboard
         </NavItem>
@@ -42,7 +43,7 @@ export function Root() {
           Settings
         </NavItem>
       </Box>
-      <Box as="main" p="4" height="full" flex="1" overflowY="auto">
+      <Box as="main" px="4" pt="9" height="full" flex="1" overflowY="auto">
         <Outlet />
       </Box>
     </Box>
