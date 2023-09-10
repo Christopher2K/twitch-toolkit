@@ -1,6 +1,9 @@
 {
   "entrypoints": {
     "app": {
+      "css": [
+        "https://twitchtoolkit.local/assets/app.css"
+      ],
       "js": [
         "https://twitchtoolkit.local/assets/app.js"
       ]
