@@ -11,6 +11,7 @@ COPY .yarnrc.yml /usr/app
 COPY yarn.lock /usr/app
 COPY apps/website/package.json /usr/app/apps/website/package.json
 COPY libs/types/package.json /usr/app/libs/types/package.json
+COPY turbo.json ./
 
 RUN yarn install 
 
