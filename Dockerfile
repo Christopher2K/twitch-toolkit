@@ -48,5 +48,8 @@ EXPOSE ${PORT}
 
 COPY --from=builder /usr/app/apps/website/dist /usr/app
 COPY --from=builder /usr/app/node_modules /usr/app/node_modules
+COPY --from=builder /usr/app/libs/types /usr/app/node_modules/@twitchtoolkit/types
+COPY --from=builder /usr/app/libs/types/package.json /usr/app/node_modules/@twitchtoolkit/types/package.json
+
 
 CMD ["/bin/sh", "-c", "node /usr/app/ace migration:run --force && node /usr/app/ace admin:create && node /usr/app/server.js"]

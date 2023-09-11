@@ -28,9 +28,6 @@
       "Database/*": [
         "./database/*"
       ],
-      "@weakassdev/types": [
-        "../../libs/types/index"
-      ],
       "~/*": [
         "./resources/js/*"
       ],
