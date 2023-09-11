@@ -232,11 +232,8 @@ config.stats = 'errors-warnings';
 config.module.rules.forEach((rule) => {
   if (rule.test.source == /\.(png|jpg|jpeg|gif|ico|svg|webp|avif)$/.source) {
     rule.test = /\.(png|jpg|jpeg|gif|ico|webp|avif)$/;
-    console.log('FOUND IT', rule)
   }
 });
-
-console.log(config.module.rules);
 
 /*
 |--------------------------------------------------------------------------

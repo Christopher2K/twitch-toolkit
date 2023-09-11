@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "adonis-preset-ts/tsconfig.json",
   "include": [
     "**/*",
@@ -6,12 +7,14 @@
   ],
   "exclude": [
     "node_modules",
-    "build"
+    "build",
+    "resources"
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "build",
     "sourceMap": true,
+    "jsx": "react",
     "paths": {
       "App/*": [
         "./app/*"
@@ -25,6 +28,7 @@
       "Database/*": [
         "./database/*"
       ],
+      "~/*": ["./resources/js/*"],
       "~/styled-system/*": ["./resources/js/styled-system/*"]
     },
     "types": [
