@@ -1,10 +1,26 @@
 {
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/package.json",
   "name": "@twitchtoolkit/types",
   "version": "1.0.0",
   "private": true,
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
+  "type": "module",
   "packageManager": "yarn@3.6.2",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "index": [
+        "dist/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "dev": "tsup --watch --onSuccess \"yarn generate:type\"",
     "build": "tsup --clean --minify",

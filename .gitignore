@@ -17,6 +17,9 @@
 # dependencies
 node_modules
 
+# build
+dist
+
 # IDEs and editors
 /.idea
 .project

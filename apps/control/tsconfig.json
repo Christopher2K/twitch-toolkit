@@ -25,6 +25,7 @@
     }
   },
   "include": ["src", "styled-system"],
+  "exclude": ["node_modyles"],
   "references": [
     {
       "path": "./tsconfig.node.json"
