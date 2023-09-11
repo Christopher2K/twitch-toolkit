@@ -6,6 +6,7 @@ RUN corepack enable
 
 WORKDIR /usr/src/app
 
+COPY turbo.json ./
 COPY package.json ./
 COPY yarn.lock ./
 

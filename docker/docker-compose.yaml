@@ -14,7 +14,7 @@ services:
       - db
     links:
       - 'db:db'
-    command: /bin/bash -c 'yarn && yarn website dev'
+    command: /bin/bash -c 'yarn && yarn dev'
 
   db:
     env_file: ../.env

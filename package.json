@@ -18,12 +18,15 @@
     "lint:ci": "prettier \"**/*.{js,jsx,ts,tsx,json,md,css}\" -c",
     "types": "yarn workspace @twitchtoolkit/types",
     "control": "yarn workspace @twitchtoolkit/control",
-    "website": "yarn workspace @twitchtoolkit/website"
+    "website": "yarn workspace @twitchtoolkit/website",
+    "dev": "turbo dev --filter=!@twitchtoolkit/control",
+    "build:website": "turbo build --filter=@twitchtoolkit/website"
   },
   "devDependencies": {
     "husky": "~8.0.3",
     "lint-staged": "~14.0.1",
     "prettier": "~3.0.3",
+    "turbo": "1.10.12",
     "typescript": "~4.6.4"
   },
   "lint-staged": {

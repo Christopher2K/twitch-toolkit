@@ -34,5 +34,6 @@ tmp
 Thumbs.db
 
 # Codegen
+.turbo
 styled-system/
 certs/
