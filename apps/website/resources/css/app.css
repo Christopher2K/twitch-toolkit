@@ -1,1 +1,15 @@
 @layer reset, base, tokens, recipes, utilities;
+
+:root {
+  --font-euclid: 'Euclid Circular A', monospace;
+}
+
+@font-face {
+  font-family: 'Euclid Circular A';
+  src:
+    url('./fonts/EuclidCircularA-SemiBold.woff2') format('woff2'),
+    url('./fonts/EuclidCircularA-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}

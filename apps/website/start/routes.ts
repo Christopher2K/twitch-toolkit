@@ -41,5 +41,10 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('', 'OverlaysController.index');
-  Route.get('computer-screen', 'OverlaysController.computerScreen');
+  Route.get('start-streaming', 'OverlaysController.startScreen');
+  Route.get('end-streaming', 'OverlaysController.endScreen');
+  Route.get('brb', 'OverlaysController.brbScreen');
+  Route.get('computer', 'OverlaysController.computerScreen');
+  Route.get('talk', 'OverlaysController.talkScreen');
+  Route.get('audio-guests', 'OverlaysController.audioGuestsScreen');
 });

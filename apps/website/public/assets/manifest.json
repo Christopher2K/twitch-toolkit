@@ -1,4 +1,6 @@
 {
   "assets/app.css": "https://twitchtoolkit.local/assets/app.css",
-  "assets/app.js": "https://twitchtoolkit.local/assets/app.js"
+  "assets/app.js": "https://twitchtoolkit.local/assets/app.js",
+  "assets/fonts/EuclidCircularA-SemiBold.woff": "https://twitchtoolkit.local/assets/fonts/EuclidCircularA-SemiBold.8bb3f4f6.woff",
+  "assets/fonts/EuclidCircularA-SemiBold.woff2": "https://twitchtoolkit.local/assets/fonts/EuclidCircularA-SemiBold.24739333.woff2"
 }

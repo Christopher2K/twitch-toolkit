@@ -216,11 +216,27 @@ Encore.enablePostCssLoader();
 | the level to "info".
 |
 */
+
+Encore.addRule({
+  test: /\.svg$/i,
+  issuer: /\.tsx?$/,
+  use: ['@svgr/webpack'],
+});
+
 const config = Encore.getWebpackConfig();
 config.infrastructureLogging = {
   level: 'warn',
 };
 config.stats = 'errors-warnings';
+
+config.module.rules.forEach((rule) => {
+  if (rule.test.source == /\.(png|jpg|jpeg|gif|ico|svg|webp|avif)$/.source) {
+    rule.test = /\.(png|jpg|jpeg|gif|ico|webp|avif)$/;
+    console.log('FOUND IT', rule)
+  }
+});
+
+console.log(config.module.rules);
 
 /*
 |--------------------------------------------------------------------------
@@ -230,4 +246,5 @@ config.stats = 'errors-warnings';
 | Export config for webpack to do its job
 |
 */
+
 module.exports = config;
