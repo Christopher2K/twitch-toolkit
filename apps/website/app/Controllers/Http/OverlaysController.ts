@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import ScreenConfiguration from 'App/Models/ScreenConfiguration';
 
 export default class OverlaysController {
   public async index({ inertia }: HttpContextContract) {
@@ -18,7 +19,10 @@ export default class OverlaysController {
   }
 
   public async computerScreen({ inertia }: HttpContextContract) {
-    return inertia.render('overlay/Computer');
+    const configuration = await ScreenConfiguration.findOrFail('computer');
+    return inertia.render('overlay/Computer', {
+      initialData: configuration.config,
+    });
   }
 
   public async talkScreen({ inertia }: HttpContextContract) {
