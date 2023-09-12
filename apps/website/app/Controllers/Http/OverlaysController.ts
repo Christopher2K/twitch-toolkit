@@ -19,17 +19,23 @@ export default class OverlaysController {
   }
 
   public async computerScreen({ inertia }: HttpContextContract) {
-    const configuration = await ScreenConfiguration.findOrFail('computer');
+    const configuration = await ScreenConfiguration.findOrCreate('computer');
     return inertia.render('overlay/Computer', {
       initialData: configuration.config,
     });
   }
 
   public async talkScreen({ inertia }: HttpContextContract) {
-    return inertia.render('overlay/Talk');
+    const configuration = await ScreenConfiguration.findOrCreate('talk');
+    return inertia.render('overlay/Talk', {
+      initialData: configuration.config,
+    });
   }
 
   public async audioGuestsScreen({ inertia }: HttpContextContract) {
-    return inertia.render('overlay/AudioGuests');
+    const configuration = await ScreenConfiguration.findOrCreate('audioGuests');
+    return inertia.render('overlay/AudioGuests', {
+      initialData: configuration.config,
+    });
   }
 }

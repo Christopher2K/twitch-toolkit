@@ -2,7 +2,7 @@ import { Heading, Flex, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner } from 
 
 import { ComputerScreenForm, Form as ComputerScreenFormType } from './ComputerScreenForm';
 import { TalkScreenForm, Form as TalkScreenFormType } from './TalkScreenForm';
-import { GuestScreenForm, Form as GuestScreenFormType } from './GuestScreenForm';
+import { AudioGuestsScreenForm, Form as AudioGuestsScreenFormType } from './AudioGuestsScreenForm';
 import { useScreenConfigurationStore } from '@/stores/screenConfiguration';
 
 export function ScreenConfig() {
@@ -22,9 +22,9 @@ export function ScreenConfig() {
     });
   }
 
-  function onGuestScreenFormSubmit(data: GuestScreenFormType) {
+  function onAudioGuestsScreenFormSubmit(data: AudioGuestsScreenFormType) {
     update({
-      type: 'guest',
+      type: 'audioGuests',
       ...data,
     });
   }
@@ -58,7 +58,10 @@ export function ScreenConfig() {
               <TalkScreenForm onSubmit={onTalkScreenFormSubmit} initialData={data?.talk} />
             </TabPanel>
             <TabPanel>
-              <GuestScreenForm onSubmit={onGuestScreenFormSubmit} initialData={data?.guest} />
+              <AudioGuestsScreenForm
+                onSubmit={onAudioGuestsScreenFormSubmit}
+                initialData={data?.audioGuests}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

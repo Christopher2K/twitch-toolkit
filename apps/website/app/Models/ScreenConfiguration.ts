@@ -1,26 +1,20 @@
 import { DateTime } from 'luxon';
-import { match } from 'ts-pattern';
-import { BaseModel, afterFind, beforeSave, column } from '@ioc:Adonis/Lucid/Orm';
-import { validator } from '@ioc:Adonis/Core/Validator';
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm';
 
 import {
   type ScreenConfig,
   type ScreenConfigId,
   defaultComputerScreenConfig,
   defaultTalkScreenConfig,
-  defaultGuestScreenConfig,
+  defaultAudioGuestsScreenConfig,
 } from '@twitchtoolkit/types';
-
-import ComputerConfigurationValidator from 'App/Validators/ComputerConfigurationValidator';
-import TalkConfigurationValidator from 'App/Validators/TalkConfigurationValidator';
-import GuestConfigurationValidator from 'App/Validators/GuestConfigurationValidator';
 
 export default class ScreenConfiguration extends BaseModel {
   @column({ isPrimary: true })
   public id: ScreenConfigId;
 
   @column()
-  public config: ScreenConfig | null;
+  public config: ScreenConfig | null = null;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;
@@ -28,34 +22,25 @@ export default class ScreenConfiguration extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime;
 
-  @afterFind()
-  public static async populateDefaultConfig(screenConfig: ScreenConfiguration) {
-    if (screenConfig.config === null) {
-      switch (screenConfig.id) {
-        case 'guest':
-          screenConfig.config = defaultGuestScreenConfig;
-
-        case 'talk':
-          screenConfig.config = defaultTalkScreenConfig;
-
-        case 'computer':
-          screenConfig.config = defaultComputerScreenConfig;
-      }
-      screenConfig.save();
+  // Managers
+  public static async findOrCreate(id: ScreenConfigId): Promise<ScreenConfiguration> {
+    let configuration = await ScreenConfiguration.find(id);
+    if (configuration == null) {
+      configuration = await ScreenConfiguration.create({ id, config: this.getDefaultConfig(id) });
     }
+
+    return configuration;
   }
 
-  @beforeSave()
-  public static async checkIntegrity(screenConfig: ScreenConfiguration) {
-    const configSchema = match(screenConfig.id)
-      .with('computer', () => new ComputerConfigurationValidator().schema)
-      .with('talk', () => new TalkConfigurationValidator().schema)
-      .with('guest', () => new GuestConfigurationValidator().schema)
-      .run();
-
-    await validator.validate({
-      schema: configSchema,
-      data: screenConfig.config,
-    });
+  // Helpers
+  public static getDefaultConfig(id: ScreenConfigId): ScreenConfiguration['config'] {
+    switch (id) {
+      case 'audioGuests':
+        return defaultAudioGuestsScreenConfig;
+      case 'talk':
+        return defaultTalkScreenConfig;
+      case 'computer':
+        return defaultComputerScreenConfig;
+    }
   }
 }

@@ -3,19 +3,19 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { MinusIcon } from 'lucide-react';
 import { Box, Flex, FormControl, FormLabel, Input, Button, Heading } from '@chakra-ui/react';
 
-import { GuestScreenConfig, defaultGuestScreenConfig } from '@twitchtoolkit/types';
+import { AudioGuestsScreenConfig, defaultAudioGuestsScreenConfig } from '@twitchtoolkit/types';
 
-export type Form = Omit<GuestScreenConfig, 'type'>;
+export type Form = Omit<AudioGuestsScreenConfig, 'type'>;
 
-export type GuestScreenFormProps = {
+export type AudioGuestsScreenFormProps = {
   initialData?: Form;
   onSubmit: (data: Form) => void;
 };
 
-export function GuestScreenForm({
-  initialData = defaultGuestScreenConfig,
+export function AudioGuestsScreenForm({
+  initialData = defaultAudioGuestsScreenConfig,
   onSubmit,
-}: GuestScreenFormProps) {
+}: AudioGuestsScreenFormProps) {
   const { control, register, handleSubmit } = useForm<Form>({
     defaultValues: initialData,
   });

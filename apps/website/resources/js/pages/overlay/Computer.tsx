@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import { ComputerScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
-import { ComputerScreenConfig } from '@twitchtoolkit/types';
 import { css } from '~/styled-system/css';
 
 type ComputerProps = {

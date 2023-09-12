@@ -1,8 +1,14 @@
 import React from 'react';
+import { TalkScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout } from '~/components';
 
-function Talk() {
+type TalkProps = {
+  initialData: TalkScreenConfig;
+};
+
+function Talk({ initialData }: TalkProps) {
+  console.log(initialData);
   return <div>Talk</div>;
 }
 

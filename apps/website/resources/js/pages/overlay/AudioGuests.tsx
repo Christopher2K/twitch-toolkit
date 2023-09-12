@@ -1,8 +1,14 @@
 import React from 'react';
+import { AudioGuestsScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout } from '~/components';
 
-function AudioGuests() {
+type AudioGuestsProps = {
+  initialData: AudioGuestsScreenConfig;
+};
+
+function AudioGuests({ initialData }: AudioGuestsProps) {
+  console.log(initialData);
   return <div>Guest</div>;
 }
 

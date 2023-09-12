@@ -1,4 +1,4 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { validator } from '@ioc:Adonis/Core/Validator';
 import ScreenConfiguration from 'App/Models/ScreenConfiguration';
 import ConfigurationIdValidator from 'App/Validators/ConfigurationIdValidator';
@@ -19,7 +19,7 @@ export default class ScreenConfigurationsController {
       schema: new ConfigurationIdValidator().schema,
       data: request.params(),
     });
-    const configuration = await ScreenConfiguration.findOrFail(params.id);
+    const configuration = await ScreenConfiguration.findOrCreate(params.id as ScreenConfigId);
 
     return response.ok({
       data: configuration.serialize(),
