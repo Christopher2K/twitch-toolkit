@@ -17,12 +17,12 @@
     "@tauri-apps/api": "~1.4.0",
     "@twitchtoolkit/types": "*",
     "framer-motion": "~10.16.4",
+    "ky": "~1.0.1",
     "lucide-react": "~0.274.0",
     "react": "~18.2.0",
     "react-dom": "~18.2.0",
     "react-hook-form": "~7.46.1",
     "ts-pattern": "~4.3.0",
-    "wretch": "~2.6.0",
     "zustand": "~4.4.1"
   },
   "devDependencies": {

@@ -5301,6 +5301,7 @@ __metadata:
     "@types/react-dom": ~18.2.7
     "@vitejs/plugin-react": ~4.0.3
     framer-motion: ~10.16.4
+    ky: ~1.0.1
     lucide-react: ~0.274.0
     react: ~18.2.0
     react-dom: ~18.2.0
@@ -5308,7 +5309,6 @@ __metadata:
     ts-pattern: ~4.3.0
     typescript: ~5.1.0
     vite: ~4.4.4
-    wretch: ~2.6.0
     zustand: ~4.4.1
   languageName: unknown
   linkType: soft
@@ -12466,6 +12466,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ky@npm:~1.0.1":
+  version: 1.0.1
+  resolution: "ky@npm:1.0.1"
+  checksum: 1cc8237422b901417bcced1a1fd4d0b2c9b9140ef625fcb9c6c6b78f0e4ddf169e6ba97f497d8be31db0d8f6fb17ad63bcb03aef927b8d7d562d87db3da13474
+  languageName: node
+  linkType: hard
+
 "launch-editor@npm:^2.6.0":
   version: 2.6.0
   resolution: "launch-editor@npm:2.6.0"
@@ -18969,13 +18976,6 @@ __metadata:
   version: 1.0.2
   resolution: "wrappy@npm:1.0.2"
   checksum: 159da4805f7e84a3d003d8841557196034155008f817172d4e986bd591f74aa82aa7db55929a54222309e01079a65a92a9e6414da5a6aa4b01ee44a511ac3ee5
-  languageName: node
-  linkType: hard
-
-"wretch@npm:~2.6.0":
-  version: 2.6.0
-  resolution: "wretch@npm:2.6.0"
-  checksum: 90f583c6673628f248f5517c25b40e0a2d459ea3bb5e7b952fc76a6d61f5c6c1785c9e943ed3e954ef99a476b610c02cca18189db3d4328a00fa17ed376c0da5
   languageName: node
   linkType: hard
 

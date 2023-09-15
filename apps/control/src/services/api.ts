@@ -1,41 +1,27 @@
-import wretch from 'wretch';
-
 import { ScreenConfig, type ScreenConfigId, type ScreenConfigObject } from '@twitchtoolkit/types';
 
-let apiClient = getBaseClient();
-
-function getBaseClient() {
-  return wretch(import.meta.env.VITE_API_URL, {
-    mode: 'cors',
-    credential: 'include',
-  }).content('application/json');
-}
-
-export function updateApiClient({ token }: { token?: string } = { token: undefined }) {
-  if (token) {
-    apiClient = getBaseClient().auth(`Bearer ${token}`);
-  }
-  return getBaseClient();
-}
+import { client } from './httpClient';
 
 function login(payload: APITypes.LoginRequest) {
-  return apiClient.url('/auth/login').post(payload);
+  return client.post('auth/login', { json: payload }).json<APITypes.LoginResponse>();
 }
 
 function logout() {
-  return apiClient.url('/auth/logout').post();
+  return client.post('auth/logout');
 }
 
 function me() {
-  return apiClient.get('/auth/me');
+  return client.get('auth/me').json<APITypes.MeResponse>();
 }
 
 function getScreenConfigurations() {
-  return apiClient.get('/screen-config');
+  return client.get('screen-config').json<APITypes.ScreenConfigResponse>();
 }
 
 function updateScreenConfiguration(payload: ScreenConfig) {
-  return apiClient.url(`/screen-config/${payload.type}`).put(payload);
+  return client
+    .put(`screen-config/${payload.type}`, { json: payload })
+    .json<APITypes.UpdateScreenConfigResponse<typeof payload.type>>();
 }
 
 export const API = {
@@ -83,5 +69,7 @@ export namespace APITypes {
   };
 
   export type ScreenConfigResponse = Response<Array<ScreenConfig<ScreenConfigId>>>;
-  export type UpdateScreenConfigResponse<T extends ScreenConfigId> = Response<ScreenConfig<T>>;
+  export type UpdateScreenConfigResponse<T extends ScreenConfigId = ScreenConfigId> = Response<
+    ScreenConfig<T>
+  >;
 }

@@ -1,5 +1,7 @@
 import { create } from 'zustand';
-import { API, APITypes, updateApiClient } from '@/services/api';
+
+import { setToken, removeToken } from '@/services/httpClient';
+import { API, APITypes } from '@/services/api';
 
 type AuthStore = {
   ready: boolean;
@@ -26,10 +28,10 @@ export const useAuthStore = create<AuthStore>((set, get) => {
         return;
       }
 
-      updateApiClient({ token: maybeToken });
+      setToken(maybeToken);
 
       await API.me()
-        .json(({ data }: APITypes.MeResponse) => {
+        .then(({ data }) => {
           set({
             ready: true,
             user: data.user,
@@ -39,7 +41,7 @@ export const useAuthStore = create<AuthStore>((set, get) => {
 
         .catch(() => {
           localStorage.removeItem('token');
-          updateApiClient();
+          removeToken();
           set({ ready: true });
         });
     },
@@ -47,9 +49,9 @@ export const useAuthStore = create<AuthStore>((set, get) => {
       set({ loading: true });
 
       await API.login(payload)
-        .json(({ data }: APITypes.LoginResponse) => {
+        .then(({ data }) => {
           localStorage.setItem('token', data.auth.token);
-          updateApiClient({ token: data.auth.token });
+          setToken(data.auth.token);
           set({
             loading: false,
             user: data.user,
@@ -58,7 +60,7 @@ export const useAuthStore = create<AuthStore>((set, get) => {
         })
         .catch(() => {
           set({ loading: false });
-          updateApiClient();
+          removeToken();
         });
     },
     logout: async () => {
@@ -67,10 +69,10 @@ export const useAuthStore = create<AuthStore>((set, get) => {
 
       localStorage.removeItem('token');
 
-      await API.logout().res(() => {
+      await API.logout().then(() => {
         set({ user: null, token: null });
       });
-      updateApiClient();
+      removeToken();
     },
   };
 });

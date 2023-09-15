@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
-import { ScreenConfig, ScreenConfigId, ScreenConfigObject } from '@twitchtoolkit/types';
+import { ScreenConfig, ScreenConfigObject } from '@twitchtoolkit/types';
 
-import { API, APITypes } from '@/services/api';
+import { API } from '@/services/api';
 
 type ScreenConfigurationStore = {
   ready: boolean;
@@ -20,7 +20,7 @@ export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set
     request: async () => {
       set({ loading: true });
       API.getScreenConfigurations()
-        .json(({ data }: APITypes.ScreenConfigResponse) => {
+        .then(({ data }) => {
           set({
             ready: true,
             loading: false,
@@ -40,7 +40,7 @@ export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set
       set({ loading: true });
 
       API.updateScreenConfiguration(config)
-        .json(({ data }: APITypes.UpdateScreenConfigResponse<ScreenConfigId>) => {
+        .then(({ data }) => {
           set((state) => ({
             loading: false,
             data: {
