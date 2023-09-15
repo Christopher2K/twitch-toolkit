@@ -2,14 +2,16 @@ import { create } from 'zustand';
 
 import { ScreenConfig, ScreenConfigObject } from '@twitchtoolkit/types';
 
-import { API } from '@/services/api';
+import { API, APITypes } from '@/services/api';
+import { handleHttpError } from '@/services/httpClient';
+import { ToastId } from '@chakra-ui/react';
 
 type ScreenConfigurationStore = {
   ready: boolean;
   loading: boolean;
   data: Partial<ScreenConfigObject> | null;
-  request: () => Promise<void>;
-  update: (config: ScreenConfig) => Promise<void>;
+  request: () => Promise<APITypes.ScreenConfigResponse | ToastId | void>;
+  update: (config: ScreenConfig) => Promise<APITypes.UpdateScreenConfigResponse | ToastId | void>;
 };
 
 export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set) => {
@@ -17,9 +19,10 @@ export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set
     loading: false,
     ready: false,
     data: null,
+
     request: async () => {
       set({ loading: true });
-      API.getScreenConfigurations()
+      return API.getScreenConfigurations()
         .then(({ data }) => {
           set({
             ready: true,
@@ -32,14 +35,15 @@ export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set
             }, {} as ScreenConfigObject),
           });
         })
-        .catch(() => {
+        .catch(handleHttpError)
+        .finally(() => {
           set({ loading: false });
         });
     },
     update: async (config: ScreenConfig) => {
       set({ loading: true });
 
-      API.updateScreenConfiguration(config)
+      return API.updateScreenConfiguration(config)
         .then(({ data }) => {
           set((state) => ({
             loading: false,
@@ -49,7 +53,8 @@ export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set
             },
           }));
         })
-        .catch(() => set({ loading: false }));
+        .catch(handleHttpError)
+        .finally(() => set({ loading: false }));
     },
   };
 });

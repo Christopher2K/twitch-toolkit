@@ -1,4 +1,5 @@
-import ky from 'ky';
+import ky, { HTTPError } from 'ky';
+import { toast } from './toast';
 
 export let client = ky.create({
   mode: 'cors',
@@ -23,4 +24,26 @@ export function removeToken() {
       Authorization: undefined,
     },
   });
+}
+
+export async function handleHttpError(
+  error: unknown,
+  customHandlers?: Record<number, { title: string; description: string }>,
+) {
+  const defaultOptions = { isClosable: true, status: 'error' as const };
+  if (error instanceof HTTPError) {
+    const handler = customHandlers?.[error.response.status];
+
+    if (handler) {
+      return toast({ title: handler.title, description: handler.description, ...defaultOptions });
+    } else {
+      const title = `Error [${error.response.status}]`;
+      const description = (await error.response.json())?.message ?? 'Something went wrong!';
+      return toast({ title, description, ...defaultOptions });
+    }
+  }
+
+  const title = 'Error';
+  const description = error?.toString() ?? 'Something went wrong!';
+  return toast({ title, description, ...defaultOptions });
 }

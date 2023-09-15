@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
-import { setToken, removeToken } from '@/services/httpClient';
 import { API, APITypes } from '@/services/api';
+import { setToken, removeToken, handleHttpError } from '@/services/httpClient';
 
 type AuthStore = {
   ready: boolean;
@@ -29,8 +29,7 @@ export const useAuthStore = create<AuthStore>((set, get) => {
       }
 
       setToken(maybeToken);
-
-      await API.me()
+      API.me()
         .then(({ data }) => {
           set({
             ready: true,
@@ -38,17 +37,24 @@ export const useAuthStore = create<AuthStore>((set, get) => {
             token: maybeToken,
           });
         })
-
-        .catch(() => {
+        .catch((error) => {
           localStorage.removeItem('token');
           removeToken();
+          return handleHttpError(error, {
+            401: {
+              title: 'Unauthorized',
+              description: 'Your session has expired. Please log in again.',
+            },
+          });
+        })
+        .finally(() => {
           set({ ready: true });
         });
     },
     login: async (payload) => {
       set({ loading: true });
 
-      await API.login(payload)
+      return API.login(payload)
         .then(({ data }) => {
           localStorage.setItem('token', data.auth.token);
           setToken(data.auth.token);
@@ -58,9 +64,12 @@ export const useAuthStore = create<AuthStore>((set, get) => {
             token: data.auth.token,
           });
         })
-        .catch(() => {
-          set({ loading: false });
+        .catch((error) => {
           removeToken();
+          handleHttpError(error);
+        })
+        .finally(() => {
+          set({ loading: false });
         });
     },
     logout: async () => {
@@ -69,10 +78,12 @@ export const useAuthStore = create<AuthStore>((set, get) => {
 
       localStorage.removeItem('token');
 
-      await API.logout().then(() => {
-        set({ user: null, token: null });
-      });
-      removeToken();
+      API.logout()
+        .then(() => {
+          set({ user: null, token: null });
+        })
+        .catch((error) => handleHttpError(error))
+        .finally(() => removeToken());
     },
   };
 });
