@@ -28,7 +28,7 @@ export function AdminAccount() {
         <Flex as="form" onSubmit={handleSubmit(onSubmit)} direction="column" gap="5">
           <FormControl>
             <FormLabel htmlFor="username">Username</FormLabel>
-            <Input type="text" autoComplete="off" {...register('username')} />
+            <Input type="text" autoComplete="off" autoCapitalize="off" {...register('username')} />
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="password">Password</FormLabel>

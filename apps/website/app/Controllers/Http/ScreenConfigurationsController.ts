@@ -1,9 +1,10 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { validator } from '@ioc:Adonis/Core/Validator';
-import ScreenConfiguration from 'App/Models/ScreenConfiguration';
-import ConfigurationIdValidator from 'App/Validators/ConfigurationIdValidator';
 
 import { ScreenConfigId, ScreenConfig } from '@twitchtoolkit/types';
+
+import ScreenConfiguration from 'App/Models/ScreenConfiguration';
+import ConfigurationIdValidator from 'App/Validators/ConfigurationIdValidator';
 import Ws from 'App/Services/Ws';
 
 export default class ScreenConfigurationsController {
