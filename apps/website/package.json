@@ -44,6 +44,8 @@
     "@inertiajs/react": "~1.0.11",
     "@types/react": "~18.2.21",
     "@types/react-dom": "~18.2.7",
+    "got": "~11.8.6",
+    "ky": "~1.0.1",
     "lucide-react": "~0.276.0",
     "luxon": "~3.4.3",
     "pg": "~8.11.3",

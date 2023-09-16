@@ -25,6 +25,8 @@ Route.group(() => {
     Route.post('login', 'AuthController.login');
     Route.post('logout', 'AuthController.logout').middleware('auth');
     Route.get('me', 'AuthController.me').middleware('auth');
+    Route.get('twitch/login', 'AuthController.twitchLogin');
+    Route.get('twitch/redirect', 'AuthController.twitchRedirect');
   }).prefix('auth');
 
   Route.resource('screen-config', 'ScreenConfigurationsController')
@@ -33,10 +35,6 @@ Route.group(() => {
     .middleware({
       update: 'auth',
     });
-
-  Route.get('stream', (ctx) => {
-    return ctx.response.ok({});
-  });
 }).prefix('api');
 
 Route.group(() => {

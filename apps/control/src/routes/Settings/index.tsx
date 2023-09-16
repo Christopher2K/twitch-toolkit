@@ -1,6 +1,7 @@
-import { Heading, Flex } from '@chakra-ui/react'
+import { Heading, Flex } from '@chakra-ui/react';
 
 import { AdminAccount } from './AdminAccount';
+import { TwitchConnect } from './TwitchConnect';
 
 export function Settings() {
   return (
@@ -8,8 +9,10 @@ export function Settings() {
       <Heading as="h1" mb="5">
         Settings
       </Heading>
-
-      <AdminAccount />
+      <Flex direction="column" w="full" gap={10}>
+        <AdminAccount />
+        <TwitchConnect />
+      </Flex>
     </Flex>
   );
 }
