@@ -2,7 +2,7 @@ import { Box, Button, Heading } from '@chakra-ui/react';
 import { open } from '@tauri-apps/api/shell';
 
 export function TwitchConnect() {
-  const openTwitchLink = () => open('https://twitchtoolkit.local/api/auth/twitch/login');
+  const openTwitchLink = () => open(`${import.meta.env.VITE_API_URL}/auth/twitch/login`);
 
   return (
     <Box>
