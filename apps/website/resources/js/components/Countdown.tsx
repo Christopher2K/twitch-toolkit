@@ -21,12 +21,16 @@ export function Countdown({ children, minutes }: CountdownProps) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime((time) => time - 1);
-      if (time <= 0) clearInterval(interval);
+      setTime((time) => {
+        if (time === 1) clearInterval(interval);
+        return time - 1;
+      });
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
+
+  if (time === 0) return <>{children}</>;
 
   return (
     <div
@@ -42,12 +46,9 @@ export function Countdown({ children, minutes }: CountdownProps) {
         borderRadius: 'xl',
       })}
     >
-      {time > 0 && (
-        <p className={css({ fontSize: 'four' })}>
-          {getMinutesLabel()}:{getSecondsLabel()}
-        </p>
-      )}
-      {time === 0 && <>{children}</>}
+      <p className={css({ fontSize: 'four' })}>
+        {getMinutesLabel()}:{getSecondsLabel()}
+      </p>
     </div>
   );
 }
