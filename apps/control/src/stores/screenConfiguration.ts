@@ -3,8 +3,9 @@ import { create } from 'zustand';
 import { ScreenConfig, ScreenConfigObject } from '@twitchtoolkit/types';
 
 import { API, APITypes } from '@/services/api';
+import { toast } from '@/services/toast';
 import { handleHttpError } from '@/services/httpClient';
-import { ToastId } from '@chakra-ui/react';
+import type { ToastId } from '@chakra-ui/react';
 
 type ScreenConfigurationStore = {
   ready: boolean;
@@ -52,6 +53,11 @@ export const useScreenConfigurationStore = create<ScreenConfigurationStore>((set
               [data.config.type]: data.config,
             },
           }));
+
+          toast({
+            description: 'Saved!',
+            status: 'success',
+          });
         })
         .catch(handleHttpError)
         .finally(() => set({ loading: false }));
