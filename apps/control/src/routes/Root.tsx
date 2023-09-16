@@ -10,7 +10,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { BotIcon, CogIcon, LayoutDashboardIcon, ScreenShareIcon } from 'lucide-react';
-import { Link, LinkPropsOptions } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 
 import { NavItem } from '@/components/NavItem';
 import { useAuthStore } from '@/stores/auth';

@@ -20,7 +20,8 @@
     "control": "yarn workspace @twitchtoolkit/control",
     "website": "yarn workspace @twitchtoolkit/website",
     "dev": "turbo dev --filter=!@twitchtoolkit/control",
-    "build:website": "turbo build --filter=@twitchtoolkit/website"
+    "build:website": "turbo build --filter=@twitchtoolkit/website",
+    "build:control": "yarn control tauri build"
   },
   "devDependencies": {
     "husky": "~8.0.3",
