@@ -1,4 +1,3 @@
-import { Duration } from 'luxon';
 import got from 'got';
 import qs from 'qs';
 
@@ -15,7 +14,7 @@ export default class AuthController {
   public async login({ request, response, auth }: HttpContextContract) {
     const payload = await request.validate(LoginValidator);
     const token = await auth.use('api').attempt(payload.username, payload.password, {
-      expiresIn: Duration.fromObject({ day: 30 }).toFormat('s'),
+      expiresIn: '30 days',
     });
 
     return response.ok({
