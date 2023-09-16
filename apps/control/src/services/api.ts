@@ -14,6 +14,10 @@ function me() {
   return client.get('auth/me').json<APITypes.MeResponse>();
 }
 
+function refresh() {
+  return client.post('auth/refresh').json<APITypes.LoginResponse>();
+}
+
 function getScreenConfigurations() {
   return client.get('screen-config').json<APITypes.ScreenConfigResponse>();
 }
@@ -27,6 +31,7 @@ function updateScreenConfiguration(payload: ScreenConfig) {
 export const API = {
   login,
   logout,
+  refresh,
   me,
   getScreenConfigurations,
   updateScreenConfiguration,

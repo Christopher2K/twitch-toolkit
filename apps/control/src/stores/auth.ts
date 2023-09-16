@@ -29,13 +29,17 @@ export const useAuthStore = create<AuthStore>((set, get) => {
       }
 
       setToken(maybeToken);
-      API.me()
+
+      API.refresh()
         .then(({ data }) => {
           set({
             ready: true,
             user: data.user,
-            token: maybeToken,
+            token: data.auth.token,
           });
+
+          localStorage.setItem('token', data.auth.token);
+          setToken(data.auth.token);
         })
         .catch((error) => {
           localStorage.removeItem('token');

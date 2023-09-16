@@ -30,6 +30,20 @@ export default class AuthController {
     return response.noContent();
   }
 
+  public async refresh({ auth, response }: HttpContextContract) {
+    const newToken = await auth.use('api').generate(auth.user!, {
+      expiresIn: '30 days',
+    });
+    await auth.use('api').revoke();
+
+    return response.ok({
+      data: {
+        auth: newToken.toJSON(),
+        user: newToken.user.serialize(),
+      },
+    });
+  }
+
   public async me({ auth, response }: HttpContextContract) {
     const user = auth.user;
     if (!user) return response.forbidden();
