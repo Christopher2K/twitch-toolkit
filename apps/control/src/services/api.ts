@@ -46,7 +46,7 @@ export namespace APITypes {
   export type Token = {
     type: 'bearer';
     token: string;
-    expiresAt: string;
+    expires_at: string;
   };
 
   export type LoginResponse = Response<{
