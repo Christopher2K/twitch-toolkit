@@ -63,7 +63,7 @@ export default class AuthController {
     return response.redirect(authorizationUrl);
   }
 
-  public async twitchRedirect({ request, response, session, inertia }: HttpContextContract) {
+  public async twitchRedirect({ request, session, inertia }: HttpContextContract) {
     const state = session.get('oauth_state');
     session.forget('oauth_state');
 
