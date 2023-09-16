@@ -11,6 +11,7 @@ type ComputerProps = {
 
 function Computer({ initialData }: ComputerProps) {
   const [data, setData] = useState(initialData);
+  const focusModeEnabled = data.focusMode;
 
   useEffect(() => {
     const socket = io('/');
@@ -36,13 +37,59 @@ function Computer({ initialData }: ComputerProps) {
       <div className={css({ w: '75%' })}>
         <section
           className={css({
+            position: 'relative',
             bg: 'placeholder',
             w: 'full',
             h: 'auto',
             aspectRatio: '16/9',
             flexShrink: 0,
           })}
-        />
+        >
+          {focusModeEnabled && (
+            <div
+              className={css({
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                py: '2',
+
+                display: 'flex',
+                flexDir: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              })}
+            >
+              <p
+                className={css({
+                  background: 'red.500',
+                  px: '4',
+                  py: '2',
+                  fontSize: 'lg',
+                  borderTopLeftRadius: 'lg',
+                  borderTopRightRadius: 'lg',
+                  borderBottomRightRadius: 0,
+                  borderBottomLeftRadius: 0,
+                })}
+              >
+                🔇FOCUS MODE 🔇
+              </p>
+              <p
+                className={css({
+                  background: 'red.500',
+                  px: '4',
+                  py: '2',
+                  borderRadius: 'lg',
+                  textAlign: 'center',
+                })}
+              >
+                <span>🇬🇧 Can't talk right now, but checking the chat!</span>
+                <br />
+                <span>🇫🇷 Je parle pas mais je check le chat!</span>
+              </p>
+            </div>
+          )}
+        </section>
 
         <div
           className={css({
