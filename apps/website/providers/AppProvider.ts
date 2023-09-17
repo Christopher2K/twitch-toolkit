@@ -1,10 +1,12 @@
 import type { ApplicationContract } from '@ioc:Adonis/Core/Application';
+import Twitch from 'App/Services/Twitch';
 
 export default class AppProvider {
   constructor(protected app: ApplicationContract) {}
 
   public register() {
     // Register your own bindings
+    this.app.container.singleton('TwitchToolkit/Services/Twitch', () => new Twitch());
   }
 
   public async boot() {

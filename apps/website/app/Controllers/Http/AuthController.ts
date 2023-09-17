@@ -2,11 +2,13 @@ import Env from '@ioc:Adonis/Core/Env';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { validator, schema } from '@ioc:Adonis/Core/Validator';
 import { string } from '@ioc:Adonis/Core/Helpers';
+import TwitchService from '@ioc:TwitchToolkit/Services/Twitch';
+
+import { TwitchAccountType } from '@twitchtoolkit/types/index';
 
 import LoginValidator from 'App/Validators/LoginValidator';
 import OAuthCallbackValidator from 'App/Validators/OAuthCallbackValidator';
 import TwitchCredential from 'App/Models/TwitchCredential';
-import Twitch from 'App/Services/Twitch';
 
 export default class AuthController {
   public async login({ request, response, auth }: HttpContextContract) {
@@ -65,7 +67,7 @@ export default class AuthController {
     session.put('oauth_state', state);
     session.put('oauth_account_type', accountType);
 
-    const authorizationUrl = Twitch.getIdUrl('authorize', {
+    const authorizationUrl = TwitchService.getIdUrl('authorize', {
       client_id: Env.get('TWITCH_CLIENT_ID'),
       redirect_uri: `${Env.get('APP_URL')}/api/auth/twitch/redirect`,
       response_type: 'code',
@@ -79,7 +81,7 @@ export default class AuthController {
 
   public async twitchRedirect({ request, session, inertia }: HttpContextContract) {
     const state = session.get('oauth_state');
-    const accountType = session.get('oauth_account_type');
+    const accountType = session.get('oauth_account_type') as TwitchAccountType;
     session.clear();
 
     const query = await validator.validate({
@@ -89,10 +91,15 @@ export default class AuthController {
 
     if (state !== query.state) return inertia.render('Redirect', { error: 'STATE_MISMATCH' });
 
-    const { access_token: accessToken, refresh_token: refreshToken } = await Twitch.getUserToken({
-      code: query.code,
+    const { access_token: accessToken, refresh_token: refreshToken } =
+      await TwitchService.getUserToken({
+        code: query.code,
+      });
+    const user = await TwitchService.apiGetCurrentUser({
+      token: accessToken,
+      refreshToken,
+      accountType,
     });
-    const user = await Twitch.apiGetCurrentUser({ token: accessToken });
 
     await TwitchCredential.query().where('accountType', accountType).update({ accountType: null });
 
@@ -118,14 +125,17 @@ export default class AuthController {
       }),
       data: request.qs(),
     });
+    const accountType = query.accountType as TwitchAccountType;
 
-    const twitchCredentials = await TwitchCredential.findBy('accountType', query.accountType);
+    const twitchCredentials = await TwitchCredential.findBy('accountType', accountType);
     if (!twitchCredentials) {
       return response.notFound();
     }
 
-    await Twitch.apiGetCurrentUser({
+    await TwitchService.apiGetCurrentUser({
       token: twitchCredentials.accessToken,
+      refreshToken: twitchCredentials.refreshToken,
+      accountType,
     })
       .then((currentUser) => {
         return response.ok({

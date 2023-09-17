@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { Box, Button, Heading, Flex } from '@chakra-ui/react';
+import { Button, Heading, Flex, Text } from '@chakra-ui/react';
 import { WebviewWindow } from '@tauri-apps/api/window';
 import { BotIcon, UserIcon } from 'lucide-react';
 import { useTwitchAuthStore } from '@/stores/twitchAuth';
@@ -8,13 +8,13 @@ import { useTwitchAuthStore } from '@/stores/twitchAuth';
 export function TwitchConnect() {
   const [waitingForMainWindowToClose, setWaitingForMainWindowToClose] = useState(false);
   const [waitingForBotWindowToClose, setWaitingForBotWindowToClose] = useState(false);
-  const { checkAccount, checkingMainAccount, checkingBotAccount, mainAccount, botAccount } =
+  const { checkAccounts, checkingMainAccount, checkingBotAccount, mainAccount, botAccount } =
     useTwitchAuthStore();
 
   const mainAccountTwitchWindowRef = useRef<WebviewWindow | null>(null);
   const botAccountTwitchWindowRef = useRef<WebviewWindow | null>(null);
 
-  const connectToMainAccount = () => {
+  const connectToMainAccount = async () => {
     mainAccountTwitchWindowRef.current = new WebviewWindow('twitchLoginMain', {
       url: `${import.meta.env.VITE_API_URL}/auth/twitch/login?accountType=main`,
       focus: true,
@@ -22,14 +22,15 @@ export function TwitchConnect() {
 
     setWaitingForMainWindowToClose(true);
 
-    mainAccountTwitchWindowRef.current.onCloseRequested(() => {
+    const unlisten = await mainAccountTwitchWindowRef.current.onCloseRequested((event) => {
       mainAccountTwitchWindowRef.current = null;
       setWaitingForMainWindowToClose(false);
-      checkAccount('main');
+      checkAccounts();
+      unlisten();
     });
   };
 
-  const connectToBotAccount = () => {
+  const connectToBotAccount = async () => {
     botAccountTwitchWindowRef.current = new WebviewWindow('twitchLoginBot', {
       url: `${import.meta.env.VITE_API_URL}/auth/twitch/login?accountType=bot`,
       focus: true,
@@ -37,16 +38,17 @@ export function TwitchConnect() {
 
     setWaitingForBotWindowToClose(true);
 
-    botAccountTwitchWindowRef.current.onCloseRequested(() => {
+    const unlisten = await botAccountTwitchWindowRef.current.onCloseRequested(() => {
       botAccountTwitchWindowRef.current = null;
       setWaitingForBotWindowToClose(false);
-      checkAccount('bot');
+      checkAccounts();
+      unlisten();
     });
   };
 
   return (
-    <Box>
-      <Heading as="h2" size="lg" mb="5">
+    <Flex direction="column" gap="5">
+      <Heading as="h2" size="lg">
         Twitch link
       </Heading>
       <Flex
@@ -56,25 +58,60 @@ export function TwitchConnect() {
         justifyContent="flex-start"
         alignItems="flex-start"
       >
-        <Button
-          onClick={connectToMainAccount}
-          colorScheme="teal"
-          leftIcon={<UserIcon />}
-          loadingText="Authenticating..."
-          isLoading={waitingForMainWindowToClose || checkingMainAccount}
-        >
-          Connect to Twitch main account
-        </Button>
-        <Button
-          onClick={connectToBotAccount}
-          colorScheme="purple"
-          leftIcon={<BotIcon />}
-          loadingText="Authenticating..."
-          isLoading={waitingForBotWindowToClose || checkingBotAccount}
-        >
-          Connect to Twitch Bot account
-        </Button>
+        <Heading as="h3" size="md">
+          Main account
+        </Heading>
+
+        {mainAccount ? (
+          <>
+            <Text>
+              🟢 Twitch main account: <span>{mainAccount}</span>
+            </Text>
+            <Button colorScheme="red">Disconnect</Button>
+          </>
+        ) : (
+          <Button
+            onClick={connectToMainAccount}
+            colorScheme="teal"
+            leftIcon={<UserIcon />}
+            loadingText="Authenticating..."
+            isLoading={waitingForMainWindowToClose || checkingMainAccount}
+          >
+            Connect to Twitch main account
+          </Button>
+        )}
       </Flex>
-    </Box>
+
+      <Flex
+        direction="column"
+        flexBasis="0"
+        gap="4"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        <Heading as="h3" size="md">
+          Bot account
+        </Heading>
+
+        {botAccount ? (
+          <>
+            <Text>
+              🟢 Twitch bot account: <span>{botAccount}</span>
+            </Text>
+            <Button colorScheme="red">Disconnect</Button>
+          </>
+        ) : (
+          <Button
+            onClick={connectToBotAccount}
+            colorScheme="teal"
+            leftIcon={<BotIcon />}
+            loadingText="Authenticating..."
+            isLoading={waitingForBotWindowToClose || checkingBotAccount}
+          >
+            Connect to Twitch bot account
+          </Button>
+        )}
+      </Flex>
+    </Flex>
   );
 }

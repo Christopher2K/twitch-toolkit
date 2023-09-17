@@ -19,7 +19,8 @@
       },
       "window": {
         "startDragging": true,
-        "create": true
+        "create": true,
+        "show": true
       }
     },
     "bundle": {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from '~/styled-system/css';
+import { flex } from '~/styled-system/patterns';
 
 export type RedirectProps = {
   error?: string;
@@ -8,15 +9,19 @@ export type RedirectProps = {
 export default function Redirect({ error = undefined }: RedirectProps) {
   return (
     <div
-      className={css({
-        w: 'full',
+      className={flex({
+        direction: 'column',
         p: '4',
-        color: 'black',
+        gap: '4',
       })}
     >
-      {error
-        ? `Error, check the server logs... [${error}]`
-        : 'Succesful login, go back to Twitch Toolkit App...'}
+      {error ? (
+        <p className={css({ color: 'black' })}>Error, check the server logs {error}</p>
+      ) : (
+        <p className={css({ color: 'black' })}>Succesful login, you can close this window!</p>
+      )}
+
+      <p className={css({ color: 'black' })}>Please close this window</p>
     </div>
   );
 }
