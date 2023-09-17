@@ -22,6 +22,7 @@ export default Env.rules({
   APP_URL: Env.schema.string({ format: 'url' }),
   TWITCH_CLIENT_ID: Env.schema.string(),
   TWITCH_CLIENT_SECRET: Env.schema.string(),
+  AUTHORIZED_TWITCH_ACCOUNTS: Env.schema.string(),
   DRIVE_DISK: Env.schema.enum(['local'] as const),
   SESSION_DRIVER: Env.schema.enum(['cookie'] as const),
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),

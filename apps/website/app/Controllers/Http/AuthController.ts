@@ -100,6 +100,11 @@ export default class AuthController {
       refreshToken,
       accountType,
     });
+    const authorizedAccounts = Env.get('AUTHORIZED_TWITCH_ACCOUNTS').split(',');
+
+    if (!authorizedAccounts.includes(user.login)) {
+      return inertia.render('Redirect', { error: 'UNKNOWN_TWITCH_ACCOUNT' });
+    }
 
     await TwitchCredential.query().where('accountType', accountType).update({ accountType: null });
 
