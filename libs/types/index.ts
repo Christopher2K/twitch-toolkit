@@ -44,3 +44,5 @@ export const defaultAudioGuestsScreenConfig: AudioGuestsScreenConfig = {
   title: '',
   guests: [],
 };
+
+export type TwitchAccountType = 'bot' | 'main';

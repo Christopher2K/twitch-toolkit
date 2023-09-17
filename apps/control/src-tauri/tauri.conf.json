@@ -18,7 +18,8 @@
         "open": true
       },
       "window": {
-        "startDragging": true
+        "startDragging": true,
+        "create": true
       }
     },
     "bundle": {

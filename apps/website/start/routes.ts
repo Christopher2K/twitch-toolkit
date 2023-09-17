@@ -28,6 +28,7 @@ Route.group(() => {
     Route.get('me', 'AuthController.me').middleware('auth');
     Route.get('twitch/login', 'AuthController.twitchLogin');
     Route.get('twitch/redirect', 'AuthController.twitchRedirect');
+    Route.get('twitch/check', 'AuthController.checkTwitchAccountStatus').middleware('auth');
   }).prefix('auth');
 
   Route.resource('screen-config', 'ScreenConfigurationsController')

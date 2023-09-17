@@ -1,14 +1,12 @@
-import got from 'got';
-import qs from 'qs';
-
 import Env from '@ioc:Adonis/Core/Env';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import { validator } from '@ioc:Adonis/Core/Validator';
+import { validator, schema } from '@ioc:Adonis/Core/Validator';
 import { string } from '@ioc:Adonis/Core/Helpers';
 
 import LoginValidator from 'App/Validators/LoginValidator';
 import OAuthCallbackValidator from 'App/Validators/OAuthCallbackValidator';
 import TwitchCredential from 'App/Models/TwitchCredential';
+import Twitch from 'App/Services/Twitch';
 
 export default class AuthController {
   public async login({ request, response, auth }: HttpContextContract) {
@@ -55,30 +53,34 @@ export default class AuthController {
     });
   }
 
-  public async twitchLogin({ response, session }: HttpContextContract) {
+  public async twitchLogin({ request, response, session }: HttpContextContract) {
+    const { accountType } = await validator.validate({
+      schema: schema.create({
+        accountType: schema.enum(['bot', 'main']),
+      }),
+      data: request.qs(),
+    });
+
     const state = string.generateRandom(32);
     session.put('oauth_state', state);
+    session.put('oauth_account_type', accountType);
 
-    const authorizationUrl =
-      'https://id.twitch.tv/oauth2/authorize' +
-      qs.stringify(
-        {
-          client_id: Env.get('TWITCH_CLIENT_ID'),
-          redirect_uri: `${Env.get('APP_URL')}/api/auth/twitch/redirect`,
-          response_type: 'code',
-          scope:
-            'moderation:read channel:moderate chat:edit chat:read user:read:email user:read:subscriptions channel:read:subscriptions',
-          state,
-        },
-        { addQueryPrefix: true },
-      );
-
+    const authorizationUrl = Twitch.getIdUrl('authorize', {
+      client_id: Env.get('TWITCH_CLIENT_ID'),
+      redirect_uri: `${Env.get('APP_URL')}/api/auth/twitch/redirect`,
+      response_type: 'code',
+      scope:
+        'moderation:read channel:moderate chat:edit chat:read user:read:email user:read:subscriptions channel:read:subscriptions',
+      state,
+      force_verify: 'true',
+    });
     return response.redirect(authorizationUrl);
   }
 
   public async twitchRedirect({ request, session, inertia }: HttpContextContract) {
     const state = session.get('oauth_state');
-    session.forget('oauth_state');
+    const accountType = session.get('oauth_account_type');
+    session.clear();
 
     const query = await validator.validate({
       schema: new OAuthCallbackValidator().schema,
@@ -87,32 +89,12 @@ export default class AuthController {
 
     if (state !== query.state) return inertia.render('Redirect', { error: 'STATE_MISMATCH' });
 
-    // TODO: Find a way to make it work with ky, for having a common client
-    const token = await got
-      .post('https://id.twitch.tv/oauth2/token', {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          client_id: Env.get('TWITCH_CLIENT_ID'),
-          client_secret: Env.get('TWITCH_CLIENT_SECRET'),
-          redirect_uri: `${Env.get('APP_URL')}/api/auth/twitch/redirect`,
-          code: query.code,
-          grant_type: 'authorization_code',
-        }).toString(),
-      })
-      .json<{ access_token: string; refresh_token: string }>();
+    const { access_token: accessToken, refresh_token: refreshToken } = await Twitch.getUserToken({
+      code: query.code,
+    });
+    const user = await Twitch.apiGetCurrentUser({ token: accessToken });
 
-    const {
-      data: [user],
-    } = await got
-      .get('https://api.twitch.tv/helix/users', {
-        headers: {
-          Authorization: `Bearer ${token.access_token}`,
-          'Client-ID': Env.get('TWITCH_CLIENT_ID'),
-        },
-      })
-      .json<{ data: { id: string; login: string }[] }>();
+    await TwitchCredential.query().where('accountType', accountType).update({ accountType: null });
 
     await TwitchCredential.updateOrCreate(
       {
@@ -120,11 +102,40 @@ export default class AuthController {
       },
       {
         id: user.login,
-        accessToken: token.access_token,
-        refreshToken: token.refresh_token,
+        accessToken,
+        refreshToken,
+        accountType,
       },
     );
 
     return inertia.render('Redirect');
+  }
+
+  public async checkTwitchAccountStatus({ request, response }: HttpContextContract) {
+    const query = await validator.validate({
+      schema: schema.create({
+        accountType: schema.enum(['main', 'bot']),
+      }),
+      data: request.qs(),
+    });
+
+    const twitchCredentials = await TwitchCredential.findBy('accountType', query.accountType);
+    if (!twitchCredentials) {
+      return response.notFound();
+    }
+
+    await Twitch.apiGetCurrentUser({
+      token: twitchCredentials.accessToken,
+    })
+      .then((currentUser) => {
+        return response.ok({
+          data: {
+            id: currentUser.login,
+          },
+        });
+      })
+      .catch(() => {
+        return response.badGateway();
+      });
   }
 }

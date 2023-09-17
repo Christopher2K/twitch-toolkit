@@ -55,7 +55,7 @@ declare module '@tanstack/react-router' {
 export function App() {
   const { ready } = useAppStore();
   if (!ready) {
-    return null
+    return null;
   }
 
   return <RouterProvider router={router} />;

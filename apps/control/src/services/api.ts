@@ -1,4 +1,7 @@
+import * as qs from 'qs';
 import { ScreenConfig, type ScreenConfigId, type ScreenConfigObject } from '@twitchtoolkit/types';
+
+import { TwitchAccountType } from '@twitchtoolkit/types';
 
 import { client } from './httpClient';
 
@@ -28,6 +31,16 @@ function updateScreenConfiguration(payload: ScreenConfig) {
     .json<APITypes.UpdateScreenConfigResponse<typeof payload.type>>();
 }
 
+function checkTwitchAccount(accountType: TwitchAccountType) {
+  const query = qs.stringify(
+    {
+      accountType,
+    },
+    { addQueryPrefix: true },
+  );
+  return client.get(`auth/twitch/check${query}`, {}).json<APITypes.CheckingTwithAccountResponse>();
+}
+
 export const API = {
   login,
   logout,
@@ -35,6 +48,7 @@ export const API = {
   me,
   getScreenConfigurations,
   updateScreenConfiguration,
+  checkTwitchAccount,
 };
 
 export namespace APITypes {
@@ -77,4 +91,6 @@ export namespace APITypes {
   export type UpdateScreenConfigResponse<T extends ScreenConfigId = ScreenConfigId> = Response<
     ScreenConfig<T>
   >;
+
+  export type CheckingTwithAccountResponse = Response<{ id: string }>;
 }
