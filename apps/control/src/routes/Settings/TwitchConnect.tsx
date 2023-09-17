@@ -67,7 +67,7 @@ export function TwitchConnect() {
             <Text>
               🟢 Twitch main account: <span>{mainAccount}</span>
             </Text>
-            <Button colorScheme="red">Disconnect</Button>
+            {/* <Button colorScheme="red">Disconnect</Button> */}
           </>
         ) : (
           <Button
@@ -98,7 +98,7 @@ export function TwitchConnect() {
             <Text>
               🟢 Twitch bot account: <span>{botAccount}</span>
             </Text>
-            <Button colorScheme="red">Disconnect</Button>
+            {/* <Button colorScheme="red">Disconnect</Button> */}
           </>
         ) : (
           <Button
