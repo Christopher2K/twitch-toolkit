@@ -22,7 +22,7 @@ export function TwitchConnect() {
 
     setWaitingForMainWindowToClose(true);
 
-    const unlisten = await mainAccountTwitchWindowRef.current.onCloseRequested((event) => {
+    const unlisten = await mainAccountTwitchWindowRef.current.onCloseRequested(() => {
       mainAccountTwitchWindowRef.current = null;
       setWaitingForMainWindowToClose(false);
       checkAccounts();
