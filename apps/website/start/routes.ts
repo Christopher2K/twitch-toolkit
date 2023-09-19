@@ -37,6 +37,15 @@ Route.group(() => {
     .middleware({
       update: 'auth',
     });
+
+  Route.group(() => {
+    Route.get('', 'SubscriptionsController.index');
+    Route.post('', 'SubscriptionsController.store');
+    Route.delete(':id', 'SubscriptionsController.destroy');
+    Route.post('callback', 'SubscriptionsController.callback');
+  })
+    .middleware('auth')
+    .prefix('subscription');
 }).prefix('api');
 
 Route.group(() => {

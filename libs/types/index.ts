@@ -46,3 +46,12 @@ export const defaultAudioGuestsScreenConfig: AudioGuestsScreenConfig = {
 };
 
 export type TwitchAccountType = 'bot' | 'main';
+
+export enum TwitchSubscriptionType {
+  ChannelFollow = 'channel.follow',
+  ChannelSubscribe = 'channel.subscribe',
+  ChannelSubscribeGift = 'channel.subscribe.gift',
+  ChannelSubscriptionMessage = 'channel.subscription.message',
+  ChannelCheer = 'channel.cheer',
+  ChannelRaid = 'channel.raid',
+}
