@@ -55,3 +55,12 @@ export enum TwitchSubscriptionType {
   ChannelCheer = 'channel.cheer',
   ChannelRaid = 'channel.raid',
 }
+
+export const twitchSubscriptionVersionByType: Record<TwitchSubscriptionType, string> = {
+  [TwitchSubscriptionType.ChannelFollow]: '2',
+  [TwitchSubscriptionType.ChannelSubscribe]: '1',
+  [TwitchSubscriptionType.ChannelSubscribeGift]: '1',
+  [TwitchSubscriptionType.ChannelSubscriptionMessage]: '1',
+  [TwitchSubscriptionType.ChannelCheer]: '1',
+  [TwitchSubscriptionType.ChannelRaid]: '1',
+};

@@ -2,7 +2,12 @@ import Env from '@ioc:Adonis/Core/Env';
 import qs from 'qs';
 import got, { type Got, type Response, type Options, type CancelableRequest } from 'got';
 
-import { TwitchAccountType } from '@twitchtoolkit/types/index';
+import {
+  TwitchAccountType,
+  TwitchSubscriptionType,
+  twitchSubscriptionVersionByType,
+} from '@twitchtoolkit/types';
+import TwitchCredential from 'App/Models/TwitchCredential';
 
 class Twitch {
   private ID_URL: string = 'https://id.twitch.tv/oauth2/';
@@ -19,9 +24,37 @@ class Twitch {
       prefixUrl: this.API_URL,
       headers: {
         'Client-ID': Env.get('TWITCH_CLIENT_ID'),
+        'Content-Type': 'application/json',
       },
       retry: 2,
     });
+  }
+
+  public async getConditonsForSubscription({
+    type,
+    credentials,
+  }: {
+    type: TwitchSubscriptionType;
+    credentials: TwitchCredential;
+  }) {
+    const broadcasterUserId = { broadcaster_user_id: credentials.id };
+    const moderatorUserId = { moderator_user_id: credentials.id };
+    const destination = { to_broadcaster_user_id: credentials.id };
+
+    switch (type) {
+      case TwitchSubscriptionType.ChannelFollow:
+        return {
+          ...broadcasterUserId,
+          ...moderatorUserId,
+        };
+      case TwitchSubscriptionType.ChannelSubscribe:
+      case TwitchSubscriptionType.ChannelSubscribeGift:
+      case TwitchSubscriptionType.ChannelSubscriptionMessage:
+      case TwitchSubscriptionType.ChannelCheer:
+        return broadcasterUserId;
+      case TwitchSubscriptionType.ChannelRaid:
+        return destination;
+    }
   }
 
   private async onRefreshToken({
@@ -146,6 +179,50 @@ class Twitch {
       .json<{ data: Array<{ id: string; login: string }> }>();
 
     return data.data[0];
+  }
+
+  public async apiCreateSubscription({
+    type,
+    accessToken,
+    condition,
+  }: {
+    type: TwitchSubscriptionType;
+    accessToken: string;
+    condition: unknown;
+  }) {
+    const { default: Route } = await import('@ioc:Adonis/Core/Route');
+
+    return await this.apiClient
+      .post('eventsub/subscriptions', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        json: {
+          type,
+          version: twitchSubscriptionVersionByType[type],
+          condition,
+          transport: {
+            method: 'webhook',
+            callback: Route.makeUrl('SubscriptionsController.callback', {
+              prefixUrl: Env.get('APP_URL'),
+            }),
+            secret: Env.get('TWITCH_WEBHOOK_SECRET'),
+          },
+        },
+      })
+      .json<{
+        data: {
+          id: string;
+          status: 'enabled' | 'webhook_callback_verification_pending';
+          type: TwitchSubscriptionType;
+          version: string;
+          created_at: string;
+          cost: number;
+        };
+        total: number;
+        total_cost: number;
+        max_total_cost: number;
+      }>();
   }
 }
 
