@@ -7,6 +7,9 @@ export default class TwitchCredential extends BaseModel {
   public id: string;
 
   @column()
+  public username: string;
+
+  @column()
   public accountType: TwitchAccountType | null;
 
   @column({ serializeAs: null })

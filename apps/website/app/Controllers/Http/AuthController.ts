@@ -4,7 +4,7 @@ import { validator, schema } from '@ioc:Adonis/Core/Validator';
 import { string } from '@ioc:Adonis/Core/Helpers';
 import TwitchService from '@ioc:TwitchToolkit/Services/Twitch';
 
-import { TwitchAccountType } from '@twitchtoolkit/types/index';
+import { TwitchAccountType } from '@twitchtoolkit/types';
 
 import LoginValidator from 'App/Validators/LoginValidator';
 import OAuthCallbackValidator from 'App/Validators/OAuthCallbackValidator';
@@ -110,10 +110,11 @@ export default class AuthController {
 
     await TwitchCredential.updateOrCreate(
       {
-        id: user.login,
+        id: user.id,
       },
       {
-        id: user.login,
+        id: user.id,
+        username: user.login,
         accessToken,
         refreshToken,
         accountType,

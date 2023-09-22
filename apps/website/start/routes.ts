@@ -26,7 +26,7 @@ Route.group(() => {
     Route.post('logout', 'AuthController.logout').middleware('auth');
     Route.post('refresh', 'AuthController.refresh').middleware('auth');
     Route.get('me', 'AuthController.me').middleware('auth');
-    Route.get('twitch/login', 'AuthController.twitchLogin').middleware('auth');
+    Route.get('twitch/login', 'AuthController.twitchLogin');
     Route.get('twitch/redirect', 'AuthController.twitchRedirect');
     Route.get('twitch/check', 'AuthController.checkTwitchAccountStatus').middleware('auth');
   }).prefix('auth');
