@@ -20,10 +20,6 @@ export function AdminAccount() {
 
   return (
     <Box>
-      <Heading as="h2" size="lg" mb="5">
-        Admin account
-      </Heading>
-
       {!isLogged && (
         <Flex as="form" onSubmit={handleSubmit(onSubmit)} direction="column" gap="5">
           <FormControl>

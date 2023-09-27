@@ -1,22 +1,24 @@
-import { Heading, Flex } from '@chakra-ui/react';
+import { Heading, Flex, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 
-import { useAuthStore } from '@/stores/auth';
-
-import { AdminAccount } from './AdminAccount';
-import { TwitchConnect } from './TwitchConnect';
+import { Accounts } from './Accounts';
 
 export function Settings() {
-  const isLoggedIn = useAuthStore((state) => state.user !== null);
-
   return (
     <Flex direction="column" width="full">
       <Heading as="h1" mb="5">
         Settings
       </Heading>
-      <Flex direction="column" w="full" gap={10}>
-        <AdminAccount />
-        {isLoggedIn && <TwitchConnect />}
-      </Flex>
+      <Tabs isLazy>
+        <TabList>
+          <Tab>Accounts</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <Accounts />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Flex>
   );
 }
