@@ -9,7 +9,13 @@ import {
   Text,
   Flex,
 } from '@chakra-ui/react';
-import { BotIcon, CogIcon, LayoutDashboardIcon, ScreenShareIcon } from 'lucide-react';
+import {
+  BotIcon,
+  CogIcon,
+  LayoutDashboardIcon,
+  ScreenShareIcon,
+  RefreshCwIcon,
+} from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 
 import { NavItem } from '@/components/NavItem';
@@ -67,6 +73,9 @@ export function Root() {
         </NavItem>
         <NavItem to="/screen-config" icon={<ScreenShareIcon />}>
           Screen configuration
+        </NavItem>
+        <NavItem to="/subscriptions" icon={<RefreshCwIcon />}>
+          Subscriptions
         </NavItem>
         <NavItem to="/settings" icon={<CogIcon />}>
           Settings

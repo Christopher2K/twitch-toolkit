@@ -5,6 +5,7 @@ import { Commands } from './routes/Commands';
 import { Settings } from './routes/Settings';
 import { ScreenConfig } from './routes/ScreenConfig';
 import { Dashboard } from './routes/Dashboard';
+import { Subscriptions } from './routes/Subscriptions';
 import { useAppStore } from './stores/app';
 
 // ROUTES
@@ -30,6 +31,12 @@ const screenConfigRoute = new Route({
   component: ScreenConfig,
 });
 
+const subscriptionsRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: '/subscriptions',
+  component: Subscriptions,
+});
+
 const settingsRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '/settings',
@@ -42,6 +49,7 @@ const routeTree = rootRoute.addChildren([
   commandsRoute,
   screenConfigRoute,
   settingsRoute,
+  subscriptionsRoute,
 ]);
 
 const router = new Router({ routeTree });
