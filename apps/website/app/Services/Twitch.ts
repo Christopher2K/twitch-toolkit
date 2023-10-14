@@ -14,6 +14,7 @@ class Twitch {
   private API_URL: string = 'https://api.twitch.tv/helix/';
   private idClient: Got;
   private apiClient: Got;
+  private appClient: Got;
 
   constructor() {
     this.idClient = got.extend({
@@ -28,6 +29,8 @@ class Twitch {
       },
       retry: 2,
     });
+
+    this.appClient = got.extend({});
   }
 
   public async getConditonsForSubscription({
@@ -48,13 +51,59 @@ class Twitch {
           ...moderatorUserId,
         };
       case TwitchSubscriptionType.ChannelSubscribe:
-      case TwitchSubscriptionType.ChannelSubscribeGift:
+      case TwitchSubscriptionType.ChannelSubscriptionGift:
       case TwitchSubscriptionType.ChannelSubscriptionMessage:
       case TwitchSubscriptionType.ChannelCheer:
         return broadcasterUserId;
       case TwitchSubscriptionType.ChannelRaid:
         return destination;
     }
+  }
+
+  // TODO: Use logged
+  public async configureAppClient() {
+    const { default: Cache } = await import('@ioc:Adonis/Addons/Cache');
+    const { default: Logger } = await import('@ioc:Adonis/Core/Logger');
+
+    Logger.info('Configure Twitch service...');
+    const { access_token } = await this.getAppAccessToken();
+    await Cache.forever('app_token', access_token);
+
+    this.appClient = got.extend({
+      prefixUrl: this.API_URL,
+      headers: {
+        'Client-ID': Env.get('TWITCH_CLIENT_ID'),
+        'Content-Type': 'application/json',
+      },
+      retry: 2,
+      hooks: {
+        afterResponse: [
+          async (
+            response: Response,
+            retryWithMergedOptions: (options: Options) => CancelableRequest<Response>,
+          ) => {
+            switch (response.statusCode) {
+              case 401:
+              case 403:
+                try {
+                  const { access_token } = await this.getAppAccessToken();
+                  return retryWithMergedOptions({
+                    headers: {
+                      Authorization: `Bearer ${access_token}`,
+                    },
+                  });
+                } catch (e) {
+                  return response;
+                }
+              default:
+                return response;
+            }
+          },
+        ],
+      },
+    });
+
+    Logger.info('Succesfully configured Twitch service!');
   }
 
   private async onRefreshToken({
@@ -67,7 +116,7 @@ class Twitch {
     accountType: string;
   }) {
     const TwitchCredential = (await import('App/Models/TwitchCredential')).default;
-    return await TwitchCredential.query()
+    return TwitchCredential.query()
       .where('accountType', accountType)
       .update({
         accessToken,
@@ -117,6 +166,26 @@ class Twitch {
 
   public getApiUrl(path: string, query?: Record<string, string>) {
     return `${this.API_URL}${path}` + qs.stringify(query, { addQueryPrefix: true });
+  }
+
+  public getAppAccessToken() {
+    return this.appClient
+      .post(`${this.ID_URL}token`, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+
+        body: new URLSearchParams({
+          client_id: Env.get('TWITCH_CLIENT_ID'),
+          client_secret: Env.get('TWITCH_CLIENT_SECRET'),
+          grant_type: 'client_credentials',
+        }).toString(),
+      })
+      .json<{
+        access_token: string;
+        expires_in: number;
+        token_type: 'bearer';
+      }>();
   }
 
   private async idRefreshToken({ refreshToken }: { refreshToken: string }) {
@@ -183,7 +252,6 @@ class Twitch {
 
   public async apiCreateSubscription({
     type,
-    accessToken,
     condition,
   }: {
     type: TwitchSubscriptionType;
@@ -191,8 +259,12 @@ class Twitch {
     condition: unknown;
   }) {
     const { default: Route } = await import('@ioc:Adonis/Core/Route');
+    const { default: Cache } = await import('@ioc:Adonis/Addons/Cache');
 
-    return await this.apiClient
+    // TODO: Keep app token in a constant
+    const accessToken = await Cache.get('app_token');
+
+    return this.appClient
       .post('eventsub/subscriptions', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -203,22 +275,27 @@ class Twitch {
           condition,
           transport: {
             method: 'webhook',
-            callback: Route.makeUrl('SubscriptionsController.callback', {
-              prefixUrl: Env.get('APP_URL'),
-            }),
+            callback:
+              Env.get('NODE_ENV') === 'production'
+                ? Route.makeUrl('SubscriptionsController.callback', {
+                    prefixUrl: Env.get('APP_URL'),
+                  })
+                : 'https://christopher2k.dev', // FIXME: Use NGROK for local testing
             secret: Env.get('TWITCH_WEBHOOK_SECRET'),
           },
         },
       })
       .json<{
-        data: {
-          id: string;
-          status: 'enabled' | 'webhook_callback_verification_pending';
-          type: TwitchSubscriptionType;
-          version: string;
-          created_at: string;
-          cost: number;
-        };
+        data: [
+          {
+            id: string;
+            status: 'enabled' | 'webhook_callback_verification_pending';
+            type: TwitchSubscriptionType;
+            version: string;
+            created_at: string;
+            cost: number;
+          },
+        ];
         total: number;
         total_cost: number;
         max_total_cost: number;

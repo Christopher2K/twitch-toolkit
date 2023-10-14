@@ -10,7 +10,7 @@ export default class AppProvider {
   }
 
   public async boot() {
-    // IoC container is readyS
+    // IoC container is ready
     const { BaseModel } = await import('@ioc:Adonis/Lucid/Orm');
     const { default: CamelCaseNamingStrategy } = await import(
       'App/Helpers/CamelCaseNamingStrategy'
@@ -19,6 +19,8 @@ export default class AppProvider {
   }
 
   public async ready() {
+    const { default: TwitchService } = await import('@ioc:TwitchToolkit/Services/Twitch');
+    await TwitchService.configureAppClient();
     await import('../start/socket');
   }
 
