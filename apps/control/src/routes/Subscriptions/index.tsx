@@ -1,7 +1,20 @@
+import { useEffect } from 'react';
 import { Heading, Flex, Box, Switch, FormControl, FormLabel } from '@chakra-ui/react';
+
 import { TwitchSubscriptionType } from '@twitchtoolkit/types';
 
+import { AuthenticationGuardAlert } from '@/components';
+import { useAuthStore } from '@/stores/auth';
+import { useTwitchAuthStore } from '@/stores/twitchAuth';
+
 export function Subscriptions() {
+  const isLoggedIn = useAuthStore((state) => state.user !== null);
+  const twitchMainAccountLoggedIn = useTwitchAuthStore((state) => state.mainAccount !== null);
+
+  useEffect(() => {}, []);
+
+  if (!isLoggedIn) return <AuthenticationGuardAlert needMainTwitchAccount />;
+
   return (
     <Flex direction="column" width="full">
       <Heading as="h1" mb="5">

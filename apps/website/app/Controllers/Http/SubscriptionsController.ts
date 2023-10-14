@@ -8,12 +8,16 @@ import { TwitchSubscriptionType } from '@twitchtoolkit/types';
 
 export default class SubscriptionsController {
   // TODO: List all subscriptions and get their status from twitch API
-  public async index(_: HttpContextContract) {
-    return {};
+  public async index({ response }: HttpContextContract) {
+    const subscriptions = await TwitchSubscription.all();
+
+    return response.ok({
+      data: subscriptions.map((item) => item.toJSON()),
+    });
   }
 
   // Create a subscription to Twitch (should replace the existing one if there is)
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, logger }: HttpContextContract) {
     const data = await request.validate({
       schema: schema.create({
         type: schema.enum(Object.values(TwitchSubscriptionType)),
@@ -34,7 +38,7 @@ export default class SubscriptionsController {
         condition,
       });
     } catch (e) {
-      console.log(e);
+      logger.error(e);
       return response.badGateway();
     }
 

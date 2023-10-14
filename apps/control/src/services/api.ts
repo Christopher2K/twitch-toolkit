@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { ScreenConfig, type ScreenConfigId, type ScreenConfigObject } from '@twitchtoolkit/types';
 
-import { TwitchAccountType } from '@twitchtoolkit/types';
+import { TwitchAccountType, TwitchSubscriptionType } from '@twitchtoolkit/types';
 
 import { client } from './httpClient';
 
@@ -41,6 +41,10 @@ function checkTwitchAccount(accountType: TwitchAccountType) {
   return client.get(`auth/twitch/check${query}`, {}).json<APITypes.CheckingTwithAccountResponse>();
 }
 
+function getTwitchSubscriptions() {
+  return client.get('subscription').json<APITypes.TwitchSubscriptionsResponse>();
+}
+
 export const API = {
   login,
   logout,
@@ -49,12 +53,14 @@ export const API = {
   getScreenConfigurations,
   updateScreenConfiguration,
   checkTwitchAccount,
+  getTwitchSubscriptions,
 };
 
 export namespace APITypes {
   type Response<T> = {
     data: T;
   };
+
   export type User = {
     id: string;
     username: string;
@@ -93,4 +99,12 @@ export namespace APITypes {
   >;
 
   export type CheckingTwithAccountResponse = Response<{ id: string }>;
+
+  export type TwitchSubscription = {
+    id: string;
+    subscriptionId: string;
+    subscriptionType: TwitchSubscriptionType;
+  };
+
+  export type TwitchSubscriptionsResponse = Response<TwitchSubscription[]>;
 }
