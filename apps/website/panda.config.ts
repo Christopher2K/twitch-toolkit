@@ -35,6 +35,7 @@ export default defineConfig({
           four: { value: '3rem' },
           five: { value: '2rem' },
           six: { value: '1.8rem' },
+          seven: { value: '1.3rem' },
         },
       },
     },
