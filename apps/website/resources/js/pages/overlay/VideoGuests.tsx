@@ -53,7 +53,7 @@ function VideoGuests({ initialData, nbOfParticipants }: VideoGuestsProps) {
           .fill(null)
           .map((_, index) => {
             return (
-              <div key={index} className={css({ p: '5', width: '40%' })}>
+              <div key={index} className={css({ p: '5', width: '50%' })}>
                 <CameraPlaceholder cameraType="landscape" className={css({ width: 'full' })} />
               </div>
             );
