@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import React from 'react';
 import { ComputerScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
+import { useRealTimeData } from '~/hooks/useRealTimeData';
 import { css } from '~/styled-system/css';
 
 type ComputerProps = {
@@ -10,17 +10,8 @@ type ComputerProps = {
 };
 
 function Computer({ initialData }: ComputerProps) {
-  const [data, setData] = useState(initialData);
+  const data = useRealTimeData<ComputerScreenConfig>({ initialData });
   const focusModeEnabled = data.focusMode;
-
-  useEffect(() => {
-    const socket = io('/');
-    socket.on('computer', setData);
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   return (
     <div
