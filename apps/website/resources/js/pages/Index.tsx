@@ -35,7 +35,10 @@ function Index() {
           <Anchor href="/computer">Computer screen</Anchor>
         </li>
         <li>
-          <Anchor href="/audio-guests">Audio guest screen</Anchor>
+          <Anchor href="/audio-guests">Audio guests screen</Anchor>
+        </li>
+        <li>
+          <Anchor href="/video-guests">Video guests screen</Anchor>
         </li>
       </ul>
     </main>

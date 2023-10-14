@@ -38,4 +38,13 @@ export default class OverlaysController {
       initialData: configuration.config,
     });
   }
+
+  public async videoGuestsScreen({ inertia, request }: HttpContextContract) {
+    const nbOfParticipants = parseInt(request.qs()['participants'] ?? 2);
+    const configuration = await ScreenConfiguration.findOrCreate('videoGuests');
+    return inertia.render('overlay/VideoGuests', {
+      initialData: configuration.config,
+      nbOfParticipants,
+    });
+  }
 }

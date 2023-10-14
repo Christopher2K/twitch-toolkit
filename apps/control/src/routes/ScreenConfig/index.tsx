@@ -3,6 +3,7 @@ import { Heading, Flex, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner } from 
 import { ComputerScreenForm, Form as ComputerScreenFormType } from './ComputerScreenForm';
 import { TalkScreenForm, Form as TalkScreenFormType } from './TalkScreenForm';
 import { AudioGuestsScreenForm, Form as AudioGuestsScreenFormType } from './AudioGuestsScreenForm';
+import { VideoGuestsScreenForm, Form as VideoGuestsScreenFormType } from './VideoGuestsScreenForm';
 import { useScreenConfigurationStore } from '@/stores/screenConfiguration';
 
 export function ScreenConfig() {
@@ -29,6 +30,13 @@ export function ScreenConfig() {
     });
   }
 
+  function onVideoGuestsScreenFormSubmit(data: VideoGuestsScreenFormType) {
+    update({
+      type: 'videoGuests',
+      ...data,
+    });
+  }
+
   if (!ready && !loading) {
     request();
   }
@@ -44,7 +52,8 @@ export function ScreenConfig() {
           <TabList>
             <Tab>Computer screen</Tab>
             <Tab>Talk screen</Tab>
-            <Tab>Guest screen</Tab>
+            <Tab>Audio guest screen</Tab>
+            <Tab>Video guest screen</Tab>
           </TabList>
 
           <TabPanels>
@@ -61,6 +70,12 @@ export function ScreenConfig() {
               <AudioGuestsScreenForm
                 onSubmit={onAudioGuestsScreenFormSubmit}
                 initialData={data?.audioGuests}
+              />
+            </TabPanel>
+            <TabPanel>
+              <VideoGuestsScreenForm
+                onSubmit={onVideoGuestsScreenFormSubmit}
+                initialData={data?.videoGuests}
               />
             </TabPanel>
           </TabPanels>

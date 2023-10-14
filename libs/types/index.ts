@@ -16,6 +16,11 @@ export type ScreenConfigObject = {
     title: string;
     focusMode: boolean;
   };
+  videoGuests: {
+    type: 'videoGuests';
+    banner: string;
+    title: string;
+  };
 };
 
 export type ScreenConfigId = keyof ScreenConfigObject;
@@ -24,6 +29,7 @@ export type ScreenConfig = ScreenConfigObject[keyof ScreenConfigObject];
 export type ComputerScreenConfig = ScreenConfigObject['computer'];
 export type TalkScreenConfig = ScreenConfigObject['talk'];
 export type AudioGuestsScreenConfig = ScreenConfigObject['audioGuests'];
+export type VideoGuestsScreenConfig = ScreenConfigObject['videoGuests'];
 
 export const defaultComputerScreenConfig: ComputerScreenConfig = {
   type: 'computer',
@@ -43,6 +49,12 @@ export const defaultAudioGuestsScreenConfig: AudioGuestsScreenConfig = {
   banner: '',
   title: '',
   guests: [],
+};
+
+export const defaultVideoGuestsScreenConfig: VideoGuestsScreenConfig = {
+  type: 'videoGuests',
+  banner: '',
+  title: '',
 };
 
 export type TwitchAccountType = 'bot' | 'main';

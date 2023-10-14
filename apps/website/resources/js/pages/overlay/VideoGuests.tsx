@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AudioGuestsScreenConfig } from '@twitchtoolkit/types';
+import type { VideoGuestsScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
 import { useRealTimeData } from '~/hooks/useRealTimeData';
@@ -7,12 +7,12 @@ import { css } from '~/styled-system/css';
 import { flex } from '~/styled-system/patterns';
 
 type VideoGuestsProps = {
-  initialData: AudioGuestsScreenConfig;
+  initialData: VideoGuestsScreenConfig;
   nbOfParticipants?: number;
 };
 
 function VideoGuests({ initialData, nbOfParticipants = 2 }: VideoGuestsProps) {
-  const data = useRealTimeData<AudioGuestsScreenConfig>({ initialData });
+  const data = useRealTimeData<VideoGuestsScreenConfig>({ initialData });
 
   return (
     <div
