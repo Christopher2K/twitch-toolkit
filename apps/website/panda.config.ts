@@ -43,7 +43,7 @@ export default defineConfig({
   utilities: {
     extend: {
       aspectRatio: {
-        values: { desktop: '16 / 9', 'video-portrait': '9 / 16' },
+        values: { landscape: '16 / 9', portrait: '9 / 16' },
       },
     },
   },

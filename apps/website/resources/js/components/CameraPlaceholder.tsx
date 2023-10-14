@@ -4,6 +4,10 @@ import { cx, cva } from '~/styled-system/css';
 const cameraPlaceholderStyle = cva({
   base: {
     bg: 'placeholder',
+    borderWidth: '4px',
+    borderColor: 'desktop-light',
+    rounded: 'md',
+    flexShrink: '0',
   },
   variants: {
     alternateColor: {
@@ -13,7 +17,7 @@ const cameraPlaceholderStyle = cva({
     },
     cameraType: {
       portrait: {
-        aspectRatio: 'video-portrait',
+        aspectRatio: 'portrait',
       },
       landscape: {
         aspectRatio: 'landscape',

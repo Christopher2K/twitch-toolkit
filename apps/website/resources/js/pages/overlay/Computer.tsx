@@ -116,16 +116,7 @@ function Computer({ initialData }: ComputerProps) {
         </div>
       </div>
       <div className={css({ w: '25%', p: '10', h: 'full', position: 'relative' })}>
-        <CameraPlaceholder
-          cameraType="portrait"
-          className={css({
-            w: 'full',
-            borderWidth: '8px',
-            borderColor: 'desktop-light',
-            rounded: 'xl',
-            flexShrink: '0',
-          })}
-        />
+        <CameraPlaceholder cameraType="portrait" />
         <CameraPlaceholder
           cameraType="portrait"
           className={css({
@@ -133,10 +124,6 @@ function Computer({ initialData }: ComputerProps) {
             top: '55%',
             left: '50%',
             w: '50%',
-            borderWidth: '8px',
-            borderColor: 'desktop-light',
-            rounded: 'xl',
-            flexShrink: '0',
             transform: 'translateX(-50%)',
           })}
         />
