@@ -45,6 +45,12 @@ function getTwitchSubscriptions() {
   return client.get('subscription').json<APITypes.TwitchSubscriptionsResponse>();
 }
 
+function createTwitchSubscription(type: TwitchSubscriptionType) {
+  return client
+    .post('subscription', { json: { type } })
+    .json<APITypes.TwitchSubscriptionResponse>();
+}
+
 export const API = {
   login,
   logout,
@@ -54,6 +60,7 @@ export const API = {
   updateScreenConfiguration,
   checkTwitchAccount,
   getTwitchSubscriptions,
+  createTwitchSubscription,
 };
 
 export namespace APITypes {
@@ -107,4 +114,6 @@ export namespace APITypes {
   };
 
   export type TwitchSubscriptionsResponse = Response<TwitchSubscription[]>;
+
+  export type TwitchSubscriptionResponse = Response<TwitchSubscription>;
 }
