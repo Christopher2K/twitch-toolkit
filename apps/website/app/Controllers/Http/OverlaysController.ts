@@ -47,4 +47,13 @@ export default class OverlaysController {
       nbOfParticipants,
     });
   }
+
+  public async computerGuestsScreen({ inertia, request }: HttpContextContract) {
+    const nbOfParticipants = parseInt(request.qs()['participants'] ?? 2);
+    const configuration = await ScreenConfiguration.findOrCreate('computerGuests');
+    return inertia.render('overlay/ComputerGuests', {
+      initialData: configuration.config,
+      nbOfParticipants,
+    });
+  }
 }

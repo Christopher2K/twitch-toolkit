@@ -23,7 +23,7 @@ export default class ConfigurationIdValidator {
    *    ```
    */
   public schema = schema.create({
-    id: schema.enum(['audioGuests', 'videoGuests', 'talk', 'computer']),
+    id: schema.enum(['audioGuests', 'videoGuests', 'computerGuests', 'talk', 'computer']),
   });
 
   /**

@@ -57,4 +57,5 @@ Route.group(() => {
   Route.get('talk', 'OverlaysController.talkScreen');
   Route.get('audio-guests', 'OverlaysController.audioGuestsScreen');
   Route.get('video-guests', 'OverlaysController.videoGuestsScreen');
+  Route.get('computer-guests', 'OverlaysController.computerGuestsScreen');
 });

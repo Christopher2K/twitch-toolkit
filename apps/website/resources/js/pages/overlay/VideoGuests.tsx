@@ -8,10 +8,10 @@ import { flex } from '~/styled-system/patterns';
 
 type VideoGuestsProps = {
   initialData: VideoGuestsScreenConfig;
-  nbOfParticipants?: number;
+  nbOfParticipants: number;
 };
 
-function VideoGuests({ initialData, nbOfParticipants = 2 }: VideoGuestsProps) {
+function VideoGuests({ initialData, nbOfParticipants }: VideoGuestsProps) {
   const data = useRealTimeData<VideoGuestsScreenConfig>({ initialData });
 
   return (

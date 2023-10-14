@@ -40,6 +40,9 @@ function Index() {
         <li>
           <Anchor href="/video-guests">Video guests screen</Anchor>
         </li>
+        <li>
+          <Anchor href="/computer-guests">Computer guests screen</Anchor>
+        </li>
       </ul>
     </main>
   );

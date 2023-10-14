@@ -21,6 +21,11 @@ export type ScreenConfigObject = {
     banner: string;
     title: string;
   };
+  computerGuests: {
+    type: 'computerGuests';
+    banner: string;
+    title: string;
+  };
 };
 
 export type ScreenConfigId = keyof ScreenConfigObject;
@@ -30,6 +35,7 @@ export type ComputerScreenConfig = ScreenConfigObject['computer'];
 export type TalkScreenConfig = ScreenConfigObject['talk'];
 export type AudioGuestsScreenConfig = ScreenConfigObject['audioGuests'];
 export type VideoGuestsScreenConfig = ScreenConfigObject['videoGuests'];
+export type ComputerGuestsScreenConfig = ScreenConfigObject['computerGuests'];
 
 export const defaultComputerScreenConfig: ComputerScreenConfig = {
   type: 'computer',
@@ -53,6 +59,12 @@ export const defaultAudioGuestsScreenConfig: AudioGuestsScreenConfig = {
 
 export const defaultVideoGuestsScreenConfig: VideoGuestsScreenConfig = {
   type: 'videoGuests',
+  banner: '',
+  title: '',
+};
+
+export const defaultComputerGuestsScreenConfig: ComputerGuestsScreenConfig = {
+  type: 'computerGuests',
   banner: '',
   title: '',
 };

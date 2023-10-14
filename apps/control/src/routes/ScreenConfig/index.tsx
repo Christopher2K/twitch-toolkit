@@ -4,6 +4,10 @@ import { ComputerScreenForm, Form as ComputerScreenFormType } from './ComputerSc
 import { TalkScreenForm, Form as TalkScreenFormType } from './TalkScreenForm';
 import { AudioGuestsScreenForm, Form as AudioGuestsScreenFormType } from './AudioGuestsScreenForm';
 import { VideoGuestsScreenForm, Form as VideoGuestsScreenFormType } from './VideoGuestsScreenForm';
+import {
+  ComputerGuestsScreenForm,
+  Form as ComputerGuestsScreenFormType,
+} from './ComputerGuestsScreenForm';
 import { useScreenConfigurationStore } from '@/stores/screenConfiguration';
 
 export function ScreenConfig() {
@@ -37,6 +41,13 @@ export function ScreenConfig() {
     });
   }
 
+  function onComputerGuestsScreenFormSubmit(data: ComputerGuestsScreenFormType) {
+    update({
+      type: 'computerGuests',
+      ...data,
+    });
+  }
+
   if (!ready && !loading) {
     request();
   }
@@ -50,10 +61,11 @@ export function ScreenConfig() {
       {ready && (
         <Tabs isLazy>
           <TabList>
-            <Tab>Computer screen</Tab>
-            <Tab>Talk screen</Tab>
-            <Tab>Audio guest screen</Tab>
-            <Tab>Video guest screen</Tab>
+            <Tab>Computer</Tab>
+            <Tab>Talk</Tab>
+            <Tab>Audio guests</Tab>
+            <Tab>Video guests</Tab>
+            <Tab>Computer guests</Tab>
           </TabList>
 
           <TabPanels>
@@ -76,6 +88,13 @@ export function ScreenConfig() {
               <VideoGuestsScreenForm
                 onSubmit={onVideoGuestsScreenFormSubmit}
                 initialData={data?.videoGuests}
+              />
+            </TabPanel>
+
+            <TabPanel>
+              <ComputerGuestsScreenForm
+                onSubmit={onComputerGuestsScreenFormSubmit}
+                initialData={data?.computerGuests}
               />
             </TabPanel>
           </TabPanels>

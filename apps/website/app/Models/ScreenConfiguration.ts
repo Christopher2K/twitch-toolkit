@@ -8,6 +8,7 @@ import {
   defaultTalkScreenConfig,
   defaultAudioGuestsScreenConfig,
   defaultVideoGuestsScreenConfig,
+  defaultComputerGuestsScreenConfig,
 } from '@twitchtoolkit/types';
 
 export default class ScreenConfiguration extends BaseModel {
@@ -44,6 +45,8 @@ export default class ScreenConfiguration extends BaseModel {
         return defaultComputerScreenConfig;
       case 'videoGuests':
         return defaultVideoGuestsScreenConfig;
+      case 'computerGuests':
+        return defaultComputerGuestsScreenConfig;
     }
   }
 }
