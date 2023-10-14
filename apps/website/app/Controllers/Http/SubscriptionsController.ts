@@ -1,3 +1,4 @@
+import { RequestError } from 'got';
 import TwitchService from '@ioc:TwitchToolkit/Services/Twitch';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { schema } from '@ioc:Adonis/Core/Validator';
@@ -29,7 +30,7 @@ export default class SubscriptionsController {
       type: data.type,
       credentials: twitchCredentials,
     });
-    // TODO: Do better Chris!!!!
+
     let subscription: PromiseResolve<ReturnType<typeof TwitchService.apiCreateSubscription>>;
     try {
       subscription = await TwitchService.apiCreateSubscription({
@@ -38,7 +39,9 @@ export default class SubscriptionsController {
         condition,
       });
     } catch (e) {
-      logger.error(e);
+      if (e instanceof RequestError) {
+        logger.error(e.response?.body as string); // Try to log the body of the failed request
+      }
       return response.badGateway();
     }
 
@@ -47,7 +50,7 @@ export default class SubscriptionsController {
         subscriptionType: data.type,
       },
       {
-        subscriptionId: subscription.data.id,
+        subscriptionId: subscription.data[0].id,
         subscriptionType: data.type,
       },
     );

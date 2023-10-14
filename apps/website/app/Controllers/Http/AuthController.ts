@@ -71,8 +71,17 @@ export default class AuthController {
       client_id: Env.get('TWITCH_CLIENT_ID'),
       redirect_uri: `${Env.get('APP_URL')}/api/auth/twitch/redirect`,
       response_type: 'code',
-      scope:
-        'moderation:read channel:moderate chat:edit chat:read user:read:email user:read:subscriptions channel:read:subscriptions',
+      scope: [
+        'bits:read',
+        'channel:moderate',
+        'channel:read:subscriptions',
+        'chat:edit',
+        'chat:read',
+        'moderation:read',
+        'moderator:read:followers',
+        'user:read:email',
+        'user:read:subscriptions',
+      ].join(' '),
       state,
       force_verify: 'true',
     });
