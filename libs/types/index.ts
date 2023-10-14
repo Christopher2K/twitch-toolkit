@@ -74,7 +74,7 @@ export type TwitchAccountType = 'bot' | 'main';
 export enum TwitchSubscriptionType {
   ChannelFollow = 'channel.follow',
   ChannelSubscribe = 'channel.subscribe',
-  ChannelSubscribeGift = 'channel.subscribe.gift',
+  ChannelSubscriptionGift = 'channel.subscription.gift',
   ChannelSubscriptionMessage = 'channel.subscription.message',
   ChannelCheer = 'channel.cheer',
   ChannelRaid = 'channel.raid',
@@ -83,7 +83,7 @@ export enum TwitchSubscriptionType {
 export const twitchSubscriptionVersionByType: Record<TwitchSubscriptionType, string> = {
   [TwitchSubscriptionType.ChannelFollow]: '2',
   [TwitchSubscriptionType.ChannelSubscribe]: '1',
-  [TwitchSubscriptionType.ChannelSubscribeGift]: '1',
+  [TwitchSubscriptionType.ChannelSubscriptionGift]: '1',
   [TwitchSubscriptionType.ChannelSubscriptionMessage]: '1',
   [TwitchSubscriptionType.ChannelCheer]: '1',
   [TwitchSubscriptionType.ChannelRaid]: '1',
