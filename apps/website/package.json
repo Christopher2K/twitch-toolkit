@@ -42,6 +42,7 @@
     "@adonisjs/view": "~6.2.0",
     "@eidellev/inertia-adonisjs": "~8.1.0",
     "@inertiajs/react": "~1.0.11",
+    "@melchyore/adonis-cache": "~1.0.6",
     "@types/react": "~18.2.21",
     "@types/react-dom": "~18.2.7",
     "got": "~11.8.6",

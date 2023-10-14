@@ -43,7 +43,8 @@
       "@adonisjs/auth",
       "@adonisjs/view",
       "@adonisjs/session",
-      "@eidellev/inertia-adonisjs"
+      "@eidellev/inertia-adonisjs",
+      "@melchyore/adonis-cache"
     ]
   }
 }

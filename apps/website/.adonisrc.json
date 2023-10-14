@@ -5,7 +5,8 @@
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",
     "@adonisjs/lucid/build/commands",
-    "@eidellev/inertia-adonisjs/build/commands"
+    "@eidellev/inertia-adonisjs/build/commands",
+    "@melchyore/adonis-cache/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -31,7 +32,8 @@
     "@adonisjs/auth",
     "@adonisjs/view",
     "@adonisjs/session",
-    "@eidellev/inertia-adonisjs"
+    "@eidellev/inertia-adonisjs",
+    "@melchyore/adonis-cache"
   ],
   "aceProviders": [
     "@adonisjs/repl"
