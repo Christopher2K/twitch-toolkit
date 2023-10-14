@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { FormLabel, FormControl, Input, Button, Box, Heading, Flex, Text } from '@chakra-ui/react';
+import { FormLabel, FormControl, Input, Button, Box, Flex, Text } from '@chakra-ui/react';
 
 import { useAuthStore } from '@/stores/auth';
 

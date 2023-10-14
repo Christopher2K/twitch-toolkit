@@ -5,11 +5,11 @@ import { TwitchSubscriptionType } from '@twitchtoolkit/types';
 
 import { AuthenticationGuardAlert } from '@/components';
 import { useAuthStore } from '@/stores/auth';
-import { useTwitchAuthStore } from '@/stores/twitchAuth';
+// import { useTwitchAuthStore } from '@/stores/twitchAuth';
 
 export function Subscriptions() {
   const isLoggedIn = useAuthStore((state) => state.user !== null);
-  const twitchMainAccountLoggedIn = useTwitchAuthStore((state) => state.mainAccount !== null);
+  // const twitchMainAccountLoggedIn = useTwitchAuthStore((state) => state.mainAccount !== null);
 
   useEffect(() => {}, []);
 

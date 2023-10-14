@@ -1,4 +1,4 @@
-import { Heading, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 
 import { useAuthStore } from '@/stores/auth';
 
