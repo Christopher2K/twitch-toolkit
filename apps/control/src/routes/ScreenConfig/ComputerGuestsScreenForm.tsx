@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Flex, FormControl, FormLabel, Input, Button, Checkbox } from '@chakra-ui/react';
+import { Flex, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 
 import {
   ComputerGuestsScreenConfig,

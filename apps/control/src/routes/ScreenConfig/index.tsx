@@ -59,7 +59,7 @@ export function ScreenConfig() {
       </Heading>
       {!ready && <Spinner />}
       {ready && (
-        <Tabs isLazy>
+        <Tabs>
           <TabList>
             <Tab>Computer</Tab>
             <Tab>Talk</Tab>
