@@ -12,6 +12,7 @@ import TwitchCredential from 'App/Models/TwitchCredential';
 import TwitchSubscription from 'App/Models/TwitchSubscription';
 import WebhookCallbackVerificationValidator from 'App/Validators/WebhookCallbackVerificationValidator';
 import RevocationValidator from 'App/Validators/RevocationValidator';
+import NotifcationValidator from 'App/Validators/NotificationValidator';
 
 export default class SubscriptionsController {
   // TODO: List all subscriptions and get their status from twitch API
@@ -71,7 +72,7 @@ export default class SubscriptionsController {
     return {};
   }
 
-  public async callback({ request, response, logger }: HttpContextContract) {
+  public async callback({ request, response, logger, websocket }: HttpContextContract) {
     logger.info('Processing a Twitch webhook callback call');
 
     // VERIFICATION
@@ -97,14 +98,20 @@ export default class SubscriptionsController {
     const eventType = request.header('twitch-eventsub-message-type'.toLowerCase());
     switch (eventType) {
       case 'notification':
+        const notificationPayload = await request.validate(NotifcationValidator);
+        websocket.emit(
+          `twitch:${notificationPayload.subscription.type}`,
+          notificationPayload.event,
+        );
         logger.info('Incoming event parsed');
-        // TODO: Send events to the frontends
+
         return response.noContent();
 
       case 'webhook_callback_verification':
         const verificationPayload = await request.validate(WebhookCallbackVerificationValidator);
         logger.info('Passed webhook callback verification');
         return response.header('Content-Type', 'text/plain').ok(verificationPayload.challenge);
+
       case 'revocation':
         const revocationPayload = await request.validate(RevocationValidator);
         const maybeSubscription = await TwitchSubscription.findBy(
@@ -114,7 +121,7 @@ export default class SubscriptionsController {
 
         if (maybeSubscription) {
           await maybeSubscription.delete();
-          // TODO: Send a signal to the frontend to update the subscription status
+          websocket.emit(`twitch:revocation`, revocationPayload.subscription.type);
         }
         logger.info('Event has been revoked');
 
