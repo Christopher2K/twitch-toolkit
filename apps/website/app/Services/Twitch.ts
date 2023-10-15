@@ -277,7 +277,7 @@ class Twitch {
             method: 'webhook',
             callback:
               Env.get('NODE_ENV') === 'production'
-                ? Route.makeUrl('SubscriptionsController.callback', {
+                ? Route.makeUrl('SubscriptionsController.callback', undefined, {
                     prefixUrl: Env.get('APP_URL'),
                   })
                 : 'https://christopher2k.dev', // FIXME: Use NGROK for local testing
