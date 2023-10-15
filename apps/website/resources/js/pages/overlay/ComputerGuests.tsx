@@ -2,9 +2,9 @@ import React from 'react';
 import type { ComputerGuestsScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
-import { useRealTimeData } from '~/hooks/useRealTimeData';
 import { css } from '~/styled-system/css';
 import { flex } from '~/styled-system/patterns';
+import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type ComputerGuestsProps = {
   initialData: ComputerGuestsScreenConfig;
@@ -12,7 +12,10 @@ type ComputerGuestsProps = {
 };
 
 function ComputerGuests({ initialData, nbOfParticipants }: ComputerGuestsProps) {
-  const data = useRealTimeData<ComputerGuestsScreenConfig>({ initialData });
+  const { 'config:computerGuests': data } = useSocketDataEvents({
+    events: ['config:computerGuests'],
+    initialData: { 'config:computerGuests': initialData },
+  });
 
   return (
     <div

@@ -1,16 +1,19 @@
 import React from 'react';
 import { TalkScreenConfig } from '@twitchtoolkit/types';
 
-import { useRealTimeData } from '~/hooks/useRealTimeData';
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
 import { css } from '~/styled-system/css';
+import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type TalkProps = {
   initialData: TalkScreenConfig;
 };
 
 function Talk({ initialData }: TalkProps) {
-  const data = useRealTimeData<TalkScreenConfig>({ initialData });
+  const { 'config:talk': data } = useSocketDataEvents({
+    events: ['config:talk'],
+    initialData: { 'config:talk': initialData },
+  });
 
   return (
     <div

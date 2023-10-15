@@ -44,7 +44,7 @@ export default class ScreenConfigurationsController {
       },
     );
 
-    websocket.emit(params.id, config);
+    websocket.emit(`config:${params.id}`, config);
 
     return response.ok({
       data: configuration.serialize(),

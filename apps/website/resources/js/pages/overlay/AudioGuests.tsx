@@ -3,16 +3,19 @@ import { Volume2Icon } from 'lucide-react';
 import type { AudioGuestsScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder, AudioParticipant } from '~/components';
-import { useRealTimeData } from '~/hooks/useRealTimeData';
 import { css } from '~/styled-system/css';
 import { flex } from '~/styled-system/patterns';
+import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type AudioGuestsProps = {
   initialData: AudioGuestsScreenConfig;
 };
 
 function AudioGuests({ initialData }: AudioGuestsProps) {
-  const data = useRealTimeData<AudioGuestsScreenConfig>({ initialData });
+  const { 'config:audioGuests': data } = useSocketDataEvents({
+    events: ['config:audioGuests'],
+    initialData: { 'config:audioGuests': initialData },
+  });
 
   return (
     <div

@@ -2,9 +2,9 @@ import React from 'react';
 import type { VideoGuestsScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
-import { useRealTimeData } from '~/hooks/useRealTimeData';
 import { css } from '~/styled-system/css';
 import { flex } from '~/styled-system/patterns';
+import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type VideoGuestsProps = {
   initialData: VideoGuestsScreenConfig;
@@ -12,7 +12,10 @@ type VideoGuestsProps = {
 };
 
 function VideoGuests({ initialData, nbOfParticipants }: VideoGuestsProps) {
-  const data = useRealTimeData<VideoGuestsScreenConfig>({ initialData });
+  const { 'config:videoGuests': data } = useSocketDataEvents({
+    events: ['config:videoGuests'],
+    initialData: { 'config:videoGuests': initialData },
+  });
 
   return (
     <div

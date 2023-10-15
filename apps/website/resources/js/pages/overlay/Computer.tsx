@@ -2,16 +2,18 @@ import React from 'react';
 import { ComputerScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
-import { useRealTimeData } from '~/hooks/useRealTimeData';
 import { css } from '~/styled-system/css';
+import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type ComputerProps = {
   initialData: ComputerScreenConfig;
 };
 
 function Computer({ initialData }: ComputerProps) {
-  const data = useRealTimeData<ComputerScreenConfig>({ initialData });
-  const focusModeEnabled = data.focusMode;
+  const { 'config:computer': data } = useSocketDataEvents({
+    events: ['config:computer'],
+    initialData: { 'config:computer': initialData },
+  });
 
   return (
     <div
@@ -36,7 +38,7 @@ function Computer({ initialData }: ComputerProps) {
             flexShrink: 0,
           })}
         >
-          {focusModeEnabled && (
+          {data.focusMode && (
             <div
               className={css({
                 position: 'absolute',
