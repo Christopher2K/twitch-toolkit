@@ -5,7 +5,6 @@ import { ScreenConfigId, ScreenConfig } from '@twitchtoolkit/types';
 
 import ScreenConfiguration from 'App/Models/ScreenConfiguration';
 import ConfigurationIdValidator from 'App/Validators/ConfigurationIdValidator';
-import Ws from 'App/Services/Ws';
 
 export default class ScreenConfigurationsController {
   public async index({ response }: HttpContextContract) {
@@ -27,7 +26,7 @@ export default class ScreenConfigurationsController {
     });
   }
 
-  public async update({ request, response }: HttpContextContract) {
+  public async update({ request, response, websocket }: HttpContextContract) {
     const params = await validator.validate({
       schema: new ConfigurationIdValidator().schema,
       data: request.params(),
@@ -45,7 +44,7 @@ export default class ScreenConfigurationsController {
       },
     );
 
-    Ws.io.emit(params.id, config);
+    websocket.emit(params.id, config);
 
     return response.ok({
       data: configuration.serialize(),
