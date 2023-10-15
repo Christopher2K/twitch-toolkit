@@ -39,13 +39,14 @@ Route.group(() => {
     });
 
   Route.group(() => {
-    Route.get('', 'SubscriptionsController.index');
-    Route.post('', 'SubscriptionsController.store');
-    Route.delete(':id', 'SubscriptionsController.destroy');
+    Route.group(() => {
+      Route.get('', 'SubscriptionsController.index');
+      Route.post('', 'SubscriptionsController.store');
+      Route.delete(':id', 'SubscriptionsController.destroy');
+    }).middleware('auth');
+
     Route.post('callback', 'SubscriptionsController.callback');
-  })
-    .middleware('auth')
-    .prefix('subscription');
+  }).prefix('subscription');
 }).prefix('api');
 
 Route.group(() => {
