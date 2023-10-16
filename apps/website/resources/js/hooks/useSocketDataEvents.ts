@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
-import { io } from 'socket.io-client';
+import { useEffect, useState } from 'react';
 
 import type {
   AudioGuestsScreenConfig,
@@ -8,6 +7,7 @@ import type {
   TalkScreenConfig,
   VideoGuestsScreenConfig,
 } from '@twitchtoolkit/types';
+import { useSocket } from '~/providers/SocketProvider';
 
 export type SocketEventData = {
   'config:audioGuests': AudioGuestsScreenConfig;
@@ -15,6 +15,12 @@ export type SocketEventData = {
   'config:computerGuests': ComputerGuestsScreenConfig;
   'config:talk': TalkScreenConfig;
   'config:videoGuests': VideoGuestsScreenConfig;
+  'twitch:channel.follow': null;
+  'twitch:channel.subscribe': null;
+  'twitch:channel.subscription.gift': null;
+  'twitch:channel.subscription.message': null;
+  'twitch:channel.raid': null;
+  'twitch:channel.cheer': null;
 };
 
 export type UseSocketDataEventArgs = {
@@ -24,7 +30,7 @@ export type UseSocketDataEventArgs = {
 
 export function useSocketDataEvents({ events, initialData = {} }: UseSocketDataEventArgs) {
   const [data, setData] = useState<Partial<SocketEventData>>(initialData);
-  const { current: socket } = useRef(io('/'));
+  const socket = useSocket();
 
   useEffect(() => {
     events.forEach((eventName) => {
@@ -37,13 +43,6 @@ export function useSocketDataEvents({ events, initialData = {} }: UseSocketDataE
       });
     };
   }, [events]);
-
-  useEffect(
-    () => () => {
-      socket.disconnect();
-    },
-    [],
-  );
 
   return data;
 }
