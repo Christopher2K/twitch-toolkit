@@ -76,6 +76,12 @@ export default class SubscriptionsController {
     try {
       await TwitchService.apiRemoveSubscription(maybeSubscription.subscriptionId);
       await maybeSubscription.delete();
+
+      const subscriptions = await TwitchSubscription.all();
+
+      return response.ok({
+        data: subscriptions.map((item) => item.toJSON()),
+      });
     } catch (e) {
       const message = 'Failed to remove subscription from Twitch';
 
@@ -83,6 +89,12 @@ export default class SubscriptionsController {
         switch (e.response?.statusCode) {
           case 404:
             await maybeSubscription.delete();
+
+            const subscriptions = await TwitchSubscription.all();
+
+            return response.ok({
+              data: subscriptions.map((item) => item.toJSON()),
+            });
           default:
             logger.error(
               `${message}. Code: ${e.code} | Status: ${e.response?.statusCode} | Error: ${e.response?.body}`,
@@ -91,12 +103,8 @@ export default class SubscriptionsController {
       } else {
         logger.error(e);
       }
-    } finally {
-      const subscriptions = await TwitchSubscription.all();
 
-      return response.ok({
-        data: subscriptions.map((item) => item.toJSON()),
-      });
+      return response.badGateway();
     }
   }
 
