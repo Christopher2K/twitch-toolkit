@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 import TwitchService from '@ioc:TwitchToolkit/Services/Twitch';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import { schema } from '@ioc:Adonis/Core/Validator';
+import { validator, schema } from '@ioc:Adonis/Core/Validator';
 import Env from '@ioc:Adonis/Core/Env';
 
 import { TwitchSubscriptionType } from '@twitchtoolkit/types';
@@ -33,17 +33,12 @@ export default class SubscriptionsController {
     });
 
     const twitchCredentials = await TwitchCredential.findByOrFail('accountType', 'main');
-    const condition = await TwitchService.getConditonsForSubscription({
-      type: data.type,
-      credentials: twitchCredentials,
-    });
 
     let subscription: PromiseResolve<ReturnType<typeof TwitchService.apiCreateSubscription>>;
     try {
       subscription = await TwitchService.apiCreateSubscription({
         type: data.type,
-        accessToken: twitchCredentials.accessToken,
-        condition,
+        userId: twitchCredentials.id,
       });
     } catch (e) {
       if (e instanceof RequestError) {
@@ -67,9 +62,42 @@ export default class SubscriptionsController {
     });
   }
 
-  // TODO: Remove a subscription from Twitch and from DB
-  public async destroy(_: HttpContextContract) {
-    return {};
+  public async destroy({ request, response, logger }: HttpContextContract) {
+    const data = await validator.validate({
+      schema: schema.create({
+        type: schema.enum(Object.values(TwitchSubscriptionType)),
+      }),
+      data: request.params(),
+    });
+
+    const maybeSubscription = await TwitchSubscription.findBy('subscriptionType', data.type);
+    if (!maybeSubscription) return response.notFound();
+
+    try {
+      await TwitchService.apiRemoveSubscription(maybeSubscription.subscriptionId);
+      await maybeSubscription.delete();
+    } catch (e) {
+      const message = 'Failed to remove subscription from Twitch';
+
+      if (e instanceof RequestError) {
+        switch (e.response?.statusCode) {
+          case 404:
+            await maybeSubscription.delete();
+          default:
+            logger.error(
+              `${message}. Code: ${e.code} | Status: ${e.response?.statusCode} | Error: ${e.response?.body}`,
+            );
+        }
+      } else {
+        logger.error(e);
+      }
+    } finally {
+      const subscriptions = await TwitchSubscription.all();
+
+      return response.ok({
+        data: subscriptions.map((item) => item.toJSON()),
+      });
+    }
   }
 
   public async callback({ request, response, logger, websocket }: HttpContextContract) {

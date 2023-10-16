@@ -51,6 +51,10 @@ function createTwitchSubscription(type: TwitchSubscriptionType) {
     .json<APITypes.TwitchSubscriptionResponse>();
 }
 
+function deleteTwitchSubscription(type: TwitchSubscriptionType) {
+  return client.delete(`subscription/${type}`).json<APITypes.TwitchSubscriptionsResponse>();
+}
+
 export const API = {
   login,
   logout,
@@ -61,6 +65,7 @@ export const API = {
   checkTwitchAccount,
   getTwitchSubscriptions,
   createTwitchSubscription,
+  deleteTwitchSubscription,
 };
 
 export namespace APITypes {

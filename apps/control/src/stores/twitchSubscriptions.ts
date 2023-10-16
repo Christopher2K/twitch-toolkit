@@ -28,9 +28,13 @@ export const useTwitchSubscriptionsStore = create<TwitchSubscriptionsStore>((set
         })
         .catch(() => false);
     },
-    delete: async () => {
-      // TODO
-      return true;
+    delete: async (type) => {
+      return API.deleteTwitchSubscription(type)
+        .then(({ data }) => {
+          set(() => ({ subscriptions: data }));
+          return true;
+        })
+        .catch(() => false);
     },
   };
 });

@@ -33,16 +33,66 @@ class Twitch {
     this.appClient = got.extend({});
   }
 
-  public async getConditonsForSubscription({
+  // INTERNAL STUFF
+  private async onRefreshToken({
+    accessToken,
+    refreshToken,
+    accountType,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+    accountType: string;
+  }) {
+    const TwitchCredential = (await import('App/Models/TwitchCredential')).default;
+    return TwitchCredential.query()
+      .where('accountType', accountType)
+      .update({
+        accessToken,
+        refreshToken,
+      })
+      .returning('*');
+  }
+
+  private getNewAppAccessToken() {
+    return this.appClient
+      .post(`${this.ID_URL}token`, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+
+        body: new URLSearchParams({
+          client_id: Env.get('TWITCH_CLIENT_ID'),
+          client_secret: Env.get('TWITCH_CLIENT_SECRET'),
+          grant_type: 'client_credentials',
+        }).toString(),
+      })
+      .json<{
+        access_token: string;
+        expires_in: number;
+        token_type: 'bearer';
+      }>();
+  }
+
+  private async getCachedAppToken() {
+    const { default: Cache } = await import('@ioc:Adonis/Addons/Cache');
+    return await Cache.get<string>('app_token');
+  }
+
+  private async setCachedAppToken(token: string) {
+    const { default: Cache } = await import('@ioc:Adonis/Addons/Cache');
+    await Cache.forever('app_token', token);
+  }
+
+  private getConditionsForSubscription({
     type,
-    credentials,
+    userId,
   }: {
     type: TwitchSubscriptionType;
-    credentials: TwitchCredential;
+    userId: string;
   }) {
-    const broadcasterUserId = { broadcaster_user_id: credentials.id };
-    const moderatorUserId = { moderator_user_id: credentials.id };
-    const destination = { to_broadcaster_user_id: credentials.id };
+    const broadcasterUserId = { broadcaster_user_id: userId };
+    const moderatorUserId = { moderator_user_id: userId };
+    const destination = { to_broadcaster_user_id: userId };
 
     switch (type) {
       case TwitchSubscriptionType.ChannelFollow:
@@ -60,14 +110,21 @@ class Twitch {
     }
   }
 
-  // TODO: Use logged
+  // PUBLIC UTILS STUFF
+  public getIdUrl(path: string, query?: Record<string, string>) {
+    return `${this.ID_URL}${path}` + qs.stringify(query, { addQueryPrefix: true });
+  }
+
+  public getApiUrl(path: string, query?: Record<string, string>) {
+    return `${this.API_URL}${path}` + qs.stringify(query, { addQueryPrefix: true });
+  }
+
   public async configureAppClient() {
-    const { default: Cache } = await import('@ioc:Adonis/Addons/Cache');
     const { default: Logger } = await import('@ioc:Adonis/Core/Logger');
 
     Logger.info('Configure Twitch service...');
-    const { access_token } = await this.getAppAccessToken();
-    await Cache.forever('app_token', access_token);
+    const { access_token: accessToken } = await this.getNewAppAccessToken();
+    this.setCachedAppToken(accessToken);
 
     this.appClient = got.extend({
       prefixUrl: this.API_URL,
@@ -86,10 +143,11 @@ class Twitch {
               case 401:
               case 403:
                 try {
-                  const { access_token } = await this.getAppAccessToken();
+                  const { access_token: accessToken } = await this.getNewAppAccessToken();
+                  this.setCachedAppToken(accessToken);
                   return retryWithMergedOptions({
                     headers: {
-                      Authorization: `Bearer ${access_token}`,
+                      Authorization: `Bearer ${accessToken}`,
                     },
                   });
                 } catch (e) {
@@ -106,23 +164,22 @@ class Twitch {
     Logger.info('Succesfully configured Twitch service!');
   }
 
-  private async onRefreshToken({
-    accessToken,
-    refreshToken,
-    accountType,
-  }: {
-    accessToken: string;
-    refreshToken: string;
-    accountType: string;
-  }) {
-    const TwitchCredential = (await import('App/Models/TwitchCredential')).default;
-    return TwitchCredential.query()
-      .where('accountType', accountType)
-      .update({
-        accessToken,
-        refreshToken,
+  private async idRefreshToken({ refreshToken }: { refreshToken: string }) {
+    return this.idClient
+      .post('token', {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          client_id: Env.get('TWITCH_CLIENT_ID'),
+          client_secret: Env.get('TWITCH_CLIENT_SECRET'),
+          refresh_token: refreshToken,
+          grant_type: 'refresh_token',
+        }).toString(),
+        // This return type is incomplete but I just need those
+        // Source: https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/
       })
-      .returning('*');
+      .json<{ access_token: string; refresh_token: string }>();
   }
 
   private retryApiCall({
@@ -160,52 +217,7 @@ class Twitch {
     };
   }
 
-  public getIdUrl(path: string, query?: Record<string, string>) {
-    return `${this.ID_URL}${path}` + qs.stringify(query, { addQueryPrefix: true });
-  }
-
-  public getApiUrl(path: string, query?: Record<string, string>) {
-    return `${this.API_URL}${path}` + qs.stringify(query, { addQueryPrefix: true });
-  }
-
-  public getAppAccessToken() {
-    return this.appClient
-      .post(`${this.ID_URL}token`, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-
-        body: new URLSearchParams({
-          client_id: Env.get('TWITCH_CLIENT_ID'),
-          client_secret: Env.get('TWITCH_CLIENT_SECRET'),
-          grant_type: 'client_credentials',
-        }).toString(),
-      })
-      .json<{
-        access_token: string;
-        expires_in: number;
-        token_type: 'bearer';
-      }>();
-  }
-
-  private async idRefreshToken({ refreshToken }: { refreshToken: string }) {
-    return this.idClient
-      .post('token', {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          client_id: Env.get('TWITCH_CLIENT_ID'),
-          client_secret: Env.get('TWITCH_CLIENT_SECRET'),
-          refresh_token: refreshToken,
-          grant_type: 'refresh_token',
-        }).toString(),
-        // This return type is incomplete but I just need those
-        // Source: https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/
-      })
-      .json<{ access_token: string; refresh_token: string }>();
-  }
-
+  // PUBLIC API
   public async getUserToken({ code }: { code: string }) {
     return this.idClient
       .post('token', {
@@ -252,17 +264,18 @@ class Twitch {
 
   public async apiCreateSubscription({
     type,
-    condition,
+    userId,
   }: {
     type: TwitchSubscriptionType;
-    accessToken: string;
-    condition: unknown;
+    userId: string;
   }) {
     const { default: Route } = await import('@ioc:Adonis/Core/Route');
-    const { default: Cache } = await import('@ioc:Adonis/Addons/Cache');
 
-    // TODO: Keep app token in a constant
-    const accessToken = await Cache.get('app_token');
+    const condition = this.getConditionsForSubscription({
+      type,
+      userId,
+    });
+    const accessToken = await this.getCachedAppToken();
 
     return this.appClient
       .post('eventsub/subscriptions', {
@@ -300,6 +313,20 @@ class Twitch {
         total_cost: number;
         max_total_cost: number;
       }>();
+  }
+
+  public async apiRemoveSubscription(subscriptionId: string) {
+    const accessToken = await this.getCachedAppToken();
+
+    return this.appClient.delete('eventsub/subscriptions', {
+      headers: {
+        'Client-Id': Env.get('TWITCH_CLIENT_ID'),
+        Authorization: `Bearer ${accessToken}`,
+      },
+      searchParams: {
+        id: subscriptionId,
+      },
+    });
   }
 }
 

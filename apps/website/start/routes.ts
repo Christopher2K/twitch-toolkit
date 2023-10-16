@@ -42,7 +42,7 @@ Route.group(() => {
     Route.group(() => {
       Route.get('', 'SubscriptionsController.index');
       Route.post('', 'SubscriptionsController.store');
-      Route.delete(':id', 'SubscriptionsController.destroy');
+      Route.delete(':type', 'SubscriptionsController.destroy');
     }).middleware('auth');
 
     Route.post('callback', 'SubscriptionsController.callback');
