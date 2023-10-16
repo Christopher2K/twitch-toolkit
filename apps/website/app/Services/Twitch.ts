@@ -7,7 +7,6 @@ import {
   TwitchSubscriptionType,
   twitchSubscriptionVersionByType,
 } from '@twitchtoolkit/types';
-import TwitchCredential from 'App/Models/TwitchCredential';
 
 class Twitch {
   private ID_URL: string = 'https://id.twitch.tv/oauth2/';

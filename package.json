@@ -21,7 +21,7 @@
     "website": "yarn workspace @twitchtoolkit/website",
     "dev": "turbo dev --filter=!@twitchtoolkit/control",
     "build:website": "turbo build --filter=@twitchtoolkit/website",
-    "build:control": "yarn control tauri build"
+    "build:control": "rm -rf apps/control/dist apps/control/src-tauri/target && yarn control tauri build"
   },
   "devDependencies": {
     "husky": "~8.0.3",
