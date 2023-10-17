@@ -5451,6 +5451,7 @@ __metadata:
     "@types/react-dom": ~18.2.7
     "@types/source-map-support": ~0.5.7
     adonis-preset-ts: ~2.1.0
+    framer-motion: ~10.16.4
     got: ~11.8.6
     ky: ~1.0.1
     lucide-react: ~0.276.0

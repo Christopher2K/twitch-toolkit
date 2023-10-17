@@ -80,6 +80,19 @@ export enum TwitchSubscriptionType {
   ChannelRaid = 'channel.raid',
 }
 
+export type TwitchSubscriptionEvent = {
+  broadcaster_user_id: string;
+  broadcaster_user_login: string;
+  broadcaster_user_name: string;
+  is_gift: boolean;
+  tier: '1000' | '2000' | '3000';
+  user_id: string;
+  user_login: string;
+  user_name: string;
+};
+
+export type TwitchEvent = TwitchSubscriptionEvent;
+
 export const twitchSubscriptionVersionByType: Record<TwitchSubscriptionType, string> = {
   [TwitchSubscriptionType.ChannelFollow]: '2',
   [TwitchSubscriptionType.ChannelSubscribe]: '1',

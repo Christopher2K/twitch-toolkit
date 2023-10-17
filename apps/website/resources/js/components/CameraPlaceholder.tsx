@@ -4,7 +4,7 @@ import { cx, cva } from '~/styled-system/css';
 const cameraPlaceholderStyle = cva({
   base: {
     bg: 'placeholder',
-    borderWidth: '4px',
+    borderWidth: 'thick',
     borderColor: 'desktop-light',
     rounded: 'md',
     flexShrink: '0',
