@@ -135,10 +135,10 @@ export default class SubscriptionsController {
     switch (eventType) {
       case 'notification':
         const notificationPayload = await request.validate(NotifcationValidator);
-        websocket.emit(
-          `twitch:${notificationPayload.subscription.type}`,
-          notificationPayload.event,
-        );
+        websocket.emit(`twitch:${notificationPayload.subscription.type}`, {
+          __type: notificationPayload.subscription.type,
+          ...notificationPayload.event,
+        });
         logger.info('Incoming event parsed');
 
         return response.noContent();

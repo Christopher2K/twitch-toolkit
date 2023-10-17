@@ -3,21 +3,26 @@ import { useEffect } from 'react';
 import { useSocket } from '~/providers/SocketProvider';
 import type { SocketEventData } from './utils';
 
-export type UseSocketEventListenerArgs = {
+export type EventHandler<T extends keyof SocketEventData> = (
+  eventName: T,
+  data: SocketEventData[T],
+) => any;
+export type UseSocketEventListenerArgs<T extends keyof SocketEventData> = {
   pattern: RegExp;
-  onEvent: <T extends keyof SocketEventData>(eventName: T, data: SocketEventData[T]) => any;
+  onEvent: EventHandler<T>;
 };
-export function useSocketEventListener({ pattern, onEvent }: UseSocketEventListenerArgs) {
+export function useSocketEventListener<T extends keyof SocketEventData>({
+  pattern,
+  onEvent,
+}: UseSocketEventListenerArgs<T>) {
   const socket = useSocket();
 
   useEffect(() => {
-    socket.onAny(
-      (eventName: keyof SocketEventData, data: SocketEventData[keyof SocketEventData]) => {
-        if (pattern.test(eventName)) {
-          onEvent(eventName, data);
-        }
-      },
-    );
+    socket.onAny((eventName: T, data: SocketEventData[T]) => {
+      if (pattern.test(eventName)) {
+        onEvent(eventName, data);
+      }
+    });
     return () => {
       socket.offAny();
     };

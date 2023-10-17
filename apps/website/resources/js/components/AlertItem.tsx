@@ -1,13 +1,44 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import { TwitchEvent, TwitchSubscriptionType } from '@twitchtoolkit/types';
+
 import FlexinFaceIcon from '~/components/icons/flexin_face.svg';
 import { css } from '~/styled-system/css';
 import { vstack, hstack } from '~/styled-system/patterns';
 
-export type AlertItemProps = {};
+export type AlertItemProps = {
+  event: TwitchEvent;
+};
 
-export function AlertItem({}: AlertItemProps) {
+function getEventTitle(event: TwitchEvent) {
+  switch (event.__type) {
+    case TwitchSubscriptionType.ChannelSubscribe:
+      return 'Nouveau sub!!';
+    default:
+      return 'Nouvel event: ' + event.__type;
+  }
+}
+
+function getEventUser(event: TwitchEvent) {
+  switch (event.__type) {
+    case TwitchSubscriptionType.ChannelSubscribe:
+      return event.user_name;
+    default:
+      return '';
+  }
+}
+
+function getEventAcknowledgement(event: TwitchEvent) {
+  switch (event.__type) {
+    case TwitchSubscriptionType.ChannelSubscribe:
+      return 'Merci la mif!!!';
+    default:
+      return '';
+  }
+}
+
+export function AlertItem({ event }: AlertItemProps) {
   return (
     <motion.div
       key="alert"
@@ -45,10 +76,10 @@ export function AlertItem({}: AlertItemProps) {
             textAlign: 'left',
           })}
         >
-          Nouvel abonnement!
+          {getEventTitle(event)}
         </p>
         <p className={css({ textAlign: 'left', fontSize: 'six' })}>
-          Merci la mif! <span>LLCoolChris_</span>
+          {getEventAcknowledgement(event)} <span>{getEventUser(event)}</span>
         </p>
       </div>
     </motion.div>

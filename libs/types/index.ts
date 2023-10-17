@@ -81,6 +81,7 @@ export enum TwitchSubscriptionType {
 }
 
 export type TwitchSubscriptionEvent = {
+  __type: TwitchSubscriptionType.ChannelSubscribe;
   broadcaster_user_id: string;
   broadcaster_user_login: string;
   broadcaster_user_name: string;

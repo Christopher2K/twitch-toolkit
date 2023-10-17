@@ -2,9 +2,10 @@ import React, { useCallback, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { flex } from '~/styled-system/patterns';
-import { useSocketEventListener, UseSocketEventListenerArgs } from '~/hooks/useSocketEventListener';
+import { useSocketEventListener, EventHandler } from '~/hooks/useSocketEventListener';
 
 import { AlertItem } from './AlertItem';
+import { TwitchEvent } from '@twitchtoolkit/types/index';
 
 function useDebounce<T extends any[], R>(fn: (...input: T) => R, time: number) {
   const locked = useRef<boolean>(false);
@@ -21,9 +22,9 @@ function useDebounce<T extends any[], R>(fn: (...input: T) => R, time: number) {
 }
 
 export function Alerts() {
-  const [displayedEvent, setDisplayedEvent] = useState(undefined);
+  const [displayedEvent, setDisplayedEvent] = useState<TwitchEvent | undefined>(undefined);
 
-  const onEvent: UseSocketEventListenerArgs['onEvent'] = useDebounce((eventName, data) => {
+  const onEvent: EventHandler<'twitch:channel.subscribe'> = useDebounce((eventName, data) => {
     setDisplayedEvent(data);
     setTimeout(() => {
       setDisplayedEvent(undefined);
@@ -46,7 +47,7 @@ export function Alerts() {
         justifyContent: 'center',
       })}
     >
-      <AnimatePresence>{displayedEvent && <AlertItem />}</AnimatePresence>
+      <AnimatePresence>{displayedEvent && <AlertItem event={displayedEvent} />}</AnimatePresence>
     </div>
   );
 }
