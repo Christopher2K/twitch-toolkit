@@ -1,5 +1,8 @@
 import React, { PropsWithChildren } from 'react';
+
 import { css } from '~/styled-system/css';
+
+import { Alerts } from './Alerts';
 
 export function OverlaysLayout({ children }: PropsWithChildren<{}>) {
   return (
@@ -11,6 +14,7 @@ export function OverlaysLayout({ children }: PropsWithChildren<{}>) {
         backgroundColor: 'background',
       })}
     >
+      <Alerts />
       {children}
     </main>
   );

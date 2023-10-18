@@ -24,7 +24,7 @@ function useDebounce<T extends any[], R>(fn: (...input: T) => R, time: number) {
 export function Alerts() {
   const [displayedEvent, setDisplayedEvent] = useState<TwitchEvent | undefined>(undefined);
 
-  const onEvent: EventHandler<'twitch:channel.subscribe'> = useDebounce((eventName, data) => {
+  const onEvent: EventHandler<'twitch:channel.subscribe'> = useDebounce((_, data) => {
     setDisplayedEvent(data);
     setTimeout(() => {
       setDisplayedEvent(undefined);
