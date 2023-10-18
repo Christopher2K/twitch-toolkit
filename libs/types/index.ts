@@ -92,7 +92,84 @@ export type TwitchSubscriptionEvent = {
   user_name: string;
 };
 
-export type TwitchEvent = TwitchSubscriptionEvent;
+export type TwitchFollowEvent = {
+  __type: TwitchSubscriptionType.ChannelFollow;
+  user_id: string;
+  user_login: string;
+  user_name: string;
+  broadcaster_user_id: string;
+  broadcaster_user_login: string;
+  broadcaster_user_name: string;
+  followed_at: string;
+};
+
+export type TwitchSubscriptionGiftEvent = {
+  __type: TwitchSubscriptionType.ChannelSubscriptionGift;
+  user_id: string;
+  user_login: string;
+  user_name: string;
+  broadcaster_user_id: string;
+  broadcaster_user_login: string;
+  broadcaster_user_name: string;
+  total: number;
+  tier: '1000' | '2000' | '3000';
+  cumulative_total: number | null; //null if anonymous or not shared by the user
+  is_anonymous: boolean;
+};
+
+export type TwitchSubscriptionMessageEvent = {
+  __type: TwitchSubscriptionType.ChannelSubscriptionMessage;
+  user_id: string;
+  user_login: string;
+  user_name: string;
+  broadcaster_user_id: string;
+  broadcaster_user_login: string;
+  broadcaster_user_name: string;
+  tier: '1000' | '2000' | '3000';
+  message: {
+    text: string;
+    emotes: Array<{
+      begin: number;
+      end: number;
+      id: string;
+    }>;
+  };
+  cumulative_months: number;
+  streak_months: number | number; // null if not shared
+  duration_months: number;
+};
+
+export type TwitchCheerEvent = {
+  __type: TwitchSubscriptionType.ChannelCheer;
+  is_anonymous: boolean;
+  user_id: string | null; // null if is_anonymous=true
+  user_login: string | null; // null if is_anonymous=true
+  user_name: string | null; // null if is_anonymous=true
+  broadcaster_user_id: string;
+  broadcaster_user_login: string;
+  broadcaster_user_name: string;
+  message: string;
+  bits: number;
+};
+
+export type TwitchRaidEvent = {
+  __type: TwitchSubscriptionType.ChannelRaid;
+  from_broadcaster_user_id: string;
+  from_broadcaster_user_login: string;
+  from_broadcaster_user_name: string;
+  to_broadcaster_user_id: string;
+  to_broadcaster_user_login: string;
+  to_broadcaster_user_name: string;
+  viewers: number;
+};
+
+export type TwitchEvent =
+  | TwitchFollowEvent
+  | TwitchSubscriptionEvent
+  | TwitchSubscriptionGiftEvent
+  | TwitchSubscriptionMessageEvent
+  | TwitchCheerEvent
+  | TwitchRaidEvent;
 
 export const twitchSubscriptionVersionByType: Record<TwitchSubscriptionType, string> = {
   [TwitchSubscriptionType.ChannelFollow]: '2',

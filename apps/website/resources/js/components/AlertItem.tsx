@@ -14,27 +14,44 @@ export type AlertItemProps = {
 function getEventTitle(event: TwitchEvent) {
   switch (event.__type) {
     case TwitchSubscriptionType.ChannelSubscribe:
+    case TwitchSubscriptionType.ChannelSubscriptionMessage:
       return 'Nouveau sub!!';
-    default:
-      return 'Nouvel event: ' + event.__type;
+    case TwitchSubscriptionType.ChannelFollow:
+      return 'Nouveau follow!!';
+    case TwitchSubscriptionType.ChannelSubscriptionGift:
+    case TwitchSubscriptionType.ChannelCheer:
+      return 'Un cadeau!!';
+    case TwitchSubscriptionType.ChannelRaid:
+      return 'RAID!!';
   }
 }
 
 function getEventUser(event: TwitchEvent) {
   switch (event.__type) {
     case TwitchSubscriptionType.ChannelSubscribe:
+    case TwitchSubscriptionType.ChannelCheer:
+    case TwitchSubscriptionType.ChannelFollow:
+    case TwitchSubscriptionType.ChannelSubscriptionMessage:
       return event.user_name;
-    default:
-      return '';
+    case TwitchSubscriptionType.ChannelSubscriptionGift:
+      return event.is_anonymous ? '[HUMAIN MYSTÈRE]' : event.user_name;
+    case TwitchSubscriptionType.ChannelRaid:
+      return event.from_broadcaster_user_name;
   }
 }
 
 function getEventAcknowledgement(event: TwitchEvent) {
   switch (event.__type) {
+    case TwitchSubscriptionType.ChannelFollow:
+      return 'Bienvenue boss!';
     case TwitchSubscriptionType.ChannelSubscribe:
-      return 'Merci la mif!!!';
-    default:
-      return '';
+    case TwitchSubscriptionType.ChannelSubscriptionMessage:
+    case TwitchSubscriptionType.ChannelCheer:
+      return 'Merci la mif!';
+    case TwitchSubscriptionType.ChannelSubscriptionGift:
+      return `Merci pour les ${event.total} subs!`;
+    case TwitchSubscriptionType.ChannelRaid:
+      return `${event.viewers} nouveaux nerds!!!`;
   }
 }
 
@@ -59,7 +76,7 @@ export function AlertItem({ event }: AlertItemProps) {
         h: 'fit-content',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'accent',
+        backgroundColor: 'desktop',
         gap: '5',
         px: '5',
         py: '2',
@@ -79,7 +96,14 @@ export function AlertItem({ event }: AlertItemProps) {
           {getEventTitle(event)}
         </p>
         <p className={css({ textAlign: 'left', fontSize: 'six' })}>
-          {getEventAcknowledgement(event)} <span>{getEventUser(event)}</span>
+          {getEventAcknowledgement(event)}{' '}
+          <span
+            className={css({
+              color: 'accent',
+            })}
+          >
+            {getEventUser(event)}
+          </span>
         </p>
       </div>
     </motion.div>
