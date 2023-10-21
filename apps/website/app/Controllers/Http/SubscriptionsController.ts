@@ -139,7 +139,7 @@ export default class SubscriptionsController {
           __type: notificationPayload.subscription.type,
           ...notificationPayload.event,
         });
-        logger.info('Incoming event parsed');
+        logger.info(`Incoming event parsed :: ${JSON.stringify(notificationPayload)}`);
 
         return response.noContent();
 
