@@ -29,7 +29,7 @@ export default defineConfig({
           main: { value: 'var(--font-euclid)' },
         },
         fontSizes: {
-          one: { value: '5rem' },
+          one: { value: '4.8rem' },
           two: { value: '4.5rem' },
           three: { value: '4rem' },
           four: { value: '3rem' },
