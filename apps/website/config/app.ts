@@ -68,7 +68,7 @@ export const http: ServerConfig = {
   | HTTP request and set it as `x-request-id` header.
   |
   */
-  generateRequestId: false,
+  generateRequestId: true,
 
   /*
   |--------------------------------------------------------------------------
@@ -171,7 +171,11 @@ export const logger: LoggerConfig = {
   | at deployment level and not code level.
   |
   */
-  level: Env.get('LOG_LEVEL', 'info'),
+  level: Env.get('LOG_LEVEL', 'trace'),
+
+  redact: {
+    paths: ['password', '*.password'],
+  },
 
   /*
   |--------------------------------------------------------------------------
@@ -292,4 +296,3 @@ export const assets: AssetsManagerConfig = {
     attributes: {},
   },
 };
-

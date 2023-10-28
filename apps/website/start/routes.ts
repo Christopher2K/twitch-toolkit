@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route';
+import HealthCheck from '@ioc:Adonis/Core/HealthCheck';
 
 Route.group(() => {
   Route.group(() => {
@@ -59,4 +60,10 @@ Route.group(() => {
   Route.get('audio-guests', 'OverlaysController.audioGuestsScreen');
   Route.get('video-guests', 'OverlaysController.videoGuestsScreen');
   Route.get('computer-guests', 'OverlaysController.computerGuestsScreen');
+});
+
+Route.get('health', async ({ response }) => {
+  const report = await HealthCheck.getReport();
+
+  return report.healthy ? response.ok(report) : response.badRequest(report);
 });

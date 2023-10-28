@@ -5,8 +5,8 @@
  * file.
  */
 
-import Env from '@ioc:Adonis/Core/Env'
-import type { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
+import Env from '@ioc:Adonis/Core/Env';
+import type { DatabaseConfig } from '@ioc:Adonis/Lucid/Database';
 
 const databaseConfig: DatabaseConfig = {
   /*
@@ -39,11 +39,10 @@ const databaseConfig: DatabaseConfig = {
       migrations: {
         naturalSort: true,
       },
-      healthCheck: false,
-      debug: false,
+      healthCheck: true,
+      debug: true,
     },
+  },
+};
 
-  }
-}
-
-export default databaseConfig
+export default databaseConfig;
