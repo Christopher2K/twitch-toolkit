@@ -45,6 +45,7 @@ function VideoGuests({ initialData, nbOfParticipants }: VideoGuestsProps) {
       <section
         className={flex({
           w: '100%',
+          position: 'relative',
           flex: 1,
           flexDir: 'row',
           justifyContent: 'center',
@@ -52,15 +53,41 @@ function VideoGuests({ initialData, nbOfParticipants }: VideoGuestsProps) {
           flexWrap: 'wrap',
         })}
       >
-        {Array(nbOfParticipants)
-          .fill(null)
-          .map((_, index) => {
-            return (
-              <div key={index} className={css({ p: '5', width: '50%' })}>
-                <CameraPlaceholder cameraType="landscape" className={css({ width: 'full' })} />
-              </div>
-            );
+        <div
+          className={flex({
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            height: 'full',
+            width: 'full',
+            flexDir: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexWrap: 'wrap',
           })}
+        >
+          {Array(nbOfParticipants)
+            .fill(null)
+            .map((_, index) => {
+              return (
+                <div
+                  key={index}
+                  className={css({
+                    p: '5',
+                    width: '50%',
+                  })}
+                  style={{
+                    height: `${100 / Math.ceil(nbOfParticipants / 2)}%`,
+                  }}
+                >
+                  <CameraPlaceholder
+                    cameraType="landscape"
+                    className={css({ maxWidth: 'full', maxHeight: 'full', margin: 'auto' })}
+                  />
+                </div>
+              );
+            })}
+        </div>
       </section>
     </div>
   );

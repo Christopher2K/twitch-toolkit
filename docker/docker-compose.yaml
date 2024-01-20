@@ -17,11 +17,12 @@ services:
     command: /bin/bash -c 'yarn && yarn dev'
 
   db:
+    container_name: tlk_db
     env_file: ../.env
     image: postgres:15.3-alpine3.18
     restart: always
     volumes:
-      - postgres_data:/var/lib/posgresql/data
+      - tlk_data:/var/lib/posgresql/data
     ports:
       - '5432:5432'
     healthcheck:
@@ -40,10 +41,10 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./certs:/usr/local/etc/caddy/certs
-      - caddy_data:/data
-      - caddy_config:/config
+      - tlk_caddy_data:/data
+      - tlk_caddy_config:/config
 
 volumes:
-  postgres_data:
-  caddy_data:
-  caddy_config:
+  tlk_data:
+  tlk_caddy_data:
+  tlk_caddy_config:
