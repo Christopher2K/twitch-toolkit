@@ -47,11 +47,15 @@ function ComputerGuests({ initialData }: ComputerGuestsProps) {
           flexShrink: 1,
           gap: 0,
           height: 'full',
+          position: 'relative',
         })}
       >
         <CameraPlaceholder className={css({ flex: 1, w: 'full' })} />
         <section
           className={css({
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
             w: 'full',
             backgroundColor: 'rgba(0, 0, 0, 0.85)',
             px: '10',
