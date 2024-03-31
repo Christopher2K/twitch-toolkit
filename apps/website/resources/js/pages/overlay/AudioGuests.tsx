@@ -54,7 +54,7 @@ function AudioGuests({ initialData }: AudioGuestsProps) {
           className={css({
             position: 'relative',
             w: 'full',
-            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backgroundColor: 'rgba(0, 0, 0, 0.90)',
             px: '10',
             py: '4',
           })}
@@ -72,7 +72,7 @@ function AudioGuests({ initialData }: AudioGuestsProps) {
             h: 'full',
             w: '25%',
             p: '4',
-            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backgroundColor: 'rgba(0, 0, 0, 0.90)',
           })}
         >
           {guestsData.guests.map((guest) => (

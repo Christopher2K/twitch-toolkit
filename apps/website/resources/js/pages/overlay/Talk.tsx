@@ -33,7 +33,7 @@ function Talk({ initialData }: TalkProps) {
           left: 0,
           right: 0,
           w: 'full',
-          backgroundColor: 'rgba(0, 0, 0, 0.85)',
+          backgroundColor: 'rgba(0, 0, 0, 0.90)',
           px: '10',
           py: '4',
         })}
