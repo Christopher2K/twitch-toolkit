@@ -1,85 +1,89 @@
 import React from 'react';
 import { Volume2Icon } from 'lucide-react';
-import type { AudioGuestsScreenConfig } from '@twitchtoolkit/types';
+
+import {
+  type GlobalScreenConfig,
+  type GuestsScreensConfig,
+  defaultGuest,
+} from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder, AudioParticipant } from '~/components';
 import { css } from '~/styled-system/css';
-import { flex } from '~/styled-system/patterns';
+import { hstack, vstack } from '~/styled-system/patterns';
 import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type AudioGuestsProps = {
-  initialData: AudioGuestsScreenConfig;
+  initialData: {
+    guests: GuestsScreensConfig;
+    global: GlobalScreenConfig;
+  };
 };
 
 function AudioGuests({ initialData }: AudioGuestsProps) {
-  const { 'config:audioGuests': data } = useSocketDataEvents({
-    events: ['config:audioGuests'],
-    initialData: { 'config:audioGuests': initialData },
+  const { 'config:global': globalData } = useSocketDataEvents({
+    events: ['config:global'],
+    initialData: { 'config:global': initialData.global },
+  });
+
+  const { 'config:guests': guestsData } = useSocketDataEvents({
+    events: ['config:guests'],
+    initialData: { 'config:guests': initialData.guests },
   });
 
   return (
     <div
-      className={flex({
-        flexDirection: 'column',
+      className={hstack({
+        position: 'relative',
+        gap: '0',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        py: '10',
-        px: '20',
-        background: 'desktop',
+        width: 'full',
         height: 'full',
       })}
     >
-      <header
-        className={css({
-          w: 'full',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          mb: '10',
-        })}
-      >
-        <p className={css({ fontSize: 'six', color: 'accent' })}>{data.banner ?? ''}</p>
-        <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>{data.title ?? ''}</h1>
-      </header>
+      <CameraPlaceholder cameraType="landscape" />
+
       <section
-        className={flex({
-          w: '100%',
-          flex: 1,
-          flexDir: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          flexWrap: 'wrap',
-          gap: '10',
+        className={hstack({
+          position: 'absolute',
+          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+          gap: '0',
+          top: 0,
+          left: 0,
+          h: 'full',
+          w: 'full',
         })}
       >
-        <CameraPlaceholder cameraType="landscape" className={css({ width: '70%' })} />
+        <section
+          className={css({
+            position: 'relative',
+            w: 'full',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            px: '10',
+            py: '4',
+          })}
+        >
+          <p className={css({ fontSize: 'six', color: 'accent' })}>{globalData.banner ?? ''}</p>
+          <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>
+            {globalData.title ?? ''}
+          </h1>
+        </section>
 
-        {data.guests.length > 0 && (
-          <section className={css({ flex: 1, width: 'full' })}>
-            <div
-              className={flex({
-                flexDir: 'row',
-                justifyContent: 'start',
-                alignItems: 'center',
-                gap: '4',
-                backgroundColor: 'accent',
-                px: '4',
-                py: '2',
-                rounded: 'xl',
-              })}
-            >
-              <Volume2Icon className={css({ width: '50px', h: 'auto', color: 'white' })} />
-              <p className={css({ fontSize: 'five', color: 'white' })}>Guests audio</p>
-            </div>
-
-            {data.guests.map((guest) => {
-              return (
-                <AudioParticipant key={guest.name} name={`${guest.name}, ${guest.description}`} />
-              );
-            })}
-          </section>
-        )}
+        <section
+          className={hstack({
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            h: 'full',
+            w: '25%',
+            p: '4',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+          })}
+        >
+          {guestsData.guests.map((guest) => (
+            <AudioParticipant key={guest.name} name={guest.name} description={guest.description} />
+          ))}
+        </section>
       </section>
     </div>
   );

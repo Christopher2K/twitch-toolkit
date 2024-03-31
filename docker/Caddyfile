@@ -2,12 +2,12 @@ twitchtoolkit.local:443 {
   tls /usr/local/etc/caddy/certs/twitchtoolkit.local.pem /usr/local/etc/caddy/certs/twitchtoolkit.local-key.pem
 
   route /assets/* {
-    reverse_proxy website:8080
+    reverse_proxy tlk_website:8080
   }
   route /ws {
-    reverse_proxy website:8080
+    reverse_proxy tlk_website:8080
   }
 
-  reverse_proxy website:{$PORT}
+  reverse_proxy tlk_website:{$PORT}
 }
 

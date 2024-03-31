@@ -1,14 +1,9 @@
 import { Heading, Flex, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner } from '@chakra-ui/react';
-
-import { ComputerScreenForm, Form as ComputerScreenFormType } from './ComputerScreenForm';
-import { TalkScreenForm, Form as TalkScreenFormType } from './TalkScreenForm';
-import { AudioGuestsScreenForm, Form as AudioGuestsScreenFormType } from './AudioGuestsScreenForm';
-import { VideoGuestsScreenForm, Form as VideoGuestsScreenFormType } from './VideoGuestsScreenForm';
-import {
-  ComputerGuestsScreenForm,
-  Form as ComputerGuestsScreenFormType,
-} from './ComputerGuestsScreenForm';
 import { useScreenConfigurationStore } from '@/stores/screenConfiguration';
+
+import { GlobalForm, Form as GlobalFormType } from './GlobalForm';
+import { ComputerScreenForm, Form as ComputerScreenFormType } from './ComputerScreenForm';
+import { GuestsScreensForm, Form as GuestScreensFormType } from './GuestsScreensForm';
 
 export function ScreenConfig() {
   const { request, ready, loading, update, data } = useScreenConfigurationStore();
@@ -20,30 +15,16 @@ export function ScreenConfig() {
     });
   }
 
-  function onTalkScreenFormSubmit(data: TalkScreenFormType) {
+  function onGlobalFormSubmit(data: GlobalFormType) {
     update({
-      type: 'talk',
+      type: 'global',
       ...data,
     });
   }
 
-  function onAudioGuestsScreenFormSubmit(data: AudioGuestsScreenFormType) {
+  function onGuestsFormSubmit(data: GuestScreensFormType) {
     update({
-      type: 'audioGuests',
-      ...data,
-    });
-  }
-
-  function onVideoGuestsScreenFormSubmit(data: VideoGuestsScreenFormType) {
-    update({
-      type: 'videoGuests',
-      ...data,
-    });
-  }
-
-  function onComputerGuestsScreenFormSubmit(data: ComputerGuestsScreenFormType) {
-    update({
-      type: 'computerGuests',
+      type: 'guests',
       ...data,
     });
   }
@@ -61,14 +42,15 @@ export function ScreenConfig() {
       {ready && (
         <Tabs>
           <TabList>
+            <Tab>Global</Tab>
             <Tab>Computer</Tab>
-            <Tab>Talk</Tab>
-            <Tab>Audio guests</Tab>
-            <Tab>Video guests</Tab>
-            <Tab>Computer guests</Tab>
+            <Tab>Guests</Tab>
           </TabList>
 
           <TabPanels>
+            <TabPanel>
+              <GlobalForm onSubmit={onGlobalFormSubmit} initialData={data?.global} />
+            </TabPanel>
             <TabPanel>
               <ComputerScreenForm
                 onSubmit={onComputerScreenFormSubmit}
@@ -76,26 +58,7 @@ export function ScreenConfig() {
               />
             </TabPanel>
             <TabPanel>
-              <TalkScreenForm onSubmit={onTalkScreenFormSubmit} initialData={data?.talk} />
-            </TabPanel>
-            <TabPanel>
-              <AudioGuestsScreenForm
-                onSubmit={onAudioGuestsScreenFormSubmit}
-                initialData={data?.audioGuests}
-              />
-            </TabPanel>
-            <TabPanel>
-              <VideoGuestsScreenForm
-                onSubmit={onVideoGuestsScreenFormSubmit}
-                initialData={data?.videoGuests}
-              />
-            </TabPanel>
-
-            <TabPanel>
-              <ComputerGuestsScreenForm
-                onSubmit={onComputerGuestsScreenFormSubmit}
-                initialData={data?.computerGuests}
-              />
+              <GuestsScreensForm onSubmit={onGuestsFormSubmit} initialData={data?.guests} />
             </TabPanel>
           </TabPanels>
         </Tabs>

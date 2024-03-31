@@ -3,19 +3,19 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { MinusIcon } from 'lucide-react';
 import { Box, Flex, FormControl, FormLabel, Input, Button, Heading } from '@chakra-ui/react';
 
-import { AudioGuestsScreenConfig, defaultAudioGuestsScreenConfig } from '@twitchtoolkit/types';
+import { GuestsScreensConfig, defaultGuestsScreensConfig } from '@twitchtoolkit/types';
 
-export type Form = Omit<AudioGuestsScreenConfig, 'type'>;
+export type Form = Omit<GuestsScreensConfig, 'type'>;
 
-export type AudioGuestsScreenFormProps = {
+export type GuestsScreensForm = {
   initialData?: Form;
   onSubmit: (data: Form) => void;
 };
 
-export function AudioGuestsScreenForm({
-  initialData = defaultAudioGuestsScreenConfig,
+export function GuestsScreensForm({
+  initialData = defaultGuestsScreensConfig,
   onSubmit,
-}: AudioGuestsScreenFormProps) {
+}: GuestsScreensForm) {
   const { control, register, handleSubmit } = useForm<Form>({
     defaultValues: initialData,
   });
@@ -23,15 +23,6 @@ export function AudioGuestsScreenForm({
 
   return (
     <Flex as="form" direction="column" gap="5" onSubmit={handleSubmit(onSubmit)}>
-      <FormControl>
-        <FormLabel htmlFor="banner">Banner</FormLabel>
-        <Input type="text" {...register('banner')} />
-      </FormControl>
-      <FormControl>
-        <FormLabel htmlFor="title">Title</FormLabel>
-        <Input type="text" {...register('title')} />
-      </FormControl>
-
       {fields.map((field, index) => (
         <Fragment key={field.id}>
           <Flex direction="column" gap="3" pl="5" borderLeftStyle="solid" borderLeftWidth="thick">

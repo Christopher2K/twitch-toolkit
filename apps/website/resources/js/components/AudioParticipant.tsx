@@ -1,27 +1,26 @@
 import React from 'react';
 
-import { flex } from '~/styled-system/patterns';
+import { flex, hstack } from '~/styled-system/patterns';
 import { css } from '~/styled-system/css';
 
 export type AudioParticipantProps = {
   name: string;
+  description: string;
 };
 
-export function AudioParticipant({ name }: AudioParticipantProps) {
+export function AudioParticipant({ name, description }: AudioParticipantProps) {
   return (
     <div
-      className={flex({
-        flexDir: 'row',
-        justifyContent: 'space-between',
+      className={hstack({
+        justifyContent: 'flex-start',
         alignItems: 'center',
         color: 'white',
-        py: '3',
+        w: 'full',
       })}
     >
-      <p className={css({ fontSize: 'seven' })}>{name}</p>
       <span
         className={css({
-          fontSize: 'six',
+          fontSize: 'lg',
           fontWeight: 'bold',
           backgroundColor: 'red.500',
           px: '2',
@@ -32,6 +31,11 @@ export function AudioParticipant({ name }: AudioParticipantProps) {
       >
         ON AIR
       </span>
+
+      <div className={css({ flex: 1 })}>
+        <p className={css({ fontSize: 'seven' })}>{name}</p>
+        <p className={css({ fontSize: 'seven' })}>{description}</p>
+      </div>
     </div>
   );
 }

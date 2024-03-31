@@ -1,18 +1,14 @@
 import type {
-  AudioGuestsScreenConfig,
-  ComputerGuestsScreenConfig,
   ComputerScreenConfig,
-  TalkScreenConfig,
-  VideoGuestsScreenConfig,
+  GlobalScreenConfig,
+  GuestsScreensConfig,
   TwitchSubscriptionEvent,
 } from '@twitchtoolkit/types';
 
 export type SocketEventData = {
-  'config:audioGuests': AudioGuestsScreenConfig;
+  'config:guests': GuestsScreensConfig;
   'config:computer': ComputerScreenConfig;
-  'config:computerGuests': ComputerGuestsScreenConfig;
-  'config:talk': TalkScreenConfig;
-  'config:videoGuests': VideoGuestsScreenConfig;
+  'config:global': GlobalScreenConfig;
   'twitch:channel.follow': null;
   'twitch:channel.subscribe': TwitchSubscriptionEvent;
   'twitch:channel.subscription.gift': null;

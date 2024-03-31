@@ -19,41 +19,59 @@ export default class OverlaysController {
   }
 
   public async computerScreen({ inertia }: HttpContextContract) {
-    const configuration = await ScreenConfiguration.findOrCreate('computer');
+    const globalConf = await ScreenConfiguration.findOrCreate('global');
+    const computerConf = await ScreenConfiguration.findOrCreate('computer');
+
     return inertia.render('overlay/Computer', {
-      initialData: configuration.config,
+      initialData: {
+        global: globalConf.config,
+        computer: computerConf.config,
+      },
     });
   }
 
   public async talkScreen({ inertia }: HttpContextContract) {
-    const configuration = await ScreenConfiguration.findOrCreate('talk');
+    const globalConf = await ScreenConfiguration.findOrCreate('global');
     return inertia.render('overlay/Talk', {
-      initialData: configuration.config,
+      initialData: {
+        global: globalConf.config,
+      },
     });
   }
 
   public async audioGuestsScreen({ inertia }: HttpContextContract) {
-    const configuration = await ScreenConfiguration.findOrCreate('audioGuests');
+    const globalConf = await ScreenConfiguration.findOrCreate('global');
+    const guestsConf = await ScreenConfiguration.findOrCreate('guests');
+
     return inertia.render('overlay/AudioGuests', {
-      initialData: configuration.config,
+      initialData: {
+        global: globalConf.config,
+        guests: guestsConf.config,
+      },
     });
   }
 
-  public async videoGuestsScreen({ inertia, request }: HttpContextContract) {
-    const nbOfParticipants = parseInt(request.qs()['participants'] ?? 2);
-    const configuration = await ScreenConfiguration.findOrCreate('videoGuests');
+  public async videoGuestsScreen({ inertia }: HttpContextContract) {
+    const globalConf = await ScreenConfiguration.findOrCreate('global');
+    const guestsConf = await ScreenConfiguration.findOrCreate('guests');
+
     return inertia.render('overlay/VideoGuests', {
-      initialData: configuration.config,
-      nbOfParticipants,
+      initialData: {
+        global: globalConf.config,
+        guests: guestsConf.config,
+      },
     });
   }
 
-  public async computerGuestsScreen({ inertia, request }: HttpContextContract) {
-    const nbOfParticipants = parseInt(request.qs()['participants'] ?? 2);
-    const configuration = await ScreenConfiguration.findOrCreate('computerGuests');
+  public async computerGuestsScreen({ inertia }: HttpContextContract) {
+    const globalConf = await ScreenConfiguration.findOrCreate('global');
+    const guestsConf = await ScreenConfiguration.findOrCreate('guests');
+
     return inertia.render('overlay/ComputerGuests', {
-      initialData: configuration.config,
-      nbOfParticipants,
+      initialData: {
+        global: globalConf.config,
+        guests: guestsConf.config,
+      },
     });
   }
 }

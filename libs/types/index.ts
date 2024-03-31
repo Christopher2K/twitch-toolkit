@@ -1,30 +1,16 @@
 export type ScreenConfigObject = {
-  audioGuests: {
-    type: 'audioGuests';
+  global: {
+    type: 'global';
     banner: string;
     title: string;
-    guests: Array<{ name: string; description: string }>;
   };
-  talk: {
-    type: 'talk';
-    banner: string;
-    title: string;
+  guests: {
+    type: 'guests';
+    guests: Array<{ name: string; description: string }>;
   };
   computer: {
     type: 'computer';
-    banner: string;
-    title: string;
     focusMode: boolean;
-  };
-  videoGuests: {
-    type: 'videoGuests';
-    banner: string;
-    title: string;
-  };
-  computerGuests: {
-    type: 'computerGuests';
-    banner: string;
-    title: string;
   };
 };
 
@@ -32,41 +18,28 @@ export type ScreenConfigId = keyof ScreenConfigObject;
 export type ScreenConfig = ScreenConfigObject[keyof ScreenConfigObject];
 
 export type ComputerScreenConfig = ScreenConfigObject['computer'];
-export type TalkScreenConfig = ScreenConfigObject['talk'];
-export type AudioGuestsScreenConfig = ScreenConfigObject['audioGuests'];
-export type VideoGuestsScreenConfig = ScreenConfigObject['videoGuests'];
-export type ComputerGuestsScreenConfig = ScreenConfigObject['computerGuests'];
+export type GlobalScreenConfig = ScreenConfigObject['global'];
+export type GuestsScreensConfig = ScreenConfigObject['guests'];
+
+export const defaultGlobalScreenConfig: GlobalScreenConfig = {
+  type: 'global',
+  banner: '',
+  title: '',
+};
 
 export const defaultComputerScreenConfig: ComputerScreenConfig = {
   type: 'computer',
-  banner: '',
-  title: '',
   focusMode: false,
 };
 
-export const defaultTalkScreenConfig: TalkScreenConfig = {
-  type: 'talk',
-  banner: '',
-  title: '',
-};
-
-export const defaultAudioGuestsScreenConfig: AudioGuestsScreenConfig = {
-  type: 'audioGuests',
-  banner: '',
-  title: '',
+export const defaultGuestsScreensConfig: GuestsScreensConfig = {
+  type: 'guests',
   guests: [],
 };
 
-export const defaultVideoGuestsScreenConfig: VideoGuestsScreenConfig = {
-  type: 'videoGuests',
-  banner: '',
-  title: '',
-};
-
-export const defaultComputerGuestsScreenConfig: ComputerGuestsScreenConfig = {
-  type: 'computerGuests',
-  banner: '',
-  title: '',
+export const defaultGuest: GuestsScreensConfig['guests'][number] = {
+  name: '@LLCoolChris_',
+  description: 'Senior Software Eng',
 };
 
 export type TwitchAccountType = 'bot' | 'main';

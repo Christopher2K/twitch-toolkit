@@ -1,96 +1,133 @@
 import React from 'react';
-import type { ComputerGuestsScreenConfig } from '@twitchtoolkit/types';
+
+import {
+  type GlobalScreenConfig,
+  type GuestsScreensConfig,
+  defaultGuest,
+} from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
 import { css } from '~/styled-system/css';
-import { flex } from '~/styled-system/patterns';
+import { hstack, vstack } from '~/styled-system/patterns';
 import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type ComputerGuestsProps = {
-  initialData: ComputerGuestsScreenConfig;
-  nbOfParticipants: number;
+  initialData: {
+    guests: GuestsScreensConfig;
+    global: GlobalScreenConfig;
+  };
 };
 
-function ComputerGuests({ initialData, nbOfParticipants }: ComputerGuestsProps) {
-  const { 'config:computerGuests': data } = useSocketDataEvents({
-    events: ['config:computerGuests'],
-    initialData: { 'config:computerGuests': initialData },
+function ComputerGuests({ initialData }: ComputerGuestsProps) {
+  const { 'config:global': globalData } = useSocketDataEvents({
+    events: ['config:global'],
+    initialData: { 'config:global': initialData.global },
   });
+
+  const { 'config:guests': guestsData } = useSocketDataEvents({
+    events: ['config:guests'],
+    initialData: { 'config:guests': initialData.guests },
+  });
+
+  const participants = [defaultGuest, ...guestsData.guests];
 
   return (
     <div
-      className={flex({
-        flexDir: 'row',
+      className={hstack({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        background: 'desktop',
         w: 'full',
-        height: 'full',
-        px: '10',
-        gap: '10',
+        h: 'full',
+        gap: 0,
       })}
     >
       <div
-        className={flex({
-          direction: 'column',
-          justifyContent: 'center',
-          gap: '10',
-          py: '10',
-          height: '100%',
-        })}
-      >
-        <CameraPlaceholder cameraType="portrait" className={css({ height: '45%', w: 'auto' })} />
-        {nbOfParticipants >= 3 && (
-          <CameraPlaceholder cameraType="portrait" className={css({ height: '45%', w: 'auto' })} />
-        )}
-      </div>
-      <div
-        className={flex({
+        className={vstack({
           flex: 1,
           flexShrink: 1,
-          direction: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          py: '10',
+          gap: 0,
+          height: 'full',
         })}
       >
-        <header
+        <div id="pcPlaceholder" className={css({ flex: 1 })}></div>
+        <section
           className={css({
             w: 'full',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            mb: '10',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            px: '10',
+            py: '4',
           })}
         >
-          <p className={css({ fontSize: 'six', color: 'accent' })}>{data.banner ?? ''}</p>
-          <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>{data.title ?? ''}</h1>
-        </header>
-
-        <main
-          className={css({
-            bg: 'placeholder',
-            w: 'full',
-            h: 'auto',
-            aspectRatio: '16/9',
-            flexShrink: 0,
-          })}
-        ></main>
+          <p className={css({ fontSize: 'six', color: 'accent' })}>{globalData.banner ?? ''}</p>
+          <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>
+            {globalData.title ?? ''}
+          </h1>
+        </section>
       </div>
+
       <div
-        className={flex({
-          direction: 'column',
-          justifyContent: 'center',
-          gap: '10',
-          py: '10',
-          height: '100%',
+        className={vstack({
+          width: '450px',
+          height: 'full',
+          flexShrink: 0,
+          gap: 0,
         })}
       >
-        <CameraPlaceholder cameraType="portrait" className={css({ height: '45%', w: 'auto' })} />
-        {nbOfParticipants === 4 && (
-          <CameraPlaceholder cameraType="portrait" className={css({ height: '45%', w: 'auto' })} />
-        )}
+        {participants.map((participant) => (
+          <div
+            key={participant.name}
+            className={css({
+              position: 'relative',
+              w: 'full',
+              flexGrow: '1',
+              flexBasis: '0',
+              flexShrink: '0',
+            })}
+          >
+            <CameraPlaceholder
+              cameraType="portrait"
+              className={css({
+                gap: 0,
+                width: 'full',
+                height: 'full',
+                flexShrink: 0,
+              })}
+            />
+
+            <div
+              className={vstack({
+                position: 'absolute',
+                bottom: '4',
+                left: '4',
+                display: 'inline-flex',
+                gap: 0,
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+              })}
+            >
+              <p
+                className={css({
+                  px: '6',
+                  py: '4',
+                  backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                  color: 'white',
+                })}
+              >
+                {participant.name}
+              </p>
+              <p
+                className={css({
+                  px: '6',
+                  py: '4',
+                  backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                  color: 'white',
+                })}
+              >
+                {participant.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

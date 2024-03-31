@@ -5,10 +5,8 @@ import {
   type ScreenConfig,
   type ScreenConfigId,
   defaultComputerScreenConfig,
-  defaultTalkScreenConfig,
-  defaultAudioGuestsScreenConfig,
-  defaultVideoGuestsScreenConfig,
-  defaultComputerGuestsScreenConfig,
+  defaultGuestsScreensConfig,
+  defaultGlobalScreenConfig,
 } from '@twitchtoolkit/types';
 
 export default class ScreenConfiguration extends BaseModel {
@@ -37,16 +35,12 @@ export default class ScreenConfiguration extends BaseModel {
   // Helpers
   public static getDefaultConfig(id: ScreenConfigId): ScreenConfiguration['config'] {
     switch (id) {
-      case 'audioGuests':
-        return defaultAudioGuestsScreenConfig;
-      case 'talk':
-        return defaultTalkScreenConfig;
+      case 'global':
+        return defaultGlobalScreenConfig;
+      case 'guests':
+        return defaultGuestsScreensConfig;
       case 'computer':
         return defaultComputerScreenConfig;
-      case 'videoGuests':
-        return defaultVideoGuestsScreenConfig;
-      case 'computerGuests':
-        return defaultComputerGuestsScreenConfig;
     }
   }
 }

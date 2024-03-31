@@ -1,135 +1,71 @@
 import React from 'react';
-import { ComputerScreenConfig } from '@twitchtoolkit/types';
+import { ComputerScreenConfig, GlobalScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
 import { css } from '~/styled-system/css';
 import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
+import { hstack, vstack } from '~/styled-system/patterns';
 
 type ComputerProps = {
-  initialData: ComputerScreenConfig;
+  initialData: {
+    computer: ComputerScreenConfig;
+    global: GlobalScreenConfig;
+  };
 };
 
 function Computer({ initialData }: ComputerProps) {
-  const { 'config:computer': data } = useSocketDataEvents({
-    events: ['config:computer'],
-    initialData: { 'config:computer': initialData },
+  // const { 'config:computer': computerData } = useSocketDataEvents({
+  //   events: ['config:computer'],
+  //   initialData: { 'config:computer': initialData.computer },
+  // });
+
+  const { 'config:global': globalData } = useSocketDataEvents({
+    events: ['config:global'],
+    initialData: { 'config:global': initialData.global },
   });
 
   return (
     <div
-      className={css({
-        bg: 'desktop',
-        display: 'flex',
-        flexDirection: 'row',
+      className={hstack({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         w: 'full',
         h: 'full',
+        gap: 0,
       })}
     >
-      <div className={css({ w: '75%' })}>
+      <div
+        className={vstack({
+          flex: 1,
+          flexShrink: 1,
+          gap: 0,
+          height: 'full',
+        })}
+      >
+        <div id="pcPlaceholder" className={css({ flex: 1 })}></div>
         <section
           className={css({
-            position: 'relative',
-            bg: 'placeholder',
             w: 'full',
-            h: 'auto',
-            aspectRatio: '16/9',
-            flexShrink: 0,
-          })}
-        >
-          {data.focusMode && (
-            <div
-              className={css({
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                py: '2',
-
-                display: 'flex',
-                flexDir: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              })}
-            >
-              <p
-                className={css({
-                  background: 'red.500',
-                  px: '4',
-                  py: '2',
-                  fontSize: 'lg',
-                  borderTopLeftRadius: 'lg',
-                  borderTopRightRadius: 'lg',
-                  borderBottomRightRadius: 0,
-                  borderBottomLeftRadius: 0,
-                })}
-              >
-                🔇FOCUS MODE 🔇
-              </p>
-              <p
-                className={css({
-                  background: 'red.500',
-                  px: '4',
-                  py: '2',
-                  borderRadius: 'lg',
-                  textAlign: 'center',
-                })}
-              >
-                <span>🇬🇧 Can't talk right now, but checking the chat!</span>
-                <br />
-                <span>🇫🇷 Je parle pas mais je check le chat!</span>
-              </p>
-            </div>
-          )}
-        </section>
-
-        <div
-          className={css({
-            flex: '1',
-            h: 'full',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            py: '4',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
             px: '10',
+            py: '4',
           })}
         >
-          <h1
-            className={css({
-              textAlign: 'center',
-              gap: '10',
-              fontSize: 'six',
-              color: 'accent',
-            })}
-          >
-            {data.banner}
+          <p className={css({ fontSize: 'six', color: 'accent' })}>{globalData.banner ?? ''}</p>
+          <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>
+            {globalData.title ?? ''}
           </h1>
-          <h2
-            className={css({
-              textAlign: 'center',
-              fontSize: 'four',
-              color: 'desktop-light',
-            })}
-          >
-            {data.title}
-          </h2>
-        </div>
+        </section>
       </div>
-      <div className={css({ w: '25%', p: '10', h: 'full', position: 'relative' })}>
-        <CameraPlaceholder cameraType="portrait" />
-        <CameraPlaceholder
-          cameraType="portrait"
-          className={css({
-            position: 'absolute',
-            top: '55%',
-            left: '50%',
-            w: '50%',
-            transform: 'translateX(-50%)',
-          })}
-        />
-      </div>
+
+      <CameraPlaceholder
+        cameraType="portrait"
+        className={css({
+          width: '450px',
+          height: 'full',
+          flexShrink: 0,
+        })}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Flex, FormControl, FormLabel, Input, Button, Checkbox } from '@chakra-ui/react';
+import { Flex, FormControl, Button, Checkbox } from '@chakra-ui/react';
 
 import { ComputerScreenConfig, defaultComputerScreenConfig } from '@twitchtoolkit/types';
 
@@ -20,15 +20,6 @@ export function ComputerScreenForm({
 
   return (
     <Flex as="form" direction="column" gap="5" onSubmit={handleSubmit(onSubmit)}>
-      <FormControl>
-        <FormLabel htmlFor="banner">Banner</FormLabel>
-        <Input type="text" {...register('banner')} />
-      </FormControl>
-      <FormControl>
-        <FormLabel htmlFor="title">Title</FormLabel>
-        <Input type="text" {...register('title')} />
-      </FormControl>
-
       <FormControl>
         <Checkbox {...register('focusMode')}>Focus mode</Checkbox>
       </FormControl>

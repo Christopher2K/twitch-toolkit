@@ -1,44 +1,45 @@
 import React from 'react';
-import { TalkScreenConfig } from '@twitchtoolkit/types';
+import { GlobalScreenConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder } from '~/components';
 import { css } from '~/styled-system/css';
 import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type TalkProps = {
-  initialData: TalkScreenConfig;
+  initialData: {
+    global: GlobalScreenConfig;
+  };
 };
 
 function Talk({ initialData }: TalkProps) {
-  const { 'config:talk': data } = useSocketDataEvents({
-    events: ['config:talk'],
-    initialData: { 'config:talk': initialData },
+  const { 'config:global': data } = useSocketDataEvents({
+    events: ['config:global'],
+    initialData: { 'config:global': initialData.global },
   });
 
   return (
     <div
       className={css({
-        py: '10',
-        px: '20',
-        background: 'desktop',
+        width: 'full',
         height: 'full',
       })}
     >
-      <header
+      <CameraPlaceholder cameraType="landscape" />
+
+      <section
         className={css({
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
           w: 'full',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          mb: '10',
+          backgroundColor: 'rgba(0, 0, 0, 0.85)',
+          px: '10',
+          py: '4',
         })}
       >
-        <p className={css({ fontSize: 'six', color: 'accent' })}>{data.banner}</p>
-        <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>{data.title}</h1>
-      </header>
-      <section className={css({ w: '80%' })}>
-        <CameraPlaceholder cameraType="landscape" />
+        <p className={css({ fontSize: 'six', color: 'accent' })}>{data.banner ?? ''}</p>
+        <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>{data.title ?? ''}</h1>
       </section>
     </div>
   );
