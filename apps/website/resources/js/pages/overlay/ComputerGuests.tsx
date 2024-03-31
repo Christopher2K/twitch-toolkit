@@ -49,7 +49,7 @@ function ComputerGuests({ initialData }: ComputerGuestsProps) {
           height: 'full',
         })}
       >
-        <CameraPlaceholder className={css({ flex: 1 })} />
+        <CameraPlaceholder className={css({ flex: 1, w: 'full' })} />
         <section
           className={css({
             w: 'full',
