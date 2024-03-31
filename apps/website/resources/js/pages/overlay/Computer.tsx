@@ -59,7 +59,6 @@ function Computer({ initialData }: ComputerProps) {
       </div>
 
       <CameraPlaceholder
-        cameraType="portrait"
         className={css({
           width: '450px',
           height: 'full',

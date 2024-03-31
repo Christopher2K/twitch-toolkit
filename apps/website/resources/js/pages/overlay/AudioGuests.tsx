@@ -1,15 +1,10 @@
 import React from 'react';
-import { Volume2Icon } from 'lucide-react';
 
-import {
-  type GlobalScreenConfig,
-  type GuestsScreensConfig,
-  defaultGuest,
-} from '@twitchtoolkit/types';
+import { type GlobalScreenConfig, type GuestsScreensConfig } from '@twitchtoolkit/types';
 
 import { OverlaysLayout, CameraPlaceholder, AudioParticipant } from '~/components';
 import { css } from '~/styled-system/css';
-import { hstack, vstack } from '~/styled-system/patterns';
+import { hstack } from '~/styled-system/patterns';
 import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type AudioGuestsProps = {
@@ -41,7 +36,7 @@ function AudioGuests({ initialData }: AudioGuestsProps) {
         height: 'full',
       })}
     >
-      <CameraPlaceholder cameraType="landscape" />
+      <CameraPlaceholder full />
 
       <section
         className={hstack({

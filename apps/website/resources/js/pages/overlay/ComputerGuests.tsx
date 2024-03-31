@@ -85,11 +85,8 @@ function ComputerGuests({ initialData }: ComputerGuestsProps) {
             })}
           >
             <CameraPlaceholder
-              cameraType="portrait"
+              full
               className={css({
-                gap: 0,
-                width: 'full',
-                height: 'full',
                 flexShrink: 0,
               })}
             />

@@ -12,23 +12,20 @@ const cameraPlaceholderStyle = cva({
         bg: 'placeholder-2',
       },
     },
-    cameraType: {
-      portrait: {},
-      landscape: {},
+    full: {
+      true: {
+        width: 'full',
+        height: 'full',
+      },
     },
   },
 });
 
 type CameraPlaceholderProps = {
-  cameraType: 'portrait' | 'landscape';
-  alternateColor?: boolean;
+  full?: boolean;
   className?: string;
 };
 
-export function CameraPlaceholder({
-  className,
-  alternateColor = false,
-  cameraType = 'landscape',
-}: CameraPlaceholderProps) {
-  return <div className={cx(cameraPlaceholderStyle({ alternateColor, cameraType }), className)} />;
+export function CameraPlaceholder({ className, full = false }: CameraPlaceholderProps) {
+  return <div className={cx(cameraPlaceholderStyle({ full }), className)} />;
 }

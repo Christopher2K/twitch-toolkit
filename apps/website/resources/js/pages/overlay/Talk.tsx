@@ -24,7 +24,7 @@ function Talk({ initialData }: TalkProps) {
         height: 'full',
       })}
     >
-      <CameraPlaceholder cameraType="landscape" />
+      <CameraPlaceholder full />
 
       <section
         className={css({

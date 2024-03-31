@@ -50,8 +50,8 @@ function VideoGuests({ initialData }: VideoGuestsProps) {
         {participants.map((participant) => (
           <CameraPlaceholder
             key={participant.name}
-            cameraType="portrait"
-            className={css({ width: 'full', flex: 1, height: '100%', margin: 'auto' })}
+            full
+            className={css({ flex: 1, margin: 'auto' })}
           />
         ))}
       </section>
