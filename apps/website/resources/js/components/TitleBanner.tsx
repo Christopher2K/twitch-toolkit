@@ -7,6 +7,7 @@ export type TitleBannerProps = {
 };
 
 export function TitleBanner({ title, banner }: TitleBannerProps) {
+  if (!title && !banner) return null;
   return (
     <div
       className={css({
