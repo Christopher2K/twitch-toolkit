@@ -1,7 +1,7 @@
 import React from 'react';
 import { GlobalScreenConfig } from '@twitchtoolkit/types';
 
-import { OverlaysLayout, CameraPlaceholder } from '~/components';
+import { OverlaysLayout, TitleBanner } from '~/components';
 import { css } from '~/styled-system/css';
 import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
@@ -22,25 +22,21 @@ function Talk({ initialData }: TalkProps) {
       className={css({
         width: 'full',
         height: 'full',
+        backgroundColor: 'desktop',
+        p: '4',
       })}
     >
-      <CameraPlaceholder full />
-
-      <section
+      <div
         className={css({
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          w: 'full',
-          backgroundColor: 'rgba(0, 0, 0, 0.90)',
-          px: '10',
-          py: '4',
+          layerStyle: 'card',
+          position: 'relative',
+          width: 'full',
+          height: 'full',
+          backgroundColor: 'placeholder',
         })}
       >
-        <p className={css({ fontSize: 'six', color: 'accent' })}>{data.banner ?? ''}</p>
-        <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>{data.title ?? ''}</h1>
-      </section>
+        <TitleBanner title={data.title} banner={data.banner} />
+      </div>
     </div>
   );
 }

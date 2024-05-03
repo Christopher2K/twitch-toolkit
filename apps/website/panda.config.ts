@@ -1,9 +1,20 @@
-import { defineConfig, defineGlobalStyles } from '@pandacss/dev';
+import { defineConfig, defineGlobalStyles, defineLayerStyles } from '@pandacss/dev';
 
 const globalCss = defineGlobalStyles({
   '*': {
     fontFamily: 'var(--font-euclid)',
     color: 'white',
+  },
+});
+
+const layerStyles = defineLayerStyles({
+  card: {
+    value: {
+      borderRadius: 'lg',
+      boxShadow: 'cardShadow',
+      border: '2px solid',
+      borderColor: 'white',
+    },
   },
 });
 
@@ -16,7 +27,13 @@ export default defineConfig({
 
   theme: {
     extend: {
+      layerStyles,
       tokens: {
+        shadows: {
+          cardShadow: {
+            value: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+          },
+        },
         colors: {
           background: { value: '#2D2D2D' },
           placeholder: { value: '#40ff00' },
@@ -24,6 +41,9 @@ export default defineConfig({
           desktop: { value: '#1E1E2E' },
           'desktop-light': { value: '#CDD6F4' },
           accent: { value: '#FAB387' },
+          backgroundGradient: {
+            value: 'linear-gradient(135deg, hsla(0, 0%, 18%, 1) 18%, hsla(231, 100%, 80%, 1) 100%)',
+          },
         },
         fonts: {
           main: { value: 'var(--font-euclid)' },

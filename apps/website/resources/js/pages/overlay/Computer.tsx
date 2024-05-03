@@ -1,10 +1,10 @@
 import React from 'react';
 import { ComputerScreenConfig, GlobalScreenConfig } from '@twitchtoolkit/types';
 
-import { OverlaysLayout, CameraPlaceholder } from '~/components';
+import { OverlaysLayout, TitleBanner } from '~/components';
 import { css } from '~/styled-system/css';
-import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 import { hstack, vstack } from '~/styled-system/patterns';
+import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
 
 type ComputerProps = {
   initialData: {
@@ -14,12 +14,7 @@ type ComputerProps = {
 };
 
 function Computer({ initialData }: ComputerProps) {
-  // const { 'config:computer': computerData } = useSocketDataEvents({
-  //   events: ['config:computer'],
-  //   initialData: { 'config:computer': initialData.computer },
-  // });
-
-  const { 'config:global': globalData } = useSocketDataEvents({
+  const { 'config:global': data } = useSocketDataEvents({
     events: ['config:global'],
     initialData: { 'config:global': initialData.global },
   });
@@ -31,44 +26,78 @@ function Computer({ initialData }: ComputerProps) {
         alignItems: 'flex-start',
         w: 'full',
         h: 'full',
-        gap: 0,
+        gap: '0',
+        background: 'desktop',
       })}
     >
+      {/* MAIN SCREEN */}
       <div
-        className={vstack({
+        className={css({
           flex: 1,
-          flexShrink: 1,
-          gap: 0,
+          w: 'full',
           height: 'full',
-          position: 'relative',
+          p: '4',
+          pr: '2 !important',
         })}
       >
-        <CameraPlaceholder className={css({ flex: 1, w: 'full' })} />
-        <section
+        <div
           className={css({
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
+            layerStyle: 'card',
+            position: 'relative',
+            backgroundColor: 'placeholder',
             w: 'full',
-            backgroundColor: 'rgba(0, 0, 0, 0.90)',
-            px: '10',
-            py: '4',
+            height: 'full',
           })}
         >
-          <p className={css({ fontSize: 'six', color: 'accent' })}>{globalData.banner ?? ''}</p>
-          <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>
-            {globalData.title ?? ''}
-          </h1>
-        </section>
+          <TitleBanner title={data.title} banner={data.banner} />
+        </div>
       </div>
-
-      <CameraPlaceholder
-        className={css({
-          width: '450px',
+      {/* CAMERAS */}
+      <div
+        className={vstack({
+          width: '493px',
           height: 'full',
-          flexShrink: 0,
+          gap: '0',
         })}
-      />
+      >
+        <div
+          className={css({
+            width: '100%',
+            flex: '1',
+            p: '4',
+            pb: '2 !important',
+            pl: '2 !important',
+          })}
+        >
+          <div
+            className={css({
+              layerStyle: 'card',
+              w: 'full',
+              h: 'full',
+              backgroundColor: 'placeholder',
+            })}
+          ></div>
+        </div>
+
+        <div
+          className={css({
+            width: '100%',
+            aspectRatio: '16 / 9',
+            p: '4',
+            pt: '2 !important',
+            pl: '2 !important',
+          })}
+        >
+          <div
+            className={css({
+              layerStyle: 'card',
+              w: 'full',
+              h: 'full',
+              backgroundColor: 'placeholder',
+            })}
+          ></div>
+        </div>
+      </div>
     </div>
   );
 }

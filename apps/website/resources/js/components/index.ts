@@ -5,3 +5,5 @@ export * from './OverlaysLayout';
 export * from './ScreenContainer';
 export * from './Separator';
 export * from './TransitionScreenLayout';
+export * from './TitleBanner';
+export * from './VideoParticipant';

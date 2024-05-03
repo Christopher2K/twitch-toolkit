@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
+import { TwitchEvent } from '@twitchtoolkit/types';
 import { flex } from '~/styled-system/patterns';
 import { useSocketEventListener, EventHandler } from '~/hooks/useSocketEventListener';
 
 import { AlertItem } from './AlertItem';
-import { TwitchEvent } from '@twitchtoolkit/types/index';
 
 function useDebounce<T extends any[], R>(fn: (...input: T) => R, time: number) {
   const locked = useRef<boolean>(false);
@@ -41,8 +41,8 @@ export function Alerts() {
       id="alert_layer"
       className={flex({
         position: 'fixed',
-        top: '4%',
-        left: '2%',
+        top: '8',
+        left: '8',
         zIndex: '10',
         justifyContent: 'center',
       })}

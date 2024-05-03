@@ -6,7 +6,7 @@ import {
   defaultGuest,
 } from '@twitchtoolkit/types';
 
-import { OverlaysLayout, CameraPlaceholder } from '~/components';
+import { OverlaysLayout, CameraPlaceholder, TitleBanner, VideoParticipant } from '~/components';
 import { css } from '~/styled-system/css';
 import { hstack, vstack } from '~/styled-system/patterns';
 import { useSocketDataEvents } from '~/hooks/useSocketDataEvents';
@@ -38,94 +38,62 @@ function ComputerGuests({ initialData }: ComputerGuestsProps) {
         alignItems: 'flex-start',
         w: 'full',
         h: 'full',
-        gap: 0,
+        gap: '0',
+        background: 'desktop',
       })}
     >
+      {/* MAIN SCREEN */}
       <div
-        className={vstack({
+        className={css({
           flex: 1,
-          flexShrink: 1,
-          gap: 0,
+          w: 'full',
           height: 'full',
-          position: 'relative',
+          p: '4',
+          pr: '2 !important',
         })}
       >
-        <CameraPlaceholder className={css({ flex: 1, w: 'full' })} />
-        <section
+        <div
           className={css({
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
+            layerStyle: 'card',
+            position: 'relative',
+            backgroundColor: 'placeholder',
             w: 'full',
-            backgroundColor: 'rgba(0, 0, 0, 0.90)',
-            px: '10',
-            py: '4',
+            height: 'full',
           })}
         >
-          <p className={css({ fontSize: 'six', color: 'accent' })}>{globalData.banner ?? ''}</p>
-          <h1 className={css({ fontSize: 'four', color: 'desktop-light' })}>
-            {globalData.title ?? ''}
-          </h1>
-        </section>
+          <TitleBanner title={globalData.title} banner={globalData.banner} />
+        </div>
       </div>
-
+      {/* CAMERAS */}
       <div
         className={vstack({
-          width: '450px',
+          width: '493px',
           height: 'full',
-          flexShrink: 0,
-          gap: 0,
+          gap: '4',
+          pl: '2',
+          pr: '4',
+          py: '4',
         })}
       >
         {participants.map((participant) => (
           <div
-            key={participant.name}
             className={css({
               position: 'relative',
+              layerStyle: 'card',
               w: 'full',
               flexGrow: '1',
-              flexBasis: '0',
               flexShrink: '0',
+              background: 'placeholder',
             })}
           >
-            <CameraPlaceholder
-              full
-              className={css({
-                flexShrink: 0,
-              })}
-            />
-
             <div
-              className={vstack({
+              className={css({
                 position: 'absolute',
                 bottom: '4',
                 left: '4',
-                display: 'inline-flex',
-                gap: 0,
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
               })}
             >
-              <p
-                className={css({
-                  px: '6',
-                  py: '4',
-                  backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                  color: 'white',
-                })}
-              >
-                {participant.name}
-              </p>
-              <p
-                className={css({
-                  px: '6',
-                  py: '4',
-                  backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                  color: 'white',
-                })}
-              >
-                {participant.description}
-              </p>
+              <VideoParticipant name={participant.name} description={participant.description} />
             </div>
           </div>
         ))}

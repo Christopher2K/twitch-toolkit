@@ -72,6 +72,7 @@ export function AlertItem({ event }: AlertItemProps) {
         opacity: 0,
       }}
       className={hstack({
+        layerStyle: 'card',
         w: 'fit-content',
         h: 'fit-content',
         justifyContent: 'flex-start',
@@ -80,22 +81,19 @@ export function AlertItem({ event }: AlertItemProps) {
         gap: '5',
         px: '5',
         py: '2',
-        rounded: 'md',
-        borderColor: 'white',
-        borderWidth: 'thick',
       })}
     >
       <FlexinFaceIcon className={css({ width: '40px', h: 'auto' })} />
       <div className={vstack({ gap: 0, alignItems: 'flex-start' })}>
         <p
           className={css({
-            fontSize: 'seven',
+            textStyle: 'xl',
             textAlign: 'left',
           })}
         >
           {getEventTitle(event)}
         </p>
-        <p className={css({ textAlign: 'left', fontSize: 'six' })}>
+        <p className={css({ textAlign: 'left', textStyle: '3xl' })}>
           {getEventAcknowledgement(event)}{' '}
           <span
             className={css({

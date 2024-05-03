@@ -9,7 +9,7 @@
   "packageManager": "yarn@3.6.2",
   "scripts": {
     "postinstall": "husky install",
-    "compose": "docker compose -f ./docker/docker-compose.yaml",
+    "compose": "docker-compose -f ./docker/docker-compose.yaml",
     "c:u": "yarn compose up",
     "c:u:rebuild": "yarn compose up --force-recreate --build",
     "c:d": "yarn compose down",
