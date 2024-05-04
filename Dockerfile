@@ -13,7 +13,7 @@ COPY apps/website/panda.config.ts /usr/app/apps/website/panda.config.ts
 COPY libs/types/package.json /usr/app/libs/types/package.json
 COPY turbo.json ./
 
-RUN pnpm i --no-script
+RUN pnpm i
 
 COPY tsconfig.root.json /usr/app
 COPY apps/website /usr/app/apps/website
@@ -21,9 +21,8 @@ COPY libs/types /usr/app/libs/types
 
 RUN pnpm website prepare
 RUN pnpm build:website
-RUN rm -rf node_modules
+RUN pnpm website deploy --prod /production
 
-RUN pnpm website i
 
 FROM node:18.15-alpine3.17 as runner
 
@@ -47,11 +46,8 @@ ENV ADMIN_PASSWORD=${ADMIN_PASSWORD}
 
 EXPOSE ${PORT}
 
-COPY --from=builder /usr/app/apps/website/dist /usr/app
-COPY --from=builder /usr/app/node_modules /usr/app/node_modules
-COPY --from=builder /usr/app/libs/types/dist /usr/app/node_modules/@twitchtoolkit/types/dist
-COPY --from=builder /usr/app/libs/types/package.json /usr/app/node_modules/@twitchtoolkit/types/package.json
-
+COPY --from=builder /production/dist /usr/app
+COPY --from=builder /production/node_modules /usr/app/node_modules
 
 CMD ["/bin/sh", "-c", "node /usr/app/ace migration:run --force && node /usr/app/ace admin:create && node /usr/app/server.js"]
 
