@@ -2,26 +2,21 @@
   "name": "@twitchtoolkit",
   "private": true,
   "version": "1.0.0",
-  "workspaces": [
-    "apps/*",
-    "libs/*"
-  ],
-  "packageManager": "yarn@3.6.2",
   "scripts": {
     "postinstall": "husky install",
     "compose": "docker-compose -f ./docker/docker-compose.yaml",
-    "c:u": "yarn compose up",
-    "c:u:rebuild": "yarn compose up --force-recreate --build",
-    "c:d": "yarn compose down",
-    "c:ex": "yarn compose exec tlk_website",
+    "c:u": "pnpm compose up",
+    "c:u:rebuild": "pnpm compose up --force-recreate --build",
+    "c:d": "pnpm compose down",
+    "c:ex": "pnpm compose exec tlk_website",
     "lint:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
     "lint:ci": "prettier \"**/*.{js,jsx,ts,tsx,json,md,css}\" -c",
-    "types": "yarn workspace @twitchtoolkit/types",
-    "control": "yarn workspace @twitchtoolkit/control",
-    "website": "yarn workspace @twitchtoolkit/website",
+    "types": "pnpm workspace @twitchtoolkit/types",
+    "control": "pnpm --filter @twitchtoolkit/control",
+    "website": "pnpm --filter @twitchtoolkit/website",
     "dev": "turbo dev --filter=!@twitchtoolkit/control",
     "build:website": "turbo build --filter=@twitchtoolkit/website",
-    "build:control": "rm -rf apps/control/dist apps/control/src-tauri/target && yarn control tauri build"
+    "build:control": "rm -rf apps/control/dist apps/control/src-tauri/target && pnpm control tauri build"
   },
   "devDependencies": {
     "husky": "~8.0.3",

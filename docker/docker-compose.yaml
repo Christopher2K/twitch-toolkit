@@ -6,7 +6,6 @@ services:
       context: ../
       dockerfile: ./docker/Dockerfile
     volumes:
-      - /usr/src/app/.yarn/cache
       - /usr/src/app/node_modules
       - /usr/src/app/apps/website/node_modules
       - ../:/usr/src/app
@@ -14,7 +13,7 @@ services:
       - tlk_db
     links:
       - 'tlk_db:db'
-    command: /bin/bash -c 'yarn && yarn dev'
+    command: /bin/bash -c 'pnpm i && pnpm dev'
 
   tlk_db:
     container_name: tlk_db

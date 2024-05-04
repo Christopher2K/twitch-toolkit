@@ -6,7 +6,6 @@
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "type": "module",
-  "packageManager": "yarn@3.6.2",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -22,7 +21,7 @@
     }
   },
   "scripts": {
-    "dev": "tsup --watch --onSuccess \"yarn generate:type\"",
+    "dev": "tsup --watch --onSuccess \"pnpm generate:type\"",
     "build": "tsup --clean --minify",
     "generate:type": "tsc --declaration --emitDeclarationOnly"
   },

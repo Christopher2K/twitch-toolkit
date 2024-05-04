@@ -2,28 +2,28 @@ FROM node:18.15-bullseye-slim as builder
 
 RUN corepack enable
 RUN mkdir -p /usr/app
-RUN mkdir /usr/app/.yarn
 WORKDIR /usr/app
 
-COPY .yarn /usr/app/.yarn
 COPY package.json /usr/app
-COPY .yarnrc.yml /usr/app
-COPY yarn.lock /usr/app
+COPY .npmrc /usr/app
+COPY pnpm-workspace.yaml /usr/app
+COPY pnpm-lock.yaml /usr/app
 COPY apps/website/package.json /usr/app/apps/website/package.json
+COPY apps/website/panda.config.ts /usr/app/apps/website/panda.config.ts
 COPY libs/types/package.json /usr/app/libs/types/package.json
 COPY turbo.json ./
 
-RUN yarn install 
+RUN pnpm i --no-script
 
 COPY tsconfig.root.json /usr/app
 COPY apps/website /usr/app/apps/website
 COPY libs/types /usr/app/libs/types
 
-RUN yarn website prepare
-RUN yarn build:website
+RUN pnpm website prepare
+RUN pnpm build:website
 RUN rm -rf node_modules
 
-RUN yarn workspaces focus @twitchtoolkit/website --production
+RUN pnpm website i
 
 FROM node:18.15-alpine3.17 as runner
 

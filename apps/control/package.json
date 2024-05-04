@@ -15,7 +15,7 @@
     "@emotion/styled": "~11.11.0",
     "@tanstack/react-router": "beta",
     "@tauri-apps/api": "~1.4.0",
-    "@twitchtoolkit/types": "*",
+    "@twitchtoolkit/types": "workspace:*",
     "framer-motion": "~10.16.4",
     "ky": "~1.0.1",
     "lucide-react": "~0.274.0",

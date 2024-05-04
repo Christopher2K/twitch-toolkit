@@ -8,10 +8,12 @@ WORKDIR /usr/src/app
 
 COPY turbo.json ./
 COPY package.json ./
-COPY yarn.lock ./
+COPY pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
 
 COPY apps/website/package.json ./apps/website/
+COPY apps/website/panda.config.ts ./apps/website/
 COPY libs/types/package.json ./libs/types/
 
-RUN yarn install
+RUN pnpm i
 
