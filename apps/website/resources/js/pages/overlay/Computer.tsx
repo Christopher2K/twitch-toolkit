@@ -49,7 +49,7 @@ function Computer({ initialData }: ComputerProps) {
             height: 'full',
           })}
         >
-          <TitleBanner title={data.title} banner={data.banner} />
+          <TitleBanner position="right" title={data.title} banner={data.banner} />
         </div>
       </div>
       {/* CAMERAS */}

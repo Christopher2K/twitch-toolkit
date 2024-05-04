@@ -1,22 +1,47 @@
 import React from 'react';
-import { css } from '~/styled-system/css';
+import { css, cva, cx } from '~/styled-system/css';
 
 export type TitleBannerProps = {
+  position?: 'left' | 'right';
   title?: string;
   banner?: string;
 };
 
-export function TitleBanner({ title, banner }: TitleBannerProps) {
+const positionStyle = cva({
+  base: {
+    position: 'absolute',
+    bottom: '0',
+  },
+  variants: {
+    position: {
+      left: {
+        left: '0',
+      },
+      right: {
+        right: '0',
+      },
+    },
+  },
+  defaultVariants: {
+    position: 'left',
+  },
+});
+
+export function TitleBanner({ title, banner, position }: TitleBannerProps) {
   if (!title && !banner) return null;
+  const positionStyleValue = positionStyle({ position });
+
   return (
     <div
-      className={css({
-        position: 'absolute',
-        bottom: '0',
-        left: '0',
-        w: 'full',
-        p: '4',
-      })}
+      className={cx(
+        css({
+          position: 'absolute',
+          bottom: '0',
+          p: '4',
+          w: 'fit-content',
+        }),
+        positionStyleValue,
+      )}
     >
       <div
         className={css({
