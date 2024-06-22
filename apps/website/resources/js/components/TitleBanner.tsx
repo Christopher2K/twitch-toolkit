@@ -37,7 +37,7 @@ export function TitleBanner({ title, banner, position }: TitleBannerProps) {
         css({
           position: 'absolute',
           bottom: '0',
-          p: '4',
+          p: '8',
           w: 'fit-content',
         }),
         positionStyleValue,
